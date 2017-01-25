@@ -1,0 +1,22 @@
+{
+  "name": "todometer",
+  "version": "1.0.0",
+  "main": "bootstrapper.js",
+  "license": "MIT",
+  "repository": "github.com/cassidoo/todometer",
+  "scripts": {
+    "start": "electron .",
+    "build:less": "lessc styles/global.less main.css"
+  },
+  "dependencies": {
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-register": "^6.3.13",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  },
+  "devDependencies": {
+    "electron": "^1.4.3",
+    "less": "^2.7.2"
+  }
+}
