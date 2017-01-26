@@ -1,0 +1,20 @@
+@import 'variables';
+
+body {
+  margin: 0;
+  padding: 0;
+  background: @bg;
+  color: @font-color;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-weight: lighter;
+  #app {
+    position: relative;
+    margin: 40px auto;
+    width: 550px;
+  }
+}
+
+@import 'date';
+@import 'item';
+@import 'itemlist';
+@import 'progress';
