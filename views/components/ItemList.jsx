@@ -21,6 +21,8 @@ export default class ItemList extends React.Component {
     });
     this.setState({items: i});
     e.preventDefault();
+    this._inputElement.value = '';
+    this._inputElement.focus();
   }
 
   createTasks(item) {

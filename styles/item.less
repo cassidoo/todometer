@@ -11,7 +11,49 @@
   border-radius: 3px;
   box-sizing: border-box;
   font-size: @item-font-size;
-  .buttons img {
-    padding: 0 0 0 10px;
+  .buttons button {
+    position: relative;
+    margin: 0 0 0 10px;
+    height: 24px;
+    border: none;
+    &.delete {
+      width: 24px;
+      background: no-repeat url('./assets/x.svg');
+      &:after {
+        background: @red;
+      }
+    }
+    &.pause {
+      width: 24px;
+      background: no-repeat url('./assets/pause.svg');
+      &:after {
+        background: @yellow;
+      }
+    }
+    &.complete {
+      width: 30px;
+      background: no-repeat url('./assets/check.svg');
+      &:after {
+        background: @green;
+      }
+    }
+    &:after {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 100%;
+      width: 0;
+      height: 0;
+    }
+    &:focus {
+      outline: none;
+    }
+    &:focus:after {
+      animation: click .5s;
+    }
   }
 }
+

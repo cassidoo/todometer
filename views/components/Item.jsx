@@ -7,9 +7,9 @@ export default class Item extends React.Component {
     return <div className="item">
       <div className="item-name">{this.props.text}</div>
       <div className="buttons">
-        <img src="./assets/x.svg" alt="Delete"/>
-        <img src="./assets/pause.svg" alt="Pause"/>
-        <img src="./assets/check.svg" alt="Complete"/>
+        <button className="delete"></button>
+        <button className="pause"></button>
+        <button className="complete"></button>
       </div>
     </div>;
   }

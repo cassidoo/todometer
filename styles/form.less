@@ -21,5 +21,24 @@
     height: 30px;
     background: no-repeat url('./assets/plus.svg');
     border: none;
+    /* TODO: Fix plus sign animation
+    /*&:after {
+      display: block;
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      background: #FFF;
+      transform: translate(-50%, -50%);
+      border-radius: 100%;
+      width: 0;
+      height: 0;
+    }
+    &:focus {
+      outline: none;
+    }
+    &:focus:after {
+      animation: click .5s;
+    }*/
   }
 }
