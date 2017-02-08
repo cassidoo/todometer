@@ -7,9 +7,9 @@ export default class Item extends React.Component {
     return <div className="item">
       <div className="item-name">{this.props.text}</div>
       <div className="buttons">
-        <button className="delete"></button>
-        <button className="pause"></button>
-        <button className="complete"></button>
+        <button className="delete" onClick={this.props.onDelete}></button>
+        <button className="pause" onClick={this.props.onPause}></button>
+        <button className="complete" onClick={this.props.onComplete}></button>
       </div>
     </div>;
   }

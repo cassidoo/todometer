@@ -17,12 +17,12 @@ export default class Progress extends React.Component {
 
     return <div className="progress">
       <Bar
-        progress={0.5}
+        progress={this.props.paused}
         options={options2}
         initialAnimate={true}
         containerClassName={'pause-bar'} />
       <Bar
-        progress={0.33}
+        progress={this.props.completed}
         options={options1}
         initialAnimate={true}
         containerClassName={'complete-bar'} />
