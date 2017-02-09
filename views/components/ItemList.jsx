@@ -15,8 +15,10 @@ export default class ItemList extends React.Component {
                   };
     this.addItem = this.addItem.bind(this);
     this.completeItem = this.completeItem.bind(this);
+    this.completePaused = this.completePaused.bind(this);
     this.createTasks = this.createTasks.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.deletePaused = this.deletePaused.bind(this);
     this.pauseItem = this.pauseItem.bind(this);
   }
 
@@ -46,15 +48,36 @@ export default class ItemList extends React.Component {
     this.updateProgress();
   }
 
+  completePaused(e) {
+    this.deletePaused(e);
+    var c = this.state.completed;
+    c.push({
+      text: e.target.parentNode.parentNode.getElementsByClassName('item-name')[0].innerHTML,
+      paused: false,
+      key: Date.now()
+    });
+    this.setState({ completed: c });
+    this.updateProgress();
+  }
+
   deleteItem(e) {
     var i = this.state.items;
     var result = i.filter(function(obj) {
-        return obj.text == e.target.parentNode.parentNode.getElementsByClassName('item-name')[0].innerHTML;
+        return obj.text !== e.target.parentNode.parentNode.getElementsByClassName('item-name')[0].innerHTML;
     });
-    var index = i.indexOf(result[0]);
-    i.splice(index, 1);
-    this.setState({ items: i });
-    this.updateProgress();
+    this.setState({ items: result }, function() {
+      this.updateProgress();
+    });
+  }
+
+  deletePaused(e) {
+    var p = this.state.paused;
+    var result = p.filter(function(obj) {
+        return obj.text !== e.target.parentNode.parentNode.getElementsByClassName('item-name')[0].innerHTML;
+    });
+    this.setState({ paused: result }, function() {
+      this.updateProgress();
+    });
   }
 
   pauseItem(e) {
@@ -69,16 +92,6 @@ export default class ItemList extends React.Component {
     this.updateProgress();
   }
 
-  createTasks(item) {
-    return <Item text={item.text}
-                 paused={item.paused}
-                 key={item.key}
-                 onComplete={this.completeItem}
-                 onDelete={this.deleteItem}
-                 onPause={this.pauseItem}
-                 />;
-  }
-
   updateProgress() {
     var completedAmount = this.state.completed.length;
     var pausedAmount = this.state.paused.length;
@@ -90,9 +103,30 @@ export default class ItemList extends React.Component {
                   });
   }
 
+  createTasks(item) {
+    return <Item text={item.text}
+                 paused={item.paused}
+                 key={item.key}
+                 onComplete={this.completeItem}
+                 onDelete={this.deleteItem}
+                 onPause={this.pauseItem}
+                 onPauseComplete={this.deletePaused}
+                 onPauseDelete={this.completePaused}
+                 />;
+  }
+
+  renderPaused() {
+    var pausedItems = this.state.paused.map(this.createTasks);
+    if (pausedItems.length > 0) {
+      return <div>
+        <h2>Do Later</h2>
+        {pausedItems}
+      </div>;
+    }
+  }
+
   render() {
     var listItems = this.state.items.map(this.createTasks);
-    var pausedItems = this.state.paused.map(this.createTasks);
 
     return <div className="item-list">
       <Progress completed={this.state.cPercent} paused={this.state.pPercent} />
@@ -103,9 +137,8 @@ export default class ItemList extends React.Component {
         <button type="submit"></button>
       </form>
 
-      <Item text="sample" paused="false" />
       {listItems}
-      {pausedItems}
+      {this.renderPaused()}
     </div>;
   }
 }
