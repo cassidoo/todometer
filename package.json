@@ -12,6 +12,7 @@
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
     "babel-register": "^6.3.13",
+    "moment": "^2.17.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-progressbar.js": "^0.2.0"
