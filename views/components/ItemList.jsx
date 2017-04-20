@@ -1,144 +1,132 @@
 'use babel';
 
 import React from 'react';
+import { connect } from 'react-redux';
+import { addItem, updateItem, deleteItem } from '../actions.js';
+import { getAllItems, getPendingItems, getCompletedItems, getPausedItems } from '../reducers.js';
 import Item from './Item';
 import Progress from './Progress';
 
-export default class ItemList extends React.Component {
-  constructor() {
-    super();
-    this.state = { items: [],
-                   completed: [],
-                   paused: [],
-                   cPercent: 0,
-                   pPercent: 0
-                  };
+class ItemList extends React.Component {
+  constructor(props) {
+    super(props);
+
     this.addItem = this.addItem.bind(this);
     this.completeItem = this.completeItem.bind(this);
-    this.completePaused = this.completePaused.bind(this);
-    this.createTasks = this.createTasks.bind(this);
-    this.deleteItem = this.deleteItem.bind(this);
-    this.deletePaused = this.deletePaused.bind(this);
     this.pauseItem = this.pauseItem.bind(this);
   }
 
   addItem(e) {
-    var i = this.state.items;
-    i.push({
+    const newItem = {
       text: this._inputElement.value,
-      paused: false,
-      key: Date.now()
-    });
-    this.setState({ items: i });
+      key: Date.now(),
+      status: 'pending'
+    };
+
+    this.props.addItem(newItem);
     e.preventDefault();
     this._inputElement.value = '';
     this._inputElement.focus();
-    this.updateProgress();
   }
 
-  completeItem(e) {
-    this.deleteItem(e);
-    var c = this.state.completed;
-    c.push({
-      text: e.target.parentNode.parentNode.getElementsByClassName('item-name')[0].innerHTML,
-      paused: false,
-      key: Date.now()
+  completeItem(item) {
+    const completedItem = Object.assign({}, item, {
+      status: 'complete'
     });
-    this.setState({ completed: c });
-    this.updateProgress();
+    this.props.updateItem(completedItem);
   }
 
-  completePaused(e) {
-    this.deletePaused(e);
-    var c = this.state.completed;
-    c.push({
-      text: e.target.parentNode.parentNode.getElementsByClassName('item-name')[0].innerHTML,
-      paused: false,
-      key: Date.now()
+  pauseItem(item) {
+    const pausedItem = Object.assign({}, item, {
+      status: 'paused'
     });
-    this.setState({ completed: c });
-    this.updateProgress();
+    this.props.updateItem(pausedItem);
   }
 
-  deleteItem(e) {
-    var i = this.state.items;
-    var result = i.filter(function(obj) {
-        return obj.text !== e.target.parentNode.parentNode.getElementsByClassName('item-name')[0].innerHTML;
-    });
-    this.setState({ items: result }, function() {
-      this.updateProgress();
-    });
-  }
+  renderProgress() {
+    const completedAmount = this.props.completedItems.length;
+    const pausedAmount = this.props.pausedItems.length;
+    const totalAmount = this.props.allItems.length;
 
-  deletePaused(e) {
-    var p = this.state.paused;
-    var result = p.filter(function(obj) {
-        return obj.text !== e.target.parentNode.parentNode.getElementsByClassName('item-name')[0].innerHTML;
-    });
-    this.setState({ paused: result }, function() {
-      this.updateProgress();
-    });
-  }
+    const completedPercentage = completedAmount/totalAmount;
+    const pausedPercentage = (pausedAmount/totalAmount) + completedPercentage;
 
-  pauseItem(e) {
-    this.deleteItem(e);
-    var p = this.state.paused;
-    p.push({
-      text: e.target.parentNode.parentNode.getElementsByClassName('item-name')[0].innerHTML,
-      paused: true,
-      key: Date.now()
-    });
-    this.setState({ paused: p });
-    this.updateProgress();
-  }
-
-  updateProgress() {
-    var completedAmount = this.state.completed.length;
-    var pausedAmount = this.state.paused.length;
-    var totalAmount = this.state.items.length + completedAmount + pausedAmount;
-    var completedPercentage = completedAmount/totalAmount;
-    var pausedPercentage = (pausedAmount/totalAmount) + completedPercentage;
-    this.setState({ cPercent: completedPercentage,
-                    pPercent: pausedPercentage
-                  });
-  }
-
-  createTasks(item) {
-    return <Item text={item.text}
-                 paused={item.paused}
-                 key={item.key}
-                 onComplete={this.completeItem}
-                 onDelete={this.deleteItem}
-                 onPause={this.pauseItem}
-                 onPauseComplete={this.deletePaused}
-                 onPauseDelete={this.completePaused}
-                 />;
+    return (
+      <Progress completed={completedPercentage} paused={pausedPercentage} />
+    );
   }
 
   renderPaused() {
-    var pausedItems = this.state.paused.map(this.createTasks);
-    if (pausedItems.length > 0) {
-      return <div>
-        <h2>Do Later</h2>
-        {pausedItems}
-      </div>;
+    const pausedItems = this.props.pausedItems;
+    if (pausedItems !== undefined && pausedItems.length > 0) {
+      return (
+        <div>
+          <h2>Do Later</h2>
+          {
+            pausedItems && pausedItems.map((item) => {
+              return (
+                <Item
+                  item={item}
+                  text={item.text}
+                  status={item.status}
+                  key={item.key}
+                  onComplete={this.completeItem}
+                  onDelete={this.props.deleteItem}
+                  paused={true}
+                />
+              );
+            })
+          }
+        </div>
+      );
     }
   }
 
   render() {
-    var listItems = this.state.items.map(this.createTasks);
-
-    return <div className="item-list">
-      <Progress completed={this.state.cPercent} paused={this.state.pPercent} />
-      <form className="form" onSubmit={this.addItem}>
-        <input ref={(a) => this._inputElement = a}
-               placeholder="Add new item"
-               autoFocus />
-        <button type="submit"></button>
-      </form>
-
-      {listItems}
-      {this.renderPaused()}
-    </div>;
+    const { pendingItems } = this.props;
+    return (
+      <div className="item-list">
+        {this.renderProgress()}
+        <form className="form" onSubmit={this.addItem}>
+          <input
+            ref={(a) => this._inputElement = a}
+            placeholder="Add new item"
+            autoFocus
+          />
+          <button type="submit" />
+        </form>
+        {
+          pendingItems && pendingItems.map((item) => {
+            return (
+              <Item
+                item={item}
+                text={item.text}
+                status={item.status}
+                key={item.key}
+                onComplete={this.completeItem}
+                onDelete={this.props.deleteItem}
+                onPause={this.pauseItem}
+              />
+            );
+          })
+        }
+        {this.renderPaused()}
+    </div>
+    );
   }
 }
+
+const mapStateToProps = state => ({
+  allItems: getAllItems(state),
+  pendingItems: getPendingItems(state),
+  completedItems: getCompletedItems(state),
+  pausedItems: getPausedItems(state)
+});
+
+const mapDispatchToProps = dispatch => ({
+  addItem: (item) => dispatch(addItem(item)),
+  updateItem: (item) => dispatch(updateItem(item)),
+  deleteItem: (item) => dispatch(deleteItem(item))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemList);

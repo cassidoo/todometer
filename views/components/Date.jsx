@@ -18,11 +18,11 @@ export default class Date extends React.Component {
   }
 
   componentDidMount() {
-    window.setInterval(function () {
-      if (this.state.day !== Moment.date()) {
-        this.setDate();
-      }
-    }.bind(this), 1000);
+    // window.setInterval(function () {
+    //   if (this.state.day !== Moment.date()) {
+    //     this.setDate();
+    //   }
+    // }.bind(this), 1000);
   }
 
   setDate() {
