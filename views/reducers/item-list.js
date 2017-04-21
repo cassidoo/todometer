@@ -1,12 +1,11 @@
-import { combineReducers } from 'redux';
-import { ADD_ITEM, UPDATE_ITEM, DELETE_ITEM } from './actions';
+import { ADD_ITEM, UPDATE_ITEM, DELETE_ITEM } from '../actions';
 
 // initialize state
 const initialState = {
   items: []
 };
 
-export const ItemListReducer = (state = initialState, action) => {
+export default function (state = initialState, action) {
   const newState = Object.assign({}, state);
 
   switch (action.type) {
@@ -35,19 +34,17 @@ export const ItemListReducer = (state = initialState, action) => {
 
 // selectors
 export const getAllItems = state => {
-  return state.items;
+  return state.itemList.items;
 };
 
 export const getPendingItems = state => {
-  return state.items.filter((item) => item.status === 'pending');
+  return state.itemList.items.filter((item) => item.status === 'pending');
 };
 
 export const getCompletedItems = state => {
-  return state.items.filter((item) => item.status === 'complete');
+  return state.itemList.items.filter((item) => item.status === 'complete');
 };
 
 export const getPausedItems = state => {
-  return state.items.filter((item) => item.status === 'paused');
+  return state.itemList.items.filter((item) => item.status === 'paused');
 };
-
-export default ItemListReducer;

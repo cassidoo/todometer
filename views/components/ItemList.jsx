@@ -3,14 +3,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addItem, updateItem, deleteItem } from '../actions.js';
-import { getAllItems, getPendingItems, getCompletedItems, getPausedItems } from '../reducers.js';
+import { getAllItems, getPendingItems, getCompletedItems, getPausedItems } from '../reducers/item-list.js';
 import Item from './Item';
 import Progress from './Progress';
 
 class ItemList extends React.Component {
   constructor(props) {
     super(props);
-
     this.addItem = this.addItem.bind(this);
     this.completeItem = this.completeItem.bind(this);
     this.pauseItem = this.pauseItem.bind(this);
