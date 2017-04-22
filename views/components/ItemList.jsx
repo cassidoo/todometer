@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { addItem, updateItem, deleteItem } from '../actions.js';
+import { addItem, updateItem, deleteItem, resetAll } from '../actions.js';
 import { getAllItems, getPendingItems, getCompletedItems, getPausedItems } from '../reducers/item-list.js';
 import Item from './Item';
 import Progress from './Progress';
@@ -110,6 +110,7 @@ class ItemList extends React.Component {
           })
         }
         {this.renderPaused()}
+        <button onClick={this.props.resetAll}>reset progress</button>
     </div>
     );
   }
@@ -125,7 +126,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   addItem: (item) => dispatch(addItem(item)),
   updateItem: (item) => dispatch(updateItem(item)),
-  deleteItem: (item) => dispatch(deleteItem(item))
+  deleteItem: (item) => dispatch(deleteItem(item)),
+  resetAll: (item) => dispatch(resetAll(item))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ItemList);

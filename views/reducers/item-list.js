@@ -1,4 +1,4 @@
-import { ADD_ITEM, UPDATE_ITEM, DELETE_ITEM } from '../actions';
+import { ADD_ITEM, UPDATE_ITEM, DELETE_ITEM, RESET_ALL } from '../actions';
 
 // initialize state
 const initialState = {
@@ -25,6 +25,17 @@ export default function (state = initialState, action) {
       break;
     case DELETE_ITEM:
       newState.items = newState.items.filter((item => item.key !== action.item.key));
+      break;
+    case RESET_ALL:
+      newState.items = newState.items.filter((item) => item.status !== 'complete').map((i) => {
+          if (i.status === 'paused') {
+            return Object.assign({}, i, {
+              status: 'pending'
+            });
+          } else {
+            return i;
+          }
+        });
       break;
     default:
       return state;
