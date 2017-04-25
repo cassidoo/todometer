@@ -4,16 +4,23 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import rootReducer from '../views/reducers/index.js';
+import { loadState, saveState } from '../views/local-storage';
+import rootReducer from '../views/reducers/index';
 import Main from '../views/main.jsx';
 
+const persistedState = loadState();
 let store = createStore(rootReducer,
-                        composeWithDevTools(
-                          applyMiddleware(
-                            createLogger({ collapsed: true })
-                          )
-                        )
-                      );
+    persistedState,
+    composeWithDevTools(
+      applyMiddleware(
+        createLogger({ collapsed: true })
+      )
+    )
+  );
+
+store.subscribe(() => {
+  saveState(store.getState());
+});
 
 window.onload = function() {
   ReactDOM.render(
