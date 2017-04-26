@@ -47,8 +47,16 @@ class ItemList extends React.Component {
     const pausedAmount = this.props.pausedItems.length;
     const totalAmount = this.props.allItems.length;
 
-    const completedPercentage = completedAmount/totalAmount;
-    const pausedPercentage = (pausedAmount/totalAmount) + completedPercentage;
+    let completedPercentage = completedAmount/totalAmount;
+    let pausedPercentage = (pausedAmount/totalAmount) + completedPercentage;
+
+    if (isNaN(completedPercentage)) {
+      completedPercentage = 0;
+    }
+
+    if (isNaN(pausedPercentage)) {
+      pausedPercentage = 0;
+    }
 
     return (
       <Progress completed={completedPercentage} paused={pausedPercentage} />
