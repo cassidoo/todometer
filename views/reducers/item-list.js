@@ -41,7 +41,7 @@ export default function (state = initialState, action) {
       return state;
   }
   return newState;
-};
+}
 
 // selectors
 export const getAllItems = state => {

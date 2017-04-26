@@ -2,9 +2,9 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { setDate } from '../actions.js';
+import { setDate, resetAll } from '../actions.js';
 import { getDate } from '../reducers/date.js';
-import Moment from 'moment';
+import moment from 'moment';
 
 class Date extends React.Component {
   constructor(props) {
@@ -12,26 +12,27 @@ class Date extends React.Component {
     this.setDate = this.setDate.bind(this);
   }
 
-  componentWillMount() {
-  }
-
   componentDidMount() {
-    // window.setInterval(function () {
-    //   if (this.state.day !== Moment.date()) {
-    //     this.setDate();
-    //   }
-    // }.bind(this), 1000);
     this.setDate();
   }
 
   setDate() {
     const date = {
-      day: Moment().date(),
-      month: Moment().format('MMM'),
-      year: Moment().year(),
-      weekday: Moment().format('dddd')
+      day: moment().date(),
+      month: moment().format('MMM'),
+      year: moment().year(),
+      weekday: moment().format('dddd')
     };
+    const local = localStorage.getItem('date');
+    this.checkDate(local);
     this.props.setDate(date);
+  }
+
+  checkDate(local) {
+    if (local !== null && moment(local).isBefore(moment().format('MM-DD-YYYY'))) {
+      this.props.resetAll();
+    }
+    localStorage.setItem('date', moment().format('MM-DD-YYYY'));
   }
 
   render() {
@@ -53,7 +54,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setDate: (date) => dispatch(setDate(date))
+  setDate: (date) => dispatch(setDate(date)),
+  resetAll: (item) => dispatch(resetAll(item))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Date);
