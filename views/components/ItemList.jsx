@@ -63,6 +63,19 @@ class ItemList extends React.Component {
     );
   }
 
+  renderReset() {
+    const completedAmount = this.props.completedItems.length;
+    const pausedAmount = this.props.pausedItems.length;
+
+    if (completedAmount > 0 || pausedAmount > 0) {
+      return (
+        <div className="reset">
+          <button onClick={this.props.resetAll}>reset progress</button>
+        </div>
+      );
+    }
+  }
+
   renderPaused() {
     const pausedItems = this.props.pausedItems;
     if (pausedItems !== undefined && pausedItems.length > 0) {
@@ -118,7 +131,7 @@ class ItemList extends React.Component {
           })
         }
         {this.renderPaused()}
-        <button onClick={this.props.resetAll}>reset progress</button>
+        {this.renderReset()}
     </div>
     );
   }
