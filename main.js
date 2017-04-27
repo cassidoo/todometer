@@ -35,7 +35,7 @@ function menuSetup() {
       label: 'todometer',
       submenu: [
         {
-          label: 'About',
+          label: 'About todometer',
           click: () => {
             dialog.showMessageBox(mainWindow, {
               type: 'info',
@@ -47,6 +47,13 @@ function menuSetup() {
           }
         }, {
           type: 'separator'
+        /* For debugging
+        }, {
+          label: 'Dev tools',
+          click: () => {
+            mainWindow.webContents.openDevTools();
+          }
+          */
         }, {
           label: 'Quit',
           click: () => {

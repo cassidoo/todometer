@@ -1,5 +1,6 @@
 {
   "name": "todometer",
+  "productName": "todometer",
   "version": "1.0.0",
   "main": "bootstrapper.js",
   "license": "MIT",
@@ -18,10 +19,12 @@
     "react-progressbar.js": "^0.2.0",
     "react-redux": "^5.0.2",
     "redux": "^3.6.0",
+    "redux-devtools-extension": "^2.13.0",
     "redux-logger": "^3.0.1"
   },
   "devDependencies": {
     "electron": "^1.4.3",
+    "electron-packager": "^8.6.0",
     "less": "^2.7.2",
     "redux-devtools-extension": "^2.13.0"
   }
