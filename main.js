@@ -1,5 +1,6 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu, dialog } from 'electron';
 import moment from 'moment';
+import path from 'path';
 
 let mainWindow = null;
 let willQuit = false;
@@ -10,7 +11,8 @@ function createWindow() {
     maxWidth: 800,
     height: 600,
     fullscreenable: false,
-    backgroundColor: '#403F4D'
+    backgroundColor: '#403F4D',
+    icon: path.join(__dirname, 'assets/png/128x128.png')
   });
   mainWindow.loadURL('file://' + __dirname + '/index.html');
 }
@@ -27,8 +29,40 @@ function manageRefresh() {
   }
 }
 
+function menuSetup() {
+  const menuTemplate = [
+    {
+      label: 'todometer',
+      submenu: [
+        {
+          label: 'About',
+          click: () => {
+            dialog.showMessageBox(mainWindow, {
+              type: 'info',
+              title: 'About',
+              message: 'todometer is built by Cassidy Williams',
+              detail: 'You can find her on GitHub and Twitter as @cassidoo, or on her website cassidoo.co.',
+              icon: path.join(__dirname, 'assets/png/64x64.png')
+            });
+          }
+        }, {
+          type: 'separator'
+        }, {
+          label: 'Quit',
+          click: () => {
+            app.quit();
+          }
+        }
+      ]
+    }
+  ];
+  const menu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(menu);
+}
+
 app.on('ready', () => {
   createWindow();
+  menuSetup();
 
   mainWindow.on('close', (e) => {
     if (willQuit) {
