@@ -12,7 +12,7 @@
     "start": "electron .",
     "build:less": "lessc styles/global.less main.css",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/mac/icon.png.icns --prune=true --out=release-builds",
-    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/win/icon.png.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE"
+    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/win/icon.png.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE",
     "package-linux" : "electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/png/1024x1024.png --prune=true --out=release-builds"
   },
   "dependencies": {
