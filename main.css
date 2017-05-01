@@ -86,6 +86,23 @@ img {
   max-width: 100%;
 }
 
+.downloads {
+  margin: 20px 0;
+}
+
+a.download {
+  padding: 20px;
+  background: #4E4D5C;
+  border-radius: 3px;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.download .check {
+  margin: 0 10px 0 0;
+  height: 17px;
+}
+
 @media (max-width: 1200px) {
   .screenshot {
     margin-left: auto;
