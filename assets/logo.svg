@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="1024px" height="1024px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+    <title>icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon">
+            <circle id="Oval" fill="#2E2D33" cx="512" cy="512" r="512"></circle>
+            <g id="check" transform="translate(175.000000, 93.000000)" fill="#62DCA5">
+                <g id="Group" transform="translate(327.655605, 328.141741) rotate(-45.000000) translate(-327.655605, -328.141741) translate(11.718105, 180.485491)">
+                    <rect id="Rectangle-3" x="-6.57252031e-14" y="210.150239" width="631.741286" height="84.4499471"></rect>
+                    <rect id="Rectangle-3" x="-2.04281037e-14" y="0" width="84.2321714" height="211.124868"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

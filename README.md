@@ -1,4 +1,6 @@
-todometer
+[todometer](cassidoo.github.io/todometer)
 =========
 
-A meter-based to-do list build with Electron, React, Babel, and Less.
+A meter-based to-do list built with Electron, React, Redux, and LESS.
+
+![todometer](assets/screenshot.png)
