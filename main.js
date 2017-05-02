@@ -7,9 +7,9 @@ let willQuit = false;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 800,
-    maxWidth: 800,
-    height: 600,
+    width: 1000,
+    maxWidth: 1000,
+    height: 700,
     fullscreenable: false,
     backgroundColor: '#403F4D',
     icon: path.join(__dirname, 'assets/png/128x128.png')
@@ -32,7 +32,7 @@ function manageRefresh() {
 function menuSetup() {
   const menuTemplate = [
     {
-      label: 'todometer',
+      label: 'Application',
       submenu: [
         {
           label: 'About todometer',
@@ -55,10 +55,52 @@ function menuSetup() {
           }
           */
         }, {
+          label: 'Close',
+          accelerator: 'CommandOrControl+W',
+          click: () => {
+            mainWindow.hide();
+          }
+        }, {
           label: 'Quit',
+          accelerator: 'CommandOrControl+Q',
           click: () => {
             app.quit();
           }
+        }
+      ]
+    },
+    {
+      label: 'Edit',
+      submenu: [
+        {
+          label: 'Undo',
+          accelerator: 'CommandOrControl+Z',
+          selector: 'undo:'
+        },
+        {
+          label: 'Redo',
+          accelerator: 'Shift+CommandOrControl+Z',
+          selector: 'redo:'
+        },
+        {
+          label: 'Cut',
+          accelerator: 'CommandOrControl+X',
+          selector: 'cut:'
+        },
+        {
+          label: 'Copy',
+          accelerator: 'CommandOrControl+C',
+          selector: 'copy:'
+        },
+        {
+          label: 'Paste',
+          accelerator: 'CommandOrControl+V',
+          selector: 'paste:'
+        },
+        {
+          label: 'Select All',
+          accelerator: 'CommandOrControl+A',
+          selector: 'selectAll:'
         }
       ]
     }
