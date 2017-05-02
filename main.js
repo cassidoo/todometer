@@ -9,6 +9,7 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1000,
     maxWidth: 1000,
+    minWidth: 800,
     height: 700,
     fullscreenable: false,
     backgroundColor: '#403F4D',
