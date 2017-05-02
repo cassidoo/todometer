@@ -11,6 +11,7 @@ function createWindow() {
     maxWidth: 1000,
     minWidth: 800,
     height: 700,
+    minHeight: 600,
     fullscreenable: false,
     backgroundColor: '#403F4D',
     icon: path.join(__dirname, 'assets/png/128x128.png')
