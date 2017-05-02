@@ -7,9 +7,9 @@ let willQuit = false;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 800,
-    maxWidth: 800,
-    height: 600,
+    width: 1000,
+    maxWidth: 1000,
+    height: 700,
     fullscreenable: false,
     backgroundColor: '#403F4D',
     icon: path.join(__dirname, 'assets/png/128x128.png')
@@ -56,6 +56,7 @@ function menuSetup() {
           */
         }, {
           label: 'Quit',
+          accelerator: 'CommandOrControl+Q',
           click: () => {
             app.quit();
           }
