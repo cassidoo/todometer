@@ -7,11 +7,11 @@ let willQuit = false;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1000,
-    maxWidth: 1000,
-    minWidth: 800,
+    width: 900,
+    maxWidth: 900,
+    minWidth: 700,
     height: 700,
-    minHeight: 600,
+    minHeight: 500,
     fullscreenable: false,
     backgroundColor: '#403F4D',
     icon: path.join(__dirname, 'assets/png/128x128.png')
