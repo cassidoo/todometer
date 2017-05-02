@@ -8,7 +8,6 @@ let willQuit = false;
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
-    maxWidth: 800,
     height: 600,
     fullscreenable: false,
     backgroundColor: '#403F4D',
