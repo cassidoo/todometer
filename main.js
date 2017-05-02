@@ -56,6 +56,7 @@ function menuSetup() {
           */
         }, {
           label: 'Quit',
+          accelerator: 'CommandOrControl+Q',
           click: () => {
             app.quit();
           }
