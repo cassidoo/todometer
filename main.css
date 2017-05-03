@@ -91,6 +91,8 @@ img {
 }
 
 a.download {
+  display: inline-block;
+  margin: 5px 0;
   padding: 20px;
   background: #4E4D5C;
   border-radius: 3px;
