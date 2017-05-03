@@ -22,7 +22,7 @@ class ItemList extends React.Component {
       status: 'pending'
     };
 
-    this.props.addItem(newItem);
+    if (!!newItem.text.trim()) this.props.addItem(newItem);
     e.preventDefault();
     this._inputElement.value = '';
     this._inputElement.focus();
