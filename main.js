@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, dialog } from 'electron';
+import { app, BrowserWindow, Menu, dialog, shell } from 'electron';
 import moment from 'moment';
 import path from 'path';
 
@@ -35,7 +35,7 @@ function menuSetup() {
       label: 'todometer',
       submenu: [
         {
-          label: 'About todometer',
+          label: 'About',
           click: () => {
             dialog.showMessageBox(mainWindow, {
               type: 'info',
@@ -45,7 +45,14 @@ function menuSetup() {
               icon: path.join(__dirname, 'assets/png/64x64.png')
             });
           }
-        }, {
+        },
+        {
+          label: 'Contribute',
+          click: () => {
+            shell.openExternal('http://github.com/cassidoo/todometer');
+          }
+        },
+        {
           type: 'separator'
         /* For debugging
         }, {
@@ -61,6 +68,27 @@ function menuSetup() {
             app.quit();
           }
         }
+      ]
+    },
+    {
+      label: 'Edit',
+      submenu: [
+        {role: 'undo'},
+        {role: 'redo'},
+        {role: 'cut'},
+        {role: 'copy'},
+        {role: 'paste'},
+        {role: 'delete'},
+        {role: 'selectall'}
+      ]
+    },
+    {
+      label: 'View',
+      submenu: [
+        {role: 'reload'},
+        {role: 'togglefullscreen'},
+        {role: 'minimize'},
+        {role: 'close'}
       ]
     }
   ];
