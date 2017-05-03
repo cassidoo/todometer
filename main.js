@@ -88,6 +88,7 @@ function menuSetup() {
         {role: 'reload'},
         {role: 'togglefullscreen'},
         {role: 'minimize'},
+        {role: 'hide'},
         {role: 'close'}
       ]
     }
