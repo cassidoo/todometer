@@ -25,6 +25,6 @@ store.subscribe(() => {
 window.onload = function() {
   ReactDOM.render(
     <Provider store={store}>
-      <Main />
+        <Main />
     </Provider>, document.getElementById('app'));
 };

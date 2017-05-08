@@ -1,15 +1,37 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>todometer</title>
+
+<head>
+    <title>TodoMeter</title>
     <link href="main.css" rel="stylesheet">
     <script>
-      // install babel hooks in the renderer process
-      require('babel-register');
-      require('./scripts/main');
+        // install babel hooks in the renderer process
+        require('babel-register');
+        require('./scripts/main');
     </script>
-  </head>
-  <body>
+</head>
+
+<body>
+    <div class="form-controls">
+        <div class="form-ctrls-item" id="minimize"></div>
+        <div class="form-ctrls-item" id="close"></div>
+    </div>
+    <div class="drag" style="-webkit-app-region: drag"></div>
     <div id="app"></div>
-  </body>
+    <script type="text/javascript">
+        const { remote } = require('electron');
+        const { BrowserWindow } = remote;
+
+        document.getElementById("minimize").addEventListener("click", function(e) {
+            var window = remote.getCurrentWindow();
+            window.minimize();
+        });
+
+        document.getElementById("close").addEventListener("click", function(e) {
+            var window = remote.getCurrentWindow();
+            window.close();
+        });
+    </script>
+</body>
+
 </html>
