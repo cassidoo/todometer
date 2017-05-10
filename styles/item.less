@@ -3,9 +3,9 @@
   align-items: center;
   justify-content: space-between;
   margin: 0 0 10px 0;
-  padding: 0 20px;
+  padding: 10px 20px;
   width: 100%;
-  height: 70px;
+  // height: 70px;
   background: @item-color;
   border: none;
   border-radius: 3px;
@@ -13,9 +13,10 @@
   font-size: @item-font-size;
   .item-name {
     width: 400px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+    word-break: break-all;
+    &:first-letter {
+      text-transform: uppercase;
+    }
   }
   .buttons button {
     position: relative;
