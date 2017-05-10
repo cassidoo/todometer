@@ -1,3 +1,4 @@
 node_modules
 .DS_Store
 main.css
+npm-debug.log
