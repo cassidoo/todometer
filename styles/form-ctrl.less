@@ -1,16 +1,34 @@
-.form-controls {
-  position: absolute;
+.form-controls-win {
+  position: fixed;
   top: 0;
   right: 0;
   display: flex;
 }
 
+.form-controls-mac {
+  position: fixed;
+  top: 0;
+  left: 20px;
+  direction: rtl;
+  display: flex;
+}
+
 .drag {
   width: 700px;
-  height: 70px;
+  height: 50px;
   position: absolute;
   top: 0;
   left: 0;
+  -webkit-app-region: drag;
+}
+
+.drag-mac {
+  width: 700px;
+  height: 50px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  -webkit-app-region: drag;
 }
 
 .form-ctrls-item {

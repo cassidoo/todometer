@@ -29,7 +29,13 @@ function manageRefresh() {
 }
 
 function traySetup() {
-  tray = new Tray(path.join(__dirname, 'assets/png/128x128.png'));
+  if (process.platform == "darwin") {
+    tray = new Tray(path.join(__dirname, 'assets/png/16x16.png'));
+  } else if (process.platform == "win32") {
+    tray = new Tray(path.join(__dirname, 'assets/png/32x32.png'));
+  } else {
+    tray = new Tray(path.join(__dirname, 'assets/png/16x16.png'));
+  }
   tray.on('click', () => {
     mainWindow.isVisible()
       ? mainWindow.hide()

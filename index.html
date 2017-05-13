@@ -8,28 +8,34 @@
     // install babel hooks in the renderer process
     require('babel-register');
     require('./scripts/main');
+    const os = require('os');
   </script>
 </head>
 
 <body>
-  <div class="form-controls">
+  <div id="form_ctrl" class="form-controls-win">
     <div class="form-ctrls-item" id="minimize"></div>
     <div class="form-ctrls-item" id="close"></div>
   </div>
-  <div class="drag" style="-webkit-app-region: drag"></div>
+  <div id="drag" class="drag"></div>
   <div id="app"></div>
   <script type="text/javascript">
-    const {
-      remote
-    } = require('electron');
-    const {
-      BrowserWindow
-    } = remote;
+    const { remote } = require('electron');
+    const { BrowserWindow } = remote;
+    const o_syst = require('os');
 
     document.getElementById("minimize").addEventListener("click", function(e) {
       var window = remote.getCurrentWindow();
       window.minimize();
     });
+
+    if (o_syst.type()==="Windows_NT") {
+      document.getElementById("form_ctrl").className = "form-controls-win";
+      document.getElementById("drag").className = "drag";
+    } else {
+      document.getElementById("form_ctrl").className = "form-controls-mac";
+      document.getElementById("drag").className = "drag-mac";
+    }
 
     document.getElementById("close").addEventListener("click", function(e) {
       var window = remote.getCurrentWindow();
