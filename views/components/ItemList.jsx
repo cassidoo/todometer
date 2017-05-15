@@ -12,6 +12,7 @@ class ItemList extends React.Component {
     super(props);
     this.addItem = this.addItem.bind(this);
     this.completeItem = this.completeItem.bind(this);
+    this.undoItem = this.undoItem.bind(this);
     this.pauseItem = this.pauseItem.bind(this);
   }
 
@@ -33,6 +34,13 @@ class ItemList extends React.Component {
       status: 'complete'
     });
     this.props.updateItem(completedItem);
+  }
+
+  undoItem(item) {
+    const undoedItem = Object.assign({}, item, {
+      status: 'pending'
+    });
+    this.props.updateItem(undoedItem);
   }
 
   pauseItem(item) {
@@ -116,6 +124,7 @@ class ItemList extends React.Component {
                   text={item.text}
                   status={item.status}
                   key={item.key}
+                  onUndo={this.undoItem}
                   onDelete={this.props.deleteItem}
                   completed={true}
                   paused={false}

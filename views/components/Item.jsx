@@ -17,6 +17,7 @@ export default class Item extends React.Component {
       return (
         <div className="buttons">
           <button className="delete" onClick={() => this.props.onDelete(this.props.item)}></button>
+          <button className="undo" onClick={() => this.props.onUndo(this.props.item)}></button>
         </div>
       );
     }
