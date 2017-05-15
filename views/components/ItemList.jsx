@@ -102,6 +102,32 @@ class ItemList extends React.Component {
     }
   }
 
+  renderCompleted() {
+    const completedItems = this.props.completedItems;
+    if (completedItems !== undefined && completedItems.length > 0) {
+      return (
+        <div>
+          <h2>Done</h2>
+          {
+            completedItems && completedItems.map((item) => {
+              return (
+                <Item
+                  item={item}
+                  text={item.text}
+                  status={item.status}
+                  key={item.key}
+                  onDelete={this.props.deleteItem}
+                  completed={true}
+                  paused={false}
+                />
+              );
+            })
+          }
+        </div>
+      );
+    }
+  }
+
   render() {
     const { pendingItems } = this.props;
     return (
@@ -131,6 +157,7 @@ class ItemList extends React.Component {
           })
         }
         {this.renderPaused()}
+        {this.renderCompleted()}
         {this.renderReset()}
     </div>
     );
