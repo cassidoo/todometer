@@ -1,6 +1,7 @@
 import { app, BrowserWindow, Menu, dialog, shell } from 'electron';
 import moment from 'moment';
 import path from 'path';
+import setupEvents from './installers/setupEvents';
 
 let mainWindow = null;
 let willQuit = false;
@@ -98,6 +99,11 @@ function menuSetup() {
 }
 
 app.on('ready', () => {
+  // Squirrel events have to be handled before anything else
+  if (setupEvents.handleSquirrelEvent()) {
+    // squirrel event handled and app will exit in 1000ms, so don't do anything else
+    return;
+  }
   createWindow();
   menuSetup();
 
