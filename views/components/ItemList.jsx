@@ -37,10 +37,10 @@ class ItemList extends React.Component {
   }
 
   undoItem(item) {
-    const undoedItem = Object.assign({}, item, {
+    const undoneItem = Object.assign({}, item, {
       status: 'pending'
     });
-    this.props.updateItem(undoedItem);
+    this.props.updateItem(undoneItem);
   }
 
   pauseItem(item) {

@@ -12,8 +12,7 @@ export default class Item extends React.Component {
           <button className="complete" onClick={() => this.props.onComplete(this.props.item)}></button>
         </div>
       );
-    } else 
-    if (!this.props.paused && this.props.completed) {
+    } else if (!this.props.paused && this.props.completed) {
       return (
         <div className="buttons">
           <button className="delete" onClick={() => this.props.onDelete(this.props.item)}></button>
