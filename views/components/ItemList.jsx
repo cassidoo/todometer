@@ -13,6 +13,7 @@ class ItemList extends React.Component {
     this.addItem = this.addItem.bind(this);
     this.completeItem = this.completeItem.bind(this);
     this.pauseItem = this.pauseItem.bind(this);
+    this.editItem = this.editItem.bind(this);
   }
 
   addItem(e) {
@@ -40,6 +41,12 @@ class ItemList extends React.Component {
       status: 'paused'
     });
     this.props.updateItem(pausedItem);
+  }
+
+  editItem(item) {
+    const { text } = item
+    console.log(this._inputElement.value = text)
+    this.props.deleteItem(item)
   }
 
   renderProgress() {
@@ -126,6 +133,7 @@ class ItemList extends React.Component {
                 onComplete={this.completeItem}
                 onDelete={this.props.deleteItem}
                 onPause={this.pauseItem}
+                onEdit={this.editItem}
               />
             );
           })
