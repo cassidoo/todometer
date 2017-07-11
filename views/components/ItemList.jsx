@@ -45,7 +45,7 @@ class ItemList extends React.Component {
 
   editItem(item) {
     const { text } = item
-    console.log(this._inputElement.value = text)
+    this._inputElement.value = text
     this.props.deleteItem(item)
   }
 
