@@ -12,7 +12,7 @@ function createWindow() {
     width: 800,
     minWidth: 800,
     height: 600,
-    fullscreenable: false,
+    fullscreenable: true,
     backgroundColor: '#403F4D',
     icon: path.join(__dirname, 'assets/png/128x128.png')
   });
