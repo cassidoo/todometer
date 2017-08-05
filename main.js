@@ -1,3 +1,4 @@
+import electron from 'electron';
 import { app, BrowserWindow, Menu, dialog, shell } from 'electron';
 import moment from 'moment';
 import path from 'path';
@@ -107,6 +108,11 @@ app.on('ready', () => {
   createWindow();
   menuSetup();
 
+  electron.powerMonitor.on('resume', () => {
+    mainWindow.reload();
+    console.log('reloaded');
+  });
+
   mainWindow.on('close', (e) => {
     if (willQuit) {
       mainWindow = null;
@@ -115,6 +121,7 @@ app.on('ready', () => {
       mainWindow.hide();
     }
   });
+
 
   manageRefresh();
 });
