@@ -49,7 +49,7 @@ function menuSetup() {
           }
         },
         {
-          label: 'Contribute',
+          label: 'Contribute (v1.0.4)',
           click: () => {
             shell.openExternal('http://github.com/cassidoo/todometer');
           }
