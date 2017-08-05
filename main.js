@@ -4,7 +4,7 @@ import moment from 'moment';
 import path from 'path';
 import setupEvents from './installers/setupEvents';
 
-let mainWindow = null;
+let mainWindow = { show: () => { console.log('show'); } }; // temp object while app loads
 let willQuit = false;
 
 function createWindow() {
