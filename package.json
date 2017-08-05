@@ -4,7 +4,7 @@
   "productName": "todometer",
   "appCopyright": "Cassidy Williams",
   "appCategoryType": "Productivity",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "bootstrapper.js",
   "license": "MIT",
   "repository": "github.com/cassidoo/todometer",
