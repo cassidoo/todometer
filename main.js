@@ -3,6 +3,7 @@ import { app, BrowserWindow, Menu, dialog, shell } from 'electron';
 import moment from 'moment';
 import path from 'path';
 import setupEvents from './installers/setupEvents';
+import { version } from './package.json'
 
 let mainWindow = { show: () => { console.log('show'); } }; // temp object while app loads
 let willQuit = false;
@@ -49,7 +50,7 @@ function menuSetup() {
           }
         },
         {
-          label: 'Contribute (v1.0.4)',
+          label: 'Contribute (v' + version + ')',
           click: () => {
             shell.openExternal('http://github.com/cassidoo/todometer');
           }
