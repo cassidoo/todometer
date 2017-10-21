@@ -5,7 +5,7 @@ const initialState = {
   items: []
 };
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   const newState = Object.assign({}, state);
 
   switch (action.type) {
@@ -13,29 +13,27 @@ export default function (state = initialState, action) {
       newState.items = newState.items.concat(action.item);
       break;
     case UPDATE_ITEM:
-      newState.items = newState.items.map((i) => {
+      newState.items = newState.items.map(i => {
         if (i.key === action.item.key) {
           return Object.assign({}, i, {
             status: action.item.status
           });
-        } else {
-          return i;
         }
+        return i;
       });
       break;
     case DELETE_ITEM:
       newState.items = newState.items.filter((item => item.key !== action.item.key));
       break;
     case RESET_ALL:
-      newState.items = newState.items.filter((item) => item.status !== 'complete').map((i) => {
-          if (i.status === 'paused') {
-            return Object.assign({}, i, {
-              status: 'pending'
-            });
-          } else {
-            return i;
-          }
-        });
+      newState.items = newState.items.filter(item => item.status !== 'complete').map(i => {
+        if (i.status === 'paused') {
+          return Object.assign({}, i, {
+            status: 'pending'
+          });
+        }
+        return i;
+      });
       break;
     default:
       return state;
@@ -49,13 +47,13 @@ export const getAllItems = state => {
 };
 
 export const getPendingItems = state => {
-  return state.itemList.items.filter((item) => item.status === 'pending');
+  return state.itemList.items.filter(item => item.status === 'pending');
 };
 
 export const getCompletedItems = state => {
-  return state.itemList.items.filter((item) => item.status === 'complete');
+  return state.itemList.items.filter(item => item.status === 'complete');
 };
 
 export const getPausedItems = state => {
-  return state.itemList.items.filter((item) => item.status === 'paused');
+  return state.itemList.items.filter(item => item.status === 'paused');
 };
