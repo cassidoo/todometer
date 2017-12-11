@@ -9,7 +9,7 @@ import rootReducer from '../views/reducers/index';
 import Main from '../views/main.jsx';
 
 const persistedState = loadState();
-let store = createStore(rootReducer,
+const store = createStore(rootReducer,
     persistedState,
     composeWithDevTools(
       applyMiddleware(

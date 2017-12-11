@@ -116,7 +116,7 @@ class ItemList extends React.Component {
           <button type="submit" />
         </form>
         {
-          pendingItems && pendingItems.map((item) => {
+          pendingItems && pendingItems.map(item => {
             return (
               <Item
                 item={item}
@@ -145,10 +145,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addItem: (item) => dispatch(addItem(item)),
-  updateItem: (item) => dispatch(updateItem(item)),
-  deleteItem: (item) => dispatch(deleteItem(item)),
-  resetAll: (item) => dispatch(resetAll(item))
+  addItem: item => dispatch(addItem(item)),
+  updateItem: item => dispatch(updateItem(item)),
+  deleteItem: item => dispatch(deleteItem(item)),
+  resetAll: item => dispatch(resetAll(item))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ItemList);

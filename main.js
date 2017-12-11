@@ -23,7 +23,7 @@ function manageRefresh() {
   const time = moment('24:00:00', 'hh:mm:ss').diff(moment(), 'seconds');
   setTimeout(
     midnightTask,
-    time*1000
+    time * 1000
   );
 
   function midnightTask() {
@@ -63,7 +63,8 @@ function menuSetup() {
             mainWindow.webContents.openDevTools();
           }
           */
-        }, {
+        },
+        {
           label: 'Quit',
           accelerator: 'CommandOrControl+Q',
           click: () => {
@@ -75,23 +76,23 @@ function menuSetup() {
     {
       label: 'Edit',
       submenu: [
-        {role: 'undo'},
-        {role: 'redo'},
-        {role: 'cut'},
-        {role: 'copy'},
-        {role: 'paste'},
-        {role: 'delete'},
-        {role: 'selectall'}
+        { role: 'undo' },
+        { role: 'redo' },
+        { role: 'cut' },
+        { role: 'copy' },
+        { role: 'paste' },
+        { role: 'delete' },
+        { role: 'selectall' }
       ]
     },
     {
       label: 'View',
       submenu: [
-        {role: 'reload'},
-        {role: 'togglefullscreen'},
-        {role: 'minimize'},
-        {role: 'hide'},
-        {role: 'close'}
+        { role: 'reload' },
+        { role: 'togglefullscreen' },
+        { role: 'minimize' },
+        { role: 'hide' },
+        { role: 'close' }
       ]
     }
   ];
@@ -113,7 +114,7 @@ app.on('ready', () => {
     console.log('reloaded');
   });
 
-  mainWindow.on('close', (e) => {
+  mainWindow.on('close', e => {
     if (willQuit) {
       mainWindow = null;
     } else {
@@ -121,7 +122,6 @@ app.on('ready', () => {
       mainWindow.hide();
     }
   });
-
 
   manageRefresh();
 });
