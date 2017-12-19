@@ -12,7 +12,7 @@
   box-sizing: border-box;
   font-size: @item-font-size;
   .item-name {
-    width: 400px;
+    width: 360px;
     word-break: break-all;
   }
   .buttons button {
@@ -35,8 +35,15 @@
       }
     }
     &.complete {
-      width: 30px;
+      width: 24px;
       background: no-repeat url('./assets/check.svg');
+      &:after {
+        background: @green;
+      }
+    }
+    &.edit {
+      width: 30px;
+      background: no-repeat url('./assets/edit.svg');
       &:after {
         background: @green;
       }
@@ -60,4 +67,3 @@
     }
   }
 }
-

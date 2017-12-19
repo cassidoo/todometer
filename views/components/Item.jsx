@@ -10,6 +10,7 @@ export default class Item extends React.Component {
           <button className="delete" onClick={() => this.props.onDelete(this.props.item)}></button>
           <button className="pause" onClick={() => this.props.onPause(this.props.item)}></button>
           <button className="complete" onClick={() => this.props.onComplete(this.props.item)}></button>
+          <button className="edit" onClick={() => this.props.onEdit(this.props.item)}></button>
         </div>
       );
     }
