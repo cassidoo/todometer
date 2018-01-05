@@ -109,6 +109,9 @@ app.on('ready', () => {
   createWindow();
   menuSetup();
 
+  // open devtools
+  mainWindow.webContents.openDevTools();
+
   electron.powerMonitor.on('resume', () => {
     mainWindow.reload();
     console.log('reloaded');
