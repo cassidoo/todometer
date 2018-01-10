@@ -36,4 +36,4 @@ cd todometer && npm install
 
 - Run `npm start` to show the Electron application window with your current build.
 
-- Add `mainWindow.webContents.openDevTools()` to the `app.on('ready')` listener in `main.js` to viw the dev tools.
+- Add `mainWindow.webContents.openDevTools()` to the `app.on('ready')` listener in `main.js` to view the dev tools.
