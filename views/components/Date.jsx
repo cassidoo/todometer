@@ -52,9 +52,9 @@ class Date extends React.Component {
         </div>
       </div>
       <div className="today">{this.props.date.weekday}</div>
-      <div className="toggle">
-        <button onClick={() => this.onClick(-1)}>&larr;</button>
-        <button onClick={() => this.onClick(+1)}>&rarr;</button>
+      <div className="buttons">
+        <button className="previous" onClick={() => this.onClick(-1)}>&larr;</button>
+        <button className="next" onClick={() => this.onClick(+1)}>&rarr;</button>
       </div>
     </div>;
   }
