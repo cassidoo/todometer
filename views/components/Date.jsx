@@ -13,15 +13,15 @@ class Date extends React.Component {
   }
 
   componentDidMount() {
-    this.setDate();
+    this.setDate(moment());
   }
 
-  setDate() {
+  setDate(newDate) {
     const date = {
-      day: moment().date(),
-      month: moment().format('MMM'),
-      year: moment().year(),
-      weekday: moment().format('dddd')
+      day: moment(newDate).date(),
+      month: moment(newDate).format('MMM'),
+      year: moment(newDate).year(),
+      weekday: moment(newDate).format('dddd')
     };
     const local = localStorage.getItem('date');
     this.checkDate(local);
@@ -35,6 +35,13 @@ class Date extends React.Component {
     localStorage.setItem('date', moment().format('MM-DD-YYYY'));
   }
 
+  onClick(num) {
+    const { date } = this.props;
+    const monthIndex = parseInt(moment(date.month, 'MMM').format('M') -1);
+    const newDay = moment([date.year, monthIndex, date.day]).add(num, 'days').format();
+    this.setDate(newDay);
+  }
+
   render() {
     return <div className="date">
       <div className="calendar">
@@ -45,6 +52,10 @@ class Date extends React.Component {
         </div>
       </div>
       <div className="today">{this.props.date.weekday}</div>
+      <div className="toggle">
+        <button onClick={() => this.onClick(-1)}>&larr;</button>
+        <button onClick={() => this.onClick(+1)}>&rarr;</button>
+      </div>
     </div>;
   }
 }
