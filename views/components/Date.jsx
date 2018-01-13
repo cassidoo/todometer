@@ -21,8 +21,10 @@ class Date extends React.Component {
       day: moment(newDate).date(),
       month: moment(newDate).format('MMM'),
       year: moment(newDate).year(),
-      weekday: moment(newDate).format('dddd')
+      weekday: moment(newDate).format('dddd'),
+      full: moment(newDate).format('LLL')
     };
+
     const local = localStorage.getItem('date');
     this.checkDate(local);
     this.props.setDate(date);

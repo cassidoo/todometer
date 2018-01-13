@@ -4,8 +4,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addItem, updateItem, deleteItem, resetAll } from '../actions.js';
 import { getAllItems, getPendingItems, getCompletedItems, getPausedItems } from '../reducers/item-list.js';
+import { getDate } from '../reducers/date.js';
 import Item from './Item';
 import Progress from './Progress';
+import moment from 'moment';
 
 class ItemList extends React.Component {
   constructor(props) {
@@ -15,10 +17,15 @@ class ItemList extends React.Component {
     this.pauseItem = this.pauseItem.bind(this);
   }
 
+  componentWillUpdate() {
+    this.getCurrentItems(this.props.allItems);
+  }
+
   addItem(e) {
     const newItem = {
       text: this._inputElement.value,
       key: Date.now(),
+      date: this.props.date.full,
       status: 'pending'
     };
 
@@ -76,14 +83,21 @@ class ItemList extends React.Component {
     }
   }
 
+  getCurrentItems(items) {
+    const currentItems = items.filter(item => 
+      new Date(moment(item.date).isAfter(this.props.date.full))
+    );
+  }
+
   renderPaused() {
-    const pausedItems = this.props.pausedItems;
-    if (pausedItems !== undefined && pausedItems.length > 0) {
+    const items = this.props.pausedItems;
+    //const items = this.getCurrentItems(pausedItems)
+    if (items !== undefined && items.length > 0) {
       return (
         <div>
           <h2>Do Later</h2>
           {
-            pausedItems && pausedItems.map((item) => {
+            items && items.map((item) => {
               return (
                 <Item
                   item={item}
@@ -100,6 +114,25 @@ class ItemList extends React.Component {
         </div>
       );
     }
+  }
+
+  renderPending() {
+    if (!this.props.pendingItems) return;
+    //const items = this.getCurrentItems(this.props.pendingItems)
+      //const { pendingItems } = this.props;
+    items.map(item => {
+      return (
+        <Item
+          item={item}
+          text={item.text}
+          status={item.status}
+          key={item.key}
+          onComplete={this.completeItem}
+          onDelete={this.props.deleteItem}
+          onPause={this.pauseItem}
+        />
+      );
+    });
   }
 
   render() {
@@ -130,6 +163,7 @@ class ItemList extends React.Component {
             );
           })
         }
+        {/*this.renderPending()*/}
         {this.renderPaused()}
         {this.renderReset()}
     </div>
@@ -141,7 +175,8 @@ const mapStateToProps = state => ({
   allItems: getAllItems(state),
   pendingItems: getPendingItems(state),
   completedItems: getCompletedItems(state),
-  pausedItems: getPausedItems(state)
+  pausedItems: getPausedItems(state),
+  date: getDate(state)
 });
 
 const mapDispatchToProps = dispatch => ({
