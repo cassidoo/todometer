@@ -26,12 +26,11 @@ class Date extends React.Component {
     };
 
     const local = localStorage.getItem('date');
-   // this.checkDate(local);
+    this.checkDate(local);
     this.props.setDate(date);
   }
 
   checkDate(local) {
-    debugger;
     if (local !== null && moment(local).isBefore(moment().format('MM-DD-YYYY'))) {
       this.props.resetAll();
     }

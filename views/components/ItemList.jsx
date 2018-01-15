@@ -85,7 +85,6 @@ class ItemList extends React.Component {
   }
 
   renderPaused() {
-    //const items = this.props.pausedItems;
     const items = this.getCurrentItems(this.props.pausedItems);
 
     if (items !== undefined && items.length > 0) {
@@ -136,7 +135,6 @@ class ItemList extends React.Component {
   }
 
   render() {
-    const { pendingItems } = this.props;
     return (
       <div className="item-list">
         {this.renderProgress()}
@@ -161,7 +159,7 @@ const mapStateToProps = state => ({
   pendingItems: getPendingItems(state),
   completedItems: getCompletedItems(state),
   pausedItems: getPausedItems(state),
-  date: state.date.date
+  date: getDate(state)
 });
 
 const mapDispatchToProps = dispatch => ({
