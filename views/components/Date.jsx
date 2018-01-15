@@ -17,6 +17,7 @@ class Date extends React.Component {
   }
 
   setDate(newDate) {
+    debugger;
     const date = {
       day: moment(newDate).date(),
       month: moment(newDate).format('MMM'),
@@ -26,11 +27,12 @@ class Date extends React.Component {
     };
 
     const local = localStorage.getItem('date');
-    this.checkDate(local);
+   // this.checkDate(local);
     this.props.setDate(date);
   }
 
   checkDate(local) {
+    debugger;
     if (local !== null && moment(local).isBefore(moment().format('MM-DD-YYYY'))) {
       this.props.resetAll();
     }
@@ -38,6 +40,7 @@ class Date extends React.Component {
   }
 
   onClick(num) {
+    debugger;
     const { date } = this.props;
     const monthIndex = parseInt(moment(date.month, 'MMM').format('M') -1);
     const newDay = moment([date.year, monthIndex, date.day]).add(num, 'days').format();
