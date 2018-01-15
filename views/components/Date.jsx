@@ -17,7 +17,6 @@ class Date extends React.Component {
   }
 
   setDate(newDate) {
-    debugger;
     const date = {
       day: moment(newDate).date(),
       month: moment(newDate).format('MMM'),
@@ -40,7 +39,6 @@ class Date extends React.Component {
   }
 
   onClick(num) {
-    debugger;
     const { date } = this.props;
     const monthIndex = parseInt(moment(date.month, 'MMM').format('M') -1);
     const newDay = moment([date.year, monthIndex, date.day]).add(num, 'days').format();

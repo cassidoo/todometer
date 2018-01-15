@@ -14,7 +14,6 @@ export default function(state = initialState, action) {
   const newState = Object.assign({}, state);
   switch (action.type) {
     case SET_DATE:
-    debugger;
       newState.date = action.date;
       break;
     default:
@@ -25,7 +24,6 @@ export default function(state = initialState, action) {
 
 // selectors
 export const getDate = state => {
-  debugger;
   return state.date.date;
 };
 

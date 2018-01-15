@@ -18,11 +18,6 @@ class ItemList extends React.Component {
     this.getCurrentItems = this.getCurrentItems.bind(this);
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   debugger;
-  //   this.getCurrentItems(nextProps.allItems, nextProps.date);
-  // }
-
   addItem(e) {
     const newItem = {
       text: this._inputElement.value,
@@ -85,14 +80,14 @@ class ItemList extends React.Component {
     }
   }
 
-  getCurrentItems(items, date) {
-    debugger;
-    return items.filter(item => moment(date.full).isAfter(item.date) || moment(date.full).isSame(item.date));
+  getCurrentItems(items) {
+    return items.filter(item => moment(this.props.date.full).isAfter(item.date) || moment(this.props.date.full).isSame(item.date));
   }
 
   renderPaused() {
-    const items = this.props.pausedItems;
-    //const items = this.getCurrentItems(pausedItems)
+    //const items = this.props.pausedItems;
+    const items = this.getCurrentItems(this.props.pausedItems);
+
     if (items !== undefined && items.length > 0) {
       return (
         <div>
@@ -119,43 +114,25 @@ class ItemList extends React.Component {
 
   renderPending() {
     if (!this.props.pendingItems) return;
-    debugger;
-    const items = this.getCurrentItems(this.props.pendingItems, this.props.date);
-      //const { pendingItems } = this.props;
+    const items = this.getCurrentItems(this.props.pendingItems);
     return (
-        <div>
-          {
-            items.map(item => {
-              return (
-                <Item
-                  item={item}
-                  text={item.text}
-                  status={item.status}
-                  key={item.key}
-                  onComplete={this.completeItem}
-                  onDelete={this.props.deleteItem}
-                  onPause={this.pauseItem}
-                />
-              );
-            })
-          }
-        </div>
-      );
-    // return( 
-    //   items.map(item => {
-    //     return (
-    //       <Item
-    //         item={item}
-    //         text={item.text}
-    //         status={item.status}
-    //         key={item.key}
-    //         onComplete={this.completeItem}
-    //         onDelete={this.props.deleteItem}
-    //         onPause={this.pauseItem}
-    //       />
-    //     );
-    //   });
-    // );
+      <div>
+        {items.map(item => {
+            return (
+              <Item
+                item={item}
+                text={item.text}
+                status={item.status}
+                key={item.key}
+                onComplete={this.completeItem}
+                onDelete={this.props.deleteItem}
+                onPause={this.pauseItem}
+              />
+            );
+          })
+        }
+      </div>
+    );
   }
 
   render() {
@@ -171,21 +148,6 @@ class ItemList extends React.Component {
           />
           <button type="submit" />
         </form>
-        {
-          /*pendingItems && pendingItems.map(item => {
-            return (
-              <Item
-                item={item}
-                text={item.text}
-                status={item.status}
-                key={item.key}
-                onComplete={this.completeItem}
-                onDelete={this.props.deleteItem}
-                onPause={this.pauseItem}
-              />
-            );
-          })
-        */}
         {this.renderPending()}
         {this.renderPaused()}
         {this.renderReset()}
@@ -194,14 +156,13 @@ class ItemList extends React.Component {
   }
 }
 
-const mapStateToProps = state => {debugger;
-  return ({
+const mapStateToProps = state => ({
   allItems: getAllItems(state),
   pendingItems: getPendingItems(state),
   completedItems: getCompletedItems(state),
   pausedItems: getPausedItems(state),
   date: state.date.date
-})};
+});
 
 const mapDispatchToProps = dispatch => ({
   addItem: item => dispatch(addItem(item)),
