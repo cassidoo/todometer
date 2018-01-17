@@ -18,6 +18,12 @@ class ItemList extends React.Component {
     this.getCurrentItems = this.getCurrentItems.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.date !== this.props.date){
+       this.renderProgress(nextProps);
+    }
+  }
+
   addItem(e) {
     const newItem = {
       text: this._inputElement.value,
@@ -46,10 +52,10 @@ class ItemList extends React.Component {
     this.props.updateItem(pausedItem);
   }
 
-  renderProgress() {
-    const completedAmount = this.props.completedItems.length;
-    const pausedAmount = this.props.pausedItems.length;
-    const totalAmount = this.props.allItems.length;
+  renderProgress(props) {
+    const completedAmount = this.getCurrentItems(props.completedItems).length;
+    const pausedAmount = this.getCurrentItems(props.pausedItems).length;
+    const totalAmount = this.getCurrentItems(props.allItems).length;
 
     let completedPercentage = completedAmount/totalAmount;
     let pausedPercentage = (pausedAmount/totalAmount) + completedPercentage;
@@ -81,7 +87,8 @@ class ItemList extends React.Component {
   }
 
   getCurrentItems(items) {
-    return items.filter(item => moment(this.props.date.full).isAfter(item.date) || moment(this.props.date.full).isSame(item.date));
+    return items.filter(item => 
+      moment(this.props.date.full).isAfter(item.date) || moment(this.props.date.full).isSame(item.date));
   }
 
   renderPaused() {
@@ -137,7 +144,7 @@ class ItemList extends React.Component {
   render() {
     return (
       <div className="item-list">
-        {this.renderProgress()}
+        {this.renderProgress(this.props)}
         <form className="form" onSubmit={this.addItem}>
           <input
             ref={(a) => this._inputElement = a}
