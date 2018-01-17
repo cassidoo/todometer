@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { setDate, resetAll } from '../actions.js';
 import { getDate } from '../reducers/date.js';
 import moment from 'moment';
+import Mousetrap from 'mousetrap';
 
 class Date extends React.Component {
   constructor(props) {
@@ -14,6 +15,12 @@ class Date extends React.Component {
 
   componentDidMount() {
     this.setDate(moment());
+    Mousetrap.bind(['command+left'], (() => this.getNewDate(-1)));
+    Mousetrap.bind(['command+right'], (() => this.getNewDate(1)));
+  }
+
+  componentWillUnmount() {
+    Mousetrap.unbind(['command+left', 'command+right'], this.getNewDate);
   }
 
   setDate(newDate) {
@@ -37,7 +44,7 @@ class Date extends React.Component {
     localStorage.setItem('date', moment().format('MM-DD-YYYY'));
   }
 
-  onClick(num) {
+  getNewDate(num) {
     const { date } = this.props;
     const monthIndex = parseInt(moment(date.month, 'MMM').format('M') -1);
     const newDay = moment([date.year, monthIndex, date.day]).add(num, 'days').format();
@@ -55,8 +62,8 @@ class Date extends React.Component {
       </div>
       <div className="today">{this.props.date.weekday}</div>
       <div className="buttons">
-        <button className="previous" onClick={() => this.onClick(-1)}>&larr;</button>
-        <button className="next" onClick={() => this.onClick(+1)}>&rarr;</button>
+        <button className="previous" onClick={() => this.getNewDate(-1)}>&larr;</button>
+        <button className="next" onClick={() => this.getNewDate(+1)}>&rarr;</button>
       </div>
     </div>;
   }

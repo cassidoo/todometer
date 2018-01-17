@@ -47,7 +47,6 @@ export const getAllItems = state => {
 };
 
 export const getPendingItems = state => {
-  debugger;
   return state.itemList.items.filter(item => item.status === 'pending');
 };
 
