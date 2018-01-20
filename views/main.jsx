@@ -9,7 +9,6 @@ import { getDate } from './reducers/date.js';
 import moment from 'moment';
 import Mousetrap from 'mousetrap';
 
-
 class Main extends React.Component {
   constructor(props) {
     super(props);

@@ -178,7 +178,7 @@ const mapDispatchToProps = dispatch => ({
   addItem: item => dispatch(addItem(item)),
   updateItem: item => dispatch(updateItem(item)),
   deleteItem: item => dispatch(deleteItem(item)),
-  resetAll: item => dispatch(resetAll(item)),
+  resetAll: item => dispatch(resetAll(item))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ItemList);

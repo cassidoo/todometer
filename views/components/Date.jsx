@@ -4,8 +4,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { setDate, resetAll } from '../actions.js';
 import { getDate } from '../reducers/date.js';
-import moment from 'moment';
-import Mousetrap from 'mousetrap';
 
 class Date extends React.Component {
   render() {
