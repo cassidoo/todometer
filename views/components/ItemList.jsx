@@ -8,6 +8,7 @@ import { getDate } from '../reducers/date.js';
 import Item from './Item';
 import Progress from './Progress';
 import moment from 'moment';
+import Mousetrap from 'mousetrap';
 
 class ItemList extends React.Component {
   constructor(props) {
@@ -16,6 +17,16 @@ class ItemList extends React.Component {
     this.completeItem = this.completeItem.bind(this);
     this.pauseItem = this.pauseItem.bind(this);
     this.getCurrentItems = this.getCurrentItems.bind(this);
+  }
+
+  componentDidMount() {
+    const mousetrap = new Mousetrap(this._inputElement);
+    mousetrap.bind('command+left', (() => this.props.getNewDate(-1)));
+    mousetrap.bind('command+right', (() => this.props.getNewDate(1)));
+  }
+
+  componentWillUnmount() {
+    mousetrap.unbind(['command+left', 'command+right'], this.props.getNewDate);
   }
 
   addItem(e) {
@@ -139,7 +150,7 @@ class ItemList extends React.Component {
     return (
       <div className="item-list">
         {this.renderProgress()}
-        <form className="form" onSubmit={this.addItem}>
+        <form className="form mousetrap" onSubmit={this.addItem}>
           <input
             ref={(a) => this._inputElement = a}
             placeholder="Add new item"
