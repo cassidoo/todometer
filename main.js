@@ -110,7 +110,7 @@ app.on('ready', () => {
   menuSetup();
 
   // open devtools
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 
   electron.powerMonitor.on('resume', () => {
     mainWindow.reload();
