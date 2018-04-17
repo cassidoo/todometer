@@ -96,7 +96,7 @@ class ItemList extends React.Component {
                   key={item.key}
                   onComplete={this.completeItem}
                   onDelete={this.props.deleteItem}
-                  paused={true}
+                  paused={item.status === 'paused'}
                   dragHandleProps={draggableProvided.dragHandleProps}
                 />
                 </div>
@@ -132,34 +132,30 @@ class ItemList extends React.Component {
             />
             <button type="submit" />
           </form>
-          <div>
-            <Droppable droppableId="pending">
-              {(droppableProvided) => (
-                <div
-                  ref={droppableProvided.innerRef}
-                >
-                  {this.renderItems(pendingItems)}
-                  {droppableProvided.placeholder}
-                </div>
-              )}
-            </Droppable>
-            <div>
-              <h2>Do Later</h2>
-              <Droppable droppableId="paused">
-                {(droppableProvided) => (
-                  <div
-                    ref={droppableProvided.innerRef}
-                  >
-                    {this.renderItems(pausedItems)}
-                    {droppableProvided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </div>
+          <Droppable droppableId="pending">
+            {(droppableProvided) => (
+              <div
+                ref={droppableProvided.innerRef}
+              >
+                {this.renderItems(pendingItems)}
+                {droppableProvided.placeholder}
+              </div>
+            )}
+          </Droppable>
+          <h2>Do Later</h2>
+          <Droppable droppableId="paused">
+            {(droppableProvided) => (
+              <div
+                ref={droppableProvided.innerRef}
+              >
+                {this.renderItems(pausedItems)}
+                {droppableProvided.placeholder}
+              </div>
+            )}
+          </Droppable>
           {this.renderReset()}
         </div>
-      </div>
-    </DragDropContext>
+      </DragDropContext>
     );
   }
 }
