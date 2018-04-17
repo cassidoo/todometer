@@ -139,15 +139,17 @@ class ItemList extends React.Component {
               >
                 {this.renderItems(pendingItems)}
                 {droppableProvided.placeholder}
+                <div style={{ height: 20 }} />
               </div>
             )}
           </Droppable>
-          <h2>Do Later</h2>
+          <h2 style={{ margin: 0 }}>Do Later</h2>
           <Droppable droppableId="paused">
             {(droppableProvided) => (
               <div
                 ref={droppableProvided.innerRef}
               >
+                <div style={{ height: 20 }} />
                 {this.renderItems(pausedItems)}
                 {droppableProvided.placeholder}
               </div>
