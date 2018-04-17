@@ -88,17 +88,17 @@ class ItemList extends React.Component {
                 ref={draggableProvided.innerRef}
                 {...draggableProvided.draggableProps}
               >
-              <div style={{ height: '100%' }}>
-                <Item
-                  item={item}
-                  text={item.text}
-                  status={item.status}
-                  key={item.key}
-                  onComplete={this.completeItem}
-                  onDelete={this.props.deleteItem}
-                  paused={item.status === 'paused'}
-                  dragHandleProps={draggableProvided.dragHandleProps}
-                />
+                <div style={{ height: '100%' }}>
+                  <Item
+                    item={item}
+                    text={item.text}
+                    status={item.status}
+                    key={item.key}
+                    onComplete={this.completeItem}
+                    onDelete={this.props.deleteItem}
+                    paused={item.status === 'paused'}
+                    dragHandleProps={draggableProvided.dragHandleProps}
+                  />
                 </div>
               </div>
               {draggableProvided.placeholder}
