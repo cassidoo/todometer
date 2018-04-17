@@ -110,7 +110,6 @@ class ItemList extends React.Component {
   }
 
   onDragEnd({ source, destination }) {
-    console.log('onDragEnd');
     if (!destination) return;
     this.props.reorderItem(source, destination);
   }
@@ -139,7 +138,7 @@ class ItemList extends React.Component {
             )}
           </Droppable>
           <h2 style={{ margin: 0 }}>Do Later</h2>
-          <Droppable droppableId="paused" ignoreContainerClipping>
+          <Droppable droppableId="paused">
             {(droppableProvided) => (
               <div ref={droppableProvided.innerRef} >
                 <div style={{ height: 20 }} />
