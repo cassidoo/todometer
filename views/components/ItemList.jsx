@@ -96,6 +96,7 @@ class ItemList extends React.Component {
                     key={item.key}
                     onComplete={this.completeItem}
                     onDelete={this.props.deleteItem}
+                    onPause={this.pauseItem}
                     paused={item.status === 'paused'}
                     dragHandleProps={draggableProvided.dragHandleProps}
                   />
