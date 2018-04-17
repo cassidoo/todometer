@@ -10,7 +10,7 @@ export const SET_DATE = 'SET_DATE';
 export const addItem = item => ({ type: ADD_ITEM, item });
 export const updateItem = item => ({ type: UPDATE_ITEM, item });
 export const deleteItem = item => ({ type: DELETE_ITEM, item });
-export const reorderItem = (startIndex, endIndex) => ({ type: REORDER_ITEM, startIndex, endIndex });
+export const reorderItem = (source, destination) => ({ type: REORDER_ITEM, source, destination });
 
 export const resetAll = () => ({ type: RESET_ALL });
 

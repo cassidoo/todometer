@@ -78,15 +78,17 @@ class ItemList extends React.Component {
     }
   }
 
-  renderPaused() {
-    const pausedItems = this.props.pausedItems;
-    if (pausedItems !== undefined && pausedItems.length > 0) {
-      return (
-        <div>
-          <h2>Do Later</h2>
-          {
-            pausedItems && pausedItems.map((item) => {
-              return (
+  renderItems(items) {
+    return (items || []).map((item, index) => (
+      <Draggable key={item.key} draggableId={String(item.key)} index={index}>
+        {(draggableProvided) => {
+          return (
+            <div>
+              <div
+                ref={draggableProvided.innerRef}
+                {...draggableProvided.draggableProps}
+              >
+              <div style={{ height: '100%' }}>
                 <Item
                   item={item}
                   text={item.text}
@@ -95,78 +97,69 @@ class ItemList extends React.Component {
                   onComplete={this.completeItem}
                   onDelete={this.props.deleteItem}
                   paused={true}
+                  dragHandleProps={draggableProvided.dragHandleProps}
                 />
-              );
-            })
-          }
-        </div>
-      );
-    }
+                </div>
+              </div>
+              {draggableProvided.placeholder}
+            </div>
+          );
+        }}
+      </Draggable>
+    ))
   }
 
-  onDragEnd(result) {
-    console.log('result: ', result);
+  onDragEnd({ source, destination }) {
     // dropped outside the list
-    if (!result.destination) {
+    if (!destination) {
       return;
     }
 
-    this.props.reorderItem(result.source.index, result.destination.index);
+    this.props.reorderItem(source, destination);
   }
 
   render() {
-    const { pendingItems } = this.props;
+    const { pendingItems, pausedItems } = this.props;
     return (
-      <div className="item-list">
-        {this.renderProgress()}
-        <form className="form" onSubmit={this.addItem}>
-          <input
-            ref={(a) => this._inputElement = a}
-            placeholder="Add new item"
-            autoFocus
-          />
-          <button type="submit" />
-        </form>
-        <DragDropContext onDragEnd={this.onDragEnd}>
-          <Droppable droppableId="droppable">
-            {(providedOuter) => (
-              <div
-                ref={providedOuter.innerRef}
-              >
-                {pendingItems && pendingItems.map((item, index) => (
-                  <Draggable key={item.key} draggableId={String(item.key)} index={index}>
-                    {(provided) => {
-                      return (
-                        <div>
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                          >
-                            <div style={{ height: '100%' }}>
-                              <Item
-                                item={item}
-                                text={item.text}
-                                status={item.status}
-                                key={item.key}
-                                onComplete={this.completeItem}
-                                onDelete={this.props.deleteItem}
-                                onPause={this.pauseItem}
-                                dragHandleProps={provided.dragHandleProps}
-                              />
-                            </div>
-                          </div>
-                          {provided.placeholder}
-                        </div>
-                    )}}
-                  </Draggable>
-                ))}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-        {this.renderPaused()}
-        {this.renderReset()}
-    </div>
+      <DragDropContext onDragEnd={this.onDragEnd}>
+        <div className="item-list">
+          {this.renderProgress()}
+          <form className="form" onSubmit={this.addItem}>
+            <input
+              ref={(a) => this._inputElement = a}
+              placeholder="Add new item"
+              autoFocus
+            />
+            <button type="submit" />
+          </form>
+          <div>
+            <Droppable droppableId="pending">
+              {(droppableProvided) => (
+                <div
+                  ref={droppableProvided.innerRef}
+                >
+                  {this.renderItems(pendingItems)}
+                  {droppableProvided.placeholder}
+                </div>
+              )}
+            </Droppable>
+            <div>
+              <h2>Do Later</h2>
+              <Droppable droppableId="paused">
+                {(droppableProvided) => (
+                  <div
+                    ref={droppableProvided.innerRef}
+                  >
+                    {this.renderItems(pausedItems)}
+                    {droppableProvided.placeholder}
+                  </div>
+                )}
+              </Droppable>
+            </div>
+          {this.renderReset()}
+        </div>
+      </div>
+    </DragDropContext>
     );
   }
 }
@@ -182,7 +175,7 @@ const mapDispatchToProps = dispatch => ({
   addItem: item => dispatch(addItem(item)),
   updateItem: item => dispatch(updateItem(item)),
   deleteItem: item => dispatch(deleteItem(item)),
-  reorderItem: (startIndex, endIndex) => dispatch(reorderItem(startIndex, endIndex)),
+  reorderItem: (source, destination) => dispatch(reorderItem(source, destination)),
   resetAll: item => dispatch(resetAll(item)),
 });
 
