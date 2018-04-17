@@ -12,8 +12,18 @@
   box-sizing: border-box;
   font-size: @item-font-size;
   .item-name {
-    width: 400px;
+    width: 394px;
     word-break: break-all;
+  }
+  .handle {
+    width: 24px;
+    border: none;
+    height: 24px;
+    margin-left: -16px;
+    background: no-repeat url('./assets/handle.svg');
+    &:after {
+      background: @red;
+    }
   }
   .buttons button {
     position: relative;

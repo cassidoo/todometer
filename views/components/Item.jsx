@@ -24,6 +24,7 @@ export default class Item extends React.Component {
   render() {
     return (
       <div className="item">
+        <div className="handle" {...this.props.dragHandleProps}></div>
         <div className="item-name">{this.props.text}</div>
         {this.renderButtons()}
       </div>

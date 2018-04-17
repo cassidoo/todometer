@@ -1,0 +1,15 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+ <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+ <title>Group</title>
+ <desc>Created with Sketch.</desc>
+
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="24" width="24" y="-1" x="-1"/>
+ </g>
+ <g fill="#FFFFFF">
+  <rect stroke="null" height="4" width="4" y="3" x="10" id="Rectangle-3"/>
+  <rect stroke="null" height="4" width="4" y="10" x="10" id="svg_1"/>
+  <rect stroke="null" height="4" width="4" y="17" x="10" id="svg_2"/>
+ </g>
+</svg>

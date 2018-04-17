@@ -6,6 +6,7 @@ import { addItem, updateItem, deleteItem, resetAll } from '../actions.js';
 import { getAllItems, getPendingItems, getCompletedItems, getPausedItems } from '../reducers/item-list.js';
 import Item from './Item';
 import Progress from './Progress';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 class ItemList extends React.Component {
   constructor(props) {
@@ -102,8 +103,13 @@ class ItemList extends React.Component {
     }
   }
 
+  onDragEnd() {
+    // TODO
+  }
+
   render() {
     const { pendingItems } = this.props;
+    console.log(pendingItems);
     return (
       <div className="item-list">
         {this.renderProgress()}
@@ -115,21 +121,41 @@ class ItemList extends React.Component {
           />
           <button type="submit" />
         </form>
-        {
-          pendingItems && pendingItems.map(item => {
-            return (
-              <Item
-                item={item}
-                text={item.text}
-                status={item.status}
-                key={item.key}
-                onComplete={this.completeItem}
-                onDelete={this.props.deleteItem}
-                onPause={this.pauseItem}
-              />
-            );
-          })
-        }
+        <DragDropContext onDragEnd={this.onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(providedOuter) => (
+              <div
+                ref={providedOuter.innerRef}
+              >
+                {pendingItems && pendingItems.map((item, index) => (
+                  <Draggable key={item.key} draggableId={String(item.key)} index={index}>
+                    {(provided) => {
+                      return (
+                        <div>
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                          >
+                            <Item
+                              item={item}
+                              text={item.text}
+                              status={item.status}
+                              key={item.key}
+                              onComplete={this.completeItem}
+                              onDelete={this.props.deleteItem}
+                              onPause={this.pauseItem}
+                              dragHandleProps={provided.dragHandleProps}
+                            />
+                          </div>
+                          {provided.placeholder}
+                        </div>
+                    )}}
+                  </Draggable>
+                ))}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
         {this.renderPaused()}
         {this.renderReset()}
     </div>
