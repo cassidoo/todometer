@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { addItem, updateItem, deleteItem, resetAll } from '../actions.js';
+import { addItem, updateItem, deleteItem, reorderItem, resetAll } from '../actions.js';
 import { getAllItems, getPendingItems, getCompletedItems, getPausedItems } from '../reducers/item-list.js';
 import Item from './Item';
 import Progress from './Progress';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { Droppable, Draggable, DragDropContext } from 'react-beautiful-dnd';
 
 class ItemList extends React.Component {
   constructor(props) {
@@ -14,6 +14,7 @@ class ItemList extends React.Component {
     this.addItem = this.addItem.bind(this);
     this.completeItem = this.completeItem.bind(this);
     this.pauseItem = this.pauseItem.bind(this);
+    this.onDragEnd = this.onDragEnd.bind(this);
   }
 
   addItem(e) {
@@ -108,9 +109,16 @@ class ItemList extends React.Component {
     ))
   }
 
+  onDragEnd({ source, destination }) {
+    console.log('onDragEnd');
+    if (!destination) return;
+    this.props.reorderItem(source, destination);
+  }
+
   render() {
     const { pendingItems, pausedItems } = this.props;
     return (
+      <DragDropContext onDragEnd={this.onDragEnd}>
         <div className="item-list">
           {this.renderProgress()}
           <form className="form" onSubmit={this.addItem}>
@@ -142,6 +150,7 @@ class ItemList extends React.Component {
           </Droppable>
           {this.renderReset()}
         </div>
+      </DragDropContext>
     );
   }
 }
