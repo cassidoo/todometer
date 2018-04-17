@@ -5,7 +5,9 @@
   ],
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "rules": {
-    "no-console": ["warn", { allow: ["error"] }],
-    "no-undef": "off"
+    "no-console": ["warn", { "allow": ["error"] }],
+    "no-undef": "off",
+    "react/prop-types": "off",
+    "no-extra-boolean-cast": "off"
   }
 }
