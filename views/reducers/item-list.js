@@ -5,27 +5,36 @@ const initialState = {
   items: []
 };
 
-// Move along the array until we have passed enough elements
-// of status 'destStatus' to place us at position 'destIndex'
-// within the filtered array, and return that index
-const findDestIndex = (list, destStatus, targetFilteredIndex) => {
-  let filteredIndex = 0;
-  const len = list.length;
-  for(let i = 0; i < len; i++) {
-    if(filteredIndex > targetFilteredIndex) return i - 1;
-    if(list[i].status === destStatus) filteredIndex++;
-  }
-  return len - 1;
+const getListIndex = (list, destStatus, targetFilteredIndex) => {
+  const filtered = list
+    .map((e, i) => Object.assign(e, {originalIndex: i }))
+    .filter(e => e.status === destStatus);
+  return filtered[targetFilteredIndex].originalIndex;
 }
 
 const reorder = (list, source, destination) => {
-  const srcIndex = findDestIndex(list, source.droppableId, source.index);
-  const destIndex = findDestIndex(list, destination.droppableId, destination.index)
-  const result = Array.from(list);
-  const [removed] = result.splice(srcIndex, 1);
-  removed.status = destination.droppableId;
-  result.splice(destIndex, 0, removed);
-  return result;
+  const destStatus = destination.droppableId
+  const srcStatus = source.droppableId
+
+  // Get the index of the moving element within the array
+  // The index passed in is the index of it within the array
+  // of either pending or paused items
+  const srcIndex = getListIndex(list, srcStatus, source.index);
+
+  // Remove the moving element and set it's new status
+  const [removed] = list.splice(srcIndex, 1);
+  removed.status = destStatus;
+
+  // Split the remaining list up
+  const destList = list.filter(e => e.status === destStatus);
+  const otherList = list.filter(e => e.status !== destStatus);
+
+  // Put the moving element into the destination list
+  destList.splice(destination.index, 0, removed);
+
+  // Return the combined list
+  const res = [...otherList, ...destList];
+  return res;
 };
 
 export default function(state = initialState, action) {
