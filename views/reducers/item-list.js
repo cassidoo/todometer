@@ -1,8 +1,16 @@
-import { ADD_ITEM, UPDATE_ITEM, DELETE_ITEM, RESET_ALL } from '../actions';
+import { ADD_ITEM, UPDATE_ITEM, DELETE_ITEM, REORDER_ITEM, RESET_ALL } from '../actions';
 
 // initialize state
 const initialState = {
   items: []
+};
+
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
 };
 
 export default function(state = initialState, action) {
@@ -24,6 +32,9 @@ export default function(state = initialState, action) {
       break;
     case DELETE_ITEM:
       newState.items = newState.items.filter((item => item.key !== action.item.key));
+      break;
+    case REORDER_ITEM:
+      newState.items = reorder(newState.items, action.startIndex, action.endIndex);
       break;
     case RESET_ALL:
       newState.items = newState.items.filter(item => item.status !== 'complete').map(i => {

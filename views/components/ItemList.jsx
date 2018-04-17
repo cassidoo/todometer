@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { addItem, updateItem, deleteItem, resetAll } from '../actions.js';
+import { addItem, updateItem, deleteItem, reorderItem, resetAll } from '../actions.js';
 import { getAllItems, getPendingItems, getCompletedItems, getPausedItems } from '../reducers/item-list.js';
 import Item from './Item';
 import Progress from './Progress';
@@ -14,6 +14,7 @@ class ItemList extends React.Component {
     this.addItem = this.addItem.bind(this);
     this.completeItem = this.completeItem.bind(this);
     this.pauseItem = this.pauseItem.bind(this);
+    this.onDragEnd = this.onDragEnd.bind(this);
   }
 
   addItem(e) {
@@ -103,13 +104,18 @@ class ItemList extends React.Component {
     }
   }
 
-  onDragEnd() {
-    // TODO
+  onDragEnd(result) {
+    console.log('result: ', result);
+    // dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+
+    this.props.reorderItem(result.source.index, result.destination.index);
   }
 
   render() {
     const { pendingItems } = this.props;
-    console.log(pendingItems);
     return (
       <div className="item-list">
         {this.renderProgress()}
@@ -136,16 +142,18 @@ class ItemList extends React.Component {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                           >
-                            <Item
-                              item={item}
-                              text={item.text}
-                              status={item.status}
-                              key={item.key}
-                              onComplete={this.completeItem}
-                              onDelete={this.props.deleteItem}
-                              onPause={this.pauseItem}
-                              dragHandleProps={provided.dragHandleProps}
-                            />
+                            <div style={{ height: '100%' }}>
+                              <Item
+                                item={item}
+                                text={item.text}
+                                status={item.status}
+                                key={item.key}
+                                onComplete={this.completeItem}
+                                onDelete={this.props.deleteItem}
+                                onPause={this.pauseItem}
+                                dragHandleProps={provided.dragHandleProps}
+                              />
+                            </div>
                           </div>
                           {provided.placeholder}
                         </div>
@@ -174,7 +182,8 @@ const mapDispatchToProps = dispatch => ({
   addItem: item => dispatch(addItem(item)),
   updateItem: item => dispatch(updateItem(item)),
   deleteItem: item => dispatch(deleteItem(item)),
-  resetAll: item => dispatch(resetAll(item))
+  reorderItem: (startIndex, endIndex) => dispatch(reorderItem(startIndex, endIndex)),
+  resetAll: item => dispatch(resetAll(item)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ItemList);
