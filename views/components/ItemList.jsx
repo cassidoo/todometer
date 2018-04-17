@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { addItem, updateItem, deleteItem, reorderItem, resetAll } from '../actions.js';
+import { addItem, updateItem, deleteItem, resetAll } from '../actions.js';
 import { getAllItems, getPendingItems, getCompletedItems, getPausedItems } from '../reducers/item-list.js';
 import Item from './Item';
 import Progress from './Progress';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 class ItemList extends React.Component {
   constructor(props) {
@@ -14,7 +14,6 @@ class ItemList extends React.Component {
     this.addItem = this.addItem.bind(this);
     this.completeItem = this.completeItem.bind(this);
     this.pauseItem = this.pauseItem.bind(this);
-    this.onDragEnd = this.onDragEnd.bind(this);
   }
 
   addItem(e) {
@@ -109,19 +108,9 @@ class ItemList extends React.Component {
     ))
   }
 
-  onDragEnd({ source, destination }) {
-    // dropped outside the list
-    if (!destination) {
-      return;
-    }
-
-    this.props.reorderItem(source, destination);
-  }
-
   render() {
     const { pendingItems, pausedItems } = this.props;
     return (
-      <DragDropContext onDragEnd={this.onDragEnd}>
         <div className="item-list">
           {this.renderProgress()}
           <form className="form" onSubmit={this.addItem}>
@@ -134,9 +123,7 @@ class ItemList extends React.Component {
           </form>
           <Droppable droppableId="pending">
             {(droppableProvided) => (
-              <div
-                ref={droppableProvided.innerRef}
-              >
+              <div ref={droppableProvided.innerRef} >
                 {this.renderItems(pendingItems)}
                 {droppableProvided.placeholder}
                 <div style={{ height: 20 }} />
@@ -144,11 +131,9 @@ class ItemList extends React.Component {
             )}
           </Droppable>
           <h2 style={{ margin: 0 }}>Do Later</h2>
-          <Droppable droppableId="paused">
+          <Droppable droppableId="paused" ignoreContainerClipping>
             {(droppableProvided) => (
-              <div
-                ref={droppableProvided.innerRef}
-              >
+              <div ref={droppableProvided.innerRef} >
                 <div style={{ height: 20 }} />
                 {this.renderItems(pausedItems)}
                 {droppableProvided.placeholder}
@@ -157,7 +142,6 @@ class ItemList extends React.Component {
           </Droppable>
           {this.renderReset()}
         </div>
-      </DragDropContext>
     );
   }
 }
