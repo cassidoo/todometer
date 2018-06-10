@@ -7,6 +7,10 @@
     "categories": [
       "Utility"
     ],
+    "depends": [
+      "libc6",
+      "libgconf2-4"
+    ],
     "lintianOverrides": [
       "changelog-file-missing-in-native-package",
       "debian-changelog-file-missing",
