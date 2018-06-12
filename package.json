@@ -14,7 +14,8 @@
     "lint": "eslint bootstrapper.js main.js scripts/** views/**; exit 0",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/mac/icon.png.icns --prune=true --out=release-builds",
     "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/win/icon.png.ico --prune=true --out=release-builds --version-string.ProductName=todometer",
-    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/png/1024x1024.png --prune=true --out=release-builds",
+    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/png/1024x1024.png --prune=true --out=release-builds --app-bundle-id=com.cassidoo.todometer --app-version=$npm_package_version",
+    "create-deb-package": "electron-installer-debian --config debian.json",
     "create-mac-installer": "electron-installer-dmg ./release-builds/todometer-darwin-x64/todometer.app/ install-todometer --out=release-builds --overwrite --icon=assets/mac/icon.png.icns",
     "create-win-installer": "node installers/createinstaller.js"
   },
@@ -34,8 +35,9 @@
   "devDependencies": {
     "babel-eslint": "^8.0.1",
     "electron": "^1.4.3",
+    "electron-installer-debian": "^0.8.1",
     "electron-installer-dmg": "^0.2.1",
-    "electron-packager": "^8.6.0",
+    "electron-packager": "^8.7.2",
     "electron-winstaller": "^2.5.2",
     "eslint": "^4.9.0",
     "eslint-config-eslint": "^4.0.0",
