@@ -8,6 +8,11 @@
   "main": "bootstrapper.js",
   "license": "MIT",
   "repository": "github.com/cassidoo/todometer",
+  "homepage": "https://cassidoo.github.io/todometer/",
+  "author": {
+    "name": "Cassidy Williams",
+    "email": "not@specified.com"
+  },
   "scripts": {
     "start": "npm run build:less && electron .",
     "build:less": "lessc styles/global.less main.css",
@@ -17,7 +22,38 @@
     "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/png/1024x1024.png --prune=true --out=release-builds --app-bundle-id=com.cassidoo.todometer --app-version=$npm_package_version",
     "create-deb-package": "electron-installer-debian --config debian.json",
     "create-mac-installer": "electron-installer-dmg ./release-builds/todometer-darwin-x64/todometer.app/ install-todometer --out=release-builds --overwrite --icon=assets/mac/icon.png.icns",
-    "create-win-installer": "node installers/createinstaller.js"
+    "create-win-installer": "node installers/createinstaller.js",
+    "pack": "build --dir",
+    "dist": "build"
+  },
+  "build": {
+    "appId": "com.cassidoo.todometer",
+    "asar": true,
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "category": "GNOME;GTK;Utility",
+      "icon": "assets/png/1024x1024.png",
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "NSIS"
+    }
   },
   "dependencies": {
     "babel-preset-es2015": "^6.3.13",
@@ -35,6 +71,7 @@
   "devDependencies": {
     "babel-eslint": "^8.0.1",
     "electron": "^1.4.3",
+    "electron-builder": "^20.28.4",
     "electron-installer-debian": "^0.8.1",
     "electron-installer-dmg": "^0.2.1",
     "electron-packager": "^8.7.2",
