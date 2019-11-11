@@ -29,7 +29,7 @@ section.heading {
 }
 
 .logo {
-  width: 150px;
+  width: 125px;
 }
 
 h1 {
@@ -55,7 +55,7 @@ section.info {
 
 .features {
   padding: 7px 20px 0;
-  width: calc(100% - 800px);
+  width: calc(100% - 700px);
   box-sizing: border-box;
   font-size: 1.7em;
   letter-spacing: 1px;
@@ -78,7 +78,7 @@ span {
 }
 
 .screenshot {
-  max-width: 800px;
+  max-width: 700px;
 }
 
 img {
@@ -98,6 +98,11 @@ a.download {
   border-radius: 3px;
   font-size: 20px;
   text-decoration: none;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+a.download:hover {
+  background-color: #ffffff;
+  color: #4E4D5C;
 }
 
 .download .check {
