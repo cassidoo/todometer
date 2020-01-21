@@ -1,5 +1,4 @@
-import electron from 'electron';
-import { app, BrowserWindow, Menu, dialog, shell } from 'electron';
+import { app, BrowserWindow, Menu, dialog, powerMonitor, shell } from 'electron';
 import moment from 'moment';
 import path from 'path';
 import setupEvents from './installers/setupEvents';
@@ -110,7 +109,7 @@ app.on('ready', () => {
   createWindow();
   menuSetup();
 
-  electron.powerMonitor.on('resume', () => {
+  powerMonitor.on('resume', () => {
     mainWindow.reload();
     console.log('reloaded');
   });
