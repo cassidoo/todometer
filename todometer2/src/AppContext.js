@@ -82,5 +82,9 @@ export function AppStateProvider({ children }) {
   };
 
   const value = useReducer(appStateReducer, initialState);
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return (
+    <div className="App">
+      <AppContext.Provider value={value}>{children}</AppContext.Provider>
+    </div>
+  );
 }

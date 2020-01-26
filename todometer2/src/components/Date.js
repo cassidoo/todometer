@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import moment from "moment";
-
 import { useAppReducer } from "../AppContext";
+import styles from "./Date.module.scss";
 
 function Date() {
   let dispatch = useAppReducer();
@@ -30,12 +30,12 @@ function Date() {
   }, []);
 
   return (
-    <div className="date">
-      <div className="calendar">
-        <div className="day">{date.day}</div>
-        <div className="my">
-          <div className="month">{date.month}</div>
-          <div className="year">{date.year}</div>
+    <div className={styles.date}>
+      <div className={styles.calendar}>
+        <div className={styles.day}>{date.day}</div>
+        <div className={styles.my}>
+          <div className={styles.month}>{date.month}</div>
+          <div className={styles.year}>{date.year}</div>
         </div>
       </div>
       <div className="today">{date.weekday}</div>
