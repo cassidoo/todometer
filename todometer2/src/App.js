@@ -6,10 +6,8 @@ import { AppStateProvider } from "./AppContext";
 function App() {
   return (
     <AppStateProvider>
-      <div>
-        <Date />
-        <ItemList />
-      </div>
+      <Date />
+      <ItemList />
     </AppStateProvider>
   );
 }

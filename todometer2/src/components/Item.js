@@ -17,8 +17,9 @@ function Item({ text, paused, item }) {
 
   function completeItem() {
     const completedItem = Object.assign({}, item, {
-      status: "complete"
+      status: "completed"
     });
+    console.log(completedItem);
     dispatch({ type: "UPDATE_ITEM", item: completedItem });
   }
 

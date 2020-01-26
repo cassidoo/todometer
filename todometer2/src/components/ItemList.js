@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { useAppReducer, useItems } from "../AppContext";
 import Item from "./Item";
+import Progress from "./Progress";
 
 function ItemList() {
   const dispatch = useAppReducer();
@@ -26,8 +27,7 @@ function ItemList() {
 
   return (
     <div className="item-list">
-      {/* {this.renderProgress()} */}
-      {/* TODO: Put progress bar in its own component */}
+      <Progress />
       <form className="form" onSubmit={addItem}>
         <input ref={inputRef} placeholder="Add new item" autoFocus />
         <button type="submit" />
@@ -35,18 +35,9 @@ function ItemList() {
       {pendingItems &&
         pendingItems.map(item => {
           return (
-            <Item
-              item={item}
-              text={item.text}
-              status={item.status}
-              key={item.key}
-              // onComplete={this.completeItem}
-              // onDelete={this.props.deleteItem}
-              // onPause={this.pauseItem}
-            />
+            <Item item={item} text={item.text} status={item.status} key={item.key} />
           );
         })}
-      {/* {this.renderPaused()}*/}
       {pausedItems !== undefined && pausedItems.length > 0 && (
         <>
           <h2>Do Later</h2>
