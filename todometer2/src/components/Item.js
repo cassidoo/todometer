@@ -1,5 +1,6 @@
 import React from "react";
 import { useAppReducer } from "../AppContext";
+import styles from "./Item.module.scss";
 
 function Item({ text, paused, item }) {
   const dispatch = useAppReducer();
@@ -24,12 +25,12 @@ function Item({ text, paused, item }) {
   }
 
   return (
-    <div className="item">
-      <div className="item-name">{text}</div>
-      <div className="buttons">
-        <button className="delete" onClick={deleteItem}></button>
-        {!paused && <button className="pause" onClick={pauseItem}></button>}
-        <button className="complete" onClick={completeItem}></button>
+    <div className={styles.item}>
+      <div className={styles.itemName}>{text}</div>
+      <div className={styles.buttons}>
+        <button className={styles.delete} onClick={deleteItem}></button>
+        {!paused && <button className={styles.pause} onClick={pauseItem}></button>}
+        <button className={styles.complete} onClick={completeItem}></button>
       </div>
     </div>
   );

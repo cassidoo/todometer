@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { useAppReducer, useItems } from "../AppContext";
 import Item from "./Item";
 import Progress from "./Progress";
+import styles from "./ItemList.module.scss";
 
 function ItemList() {
   const dispatch = useAppReducer();
@@ -28,7 +29,7 @@ function ItemList() {
   return (
     <div className="item-list">
       <Progress />
-      <form className="form" onSubmit={addItem}>
+      <form className={styles.form} onSubmit={addItem}>
         <input ref={inputRef} placeholder="Add new item" autoFocus />
         <button type="submit" />
       </form>
@@ -56,7 +57,7 @@ function ItemList() {
         </>
       )}
       {(completedItems.length > 0 || pausedItems.length > 0) && (
-        <div className="reset">
+        <div className={styles.reset}>
           <button
             onClick={() => {
               dispatch({ type: "RESET_ALL" });
