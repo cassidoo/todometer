@@ -1,48 +1,36 @@
 {
-  "name": "todometer",
-  "description": "A meter-based to-do list",
-  "productName": "todometer",
-  "appCopyright": "Cassidy Williams",
-  "appCategoryType": "Productivity",
-  "version": "1.0.4",
-  "main": "bootstrapper.js",
-  "license": "MIT",
-  "repository": "github.com/cassidoo/todometer",
-  "scripts": {
-    "start": "npm run build:less && electron .",
-    "build:less": "lessc styles/global.less main.css",
-    "lint": "eslint bootstrapper.js main.js scripts/** views/**; exit 0",
-    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/mac/icon.png.icns --prune=true --out=release-builds",
-    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/win/icon.png.ico --prune=true --out=release-builds --version-string.ProductName=todometer",
-    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=assets/png/1024x1024.png --prune=true --out=release-builds --app-bundle-id=com.cassidoo.todometer --app-version=$npm_package_version",
-    "create-deb-package": "electron-installer-debian --config debian.json",
-    "create-mac-installer": "electron-installer-dmg ./release-builds/todometer-darwin-x64/todometer.app/ install-todometer --out=release-builds --overwrite --icon=assets/mac/icon.png.icns",
-    "create-win-installer": "node installers/createinstaller.js"
-  },
+  "name": "todometer2",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "babel-preset-es2015": "^6.3.13",
-    "babel-preset-react": "^6.3.13",
-    "babel-register": "^6.3.13",
-    "moment": "^2.17.1",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
-    "react-progressbar.js": "^0.2.0",
-    "react-redux": "^5.0.2",
-    "redux": "^3.6.0",
-    "redux-devtools-extension": "^2.13.0",
-    "redux-logger": "^3.0.1"
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "moment": "^2.24.0",
+    "node-sass": "^4.13.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "3.3.0"
   },
-  "devDependencies": {
-    "babel-eslint": "^8.0.1",
-    "electron": "^1.4.3",
-    "electron-installer-debian": "^0.8.1",
-    "electron-installer-dmg": "^0.2.1",
-    "electron-packager": "^8.7.2",
-    "electron-winstaller": "^2.5.2",
-    "eslint": "^4.9.0",
-    "eslint-config-eslint": "^4.0.0",
-    "eslint-plugin-react": "^7.4.0",
-    "less": "^2.7.2",
-    "redux-devtools-extension": "^2.13.0"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
