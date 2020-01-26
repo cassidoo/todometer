@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
+import { loadState, saveState } from "./local-storage";
 
 export const AppContext = createContext();
 
@@ -16,6 +17,7 @@ export function useAppReducer() {
 
 export function useItems(filterType) {
   let { items } = useAppState();
+
   if (
     filterType === "pending" ||
     filterType === "completed" ||
@@ -30,10 +32,12 @@ export function useItems(filterType) {
 const appStateReducer = (state, action) => {
   switch (action.type) {
     case "ADD_ITEM": {
-      return { ...state, items: state.items.concat(action.item) };
+      const newState = { ...state, items: state.items.concat(action.item) };
+      saveState(newState);
+      return newState;
     }
     case "UPDATE_ITEM": {
-      let newItems = state.items.map(i => {
+      const newItems = state.items.map(i => {
         if (i.key === action.item.key) {
           return Object.assign({}, i, {
             status: action.item.status
@@ -41,16 +45,20 @@ const appStateReducer = (state, action) => {
         }
         return i;
       });
-      return { ...state, items: newItems };
+      const newState = { ...state, items: newItems };
+      saveState(newState);
+      return newState;
     }
     case "DELETE_ITEM": {
-      return {
+      const newState = {
         ...state,
         items: state.items.filter(item => item.key !== action.item.key)
       };
+      saveState(newState);
+      return newState;
     }
     case "RESET_ALL": {
-      let newItems = state.items
+      const newItems = state.items
         .filter(item => item.status !== "completed")
         .map(i => {
           if (i.status === "paused") {
@@ -60,10 +68,14 @@ const appStateReducer = (state, action) => {
           }
           return i;
         });
-      return { ...state, items: newItems };
+      const newState = { ...state, items: newItems };
+      saveState(newState);
+      return newState;
     }
     case "SET_DATE": {
-      return { ...state, date: action.date };
+      const newState = { ...state, date: action.date };
+      saveState(newState);
+      return newState;
     }
     default:
       return state;
@@ -71,15 +83,19 @@ const appStateReducer = (state, action) => {
 };
 
 export function AppStateProvider({ children }) {
-  let initialState = {
-    items: [],
-    date: {
-      day: "",
-      month: "",
-      year: "",
-      weekday: ""
-    }
-  };
+  let initialState = loadState();
+
+  if (initialState === undefined) {
+    initialState = {
+      items: [],
+      date: {
+        day: "",
+        month: "",
+        year: "",
+        weekday: ""
+      }
+    };
+  }
 
   const value = useReducer(appStateReducer, initialState);
   return (
