@@ -27,6 +27,7 @@ function Date() {
 
   useEffect(() => {
     setDate();
+    // eslint-disable-next-line
   }, []);
 
   return (
