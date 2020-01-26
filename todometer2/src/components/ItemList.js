@@ -1,11 +1,12 @@
 import React, { useRef } from "react";
 import { useAppReducer, useItems } from "../AppContext";
+import Item from "./Item";
 
 function ItemList() {
-  let dispatch = useAppReducer();
-  let pendingItems = useItems("pending");
-  let completedItems = useItems("completed");
-  let pausedItems = useItems("paused");
+  const dispatch = useAppReducer();
+  const pendingItems = useItems("pending");
+  const completedItems = useItems("completed");
+  const pausedItems = useItems("paused");
 
   let inputRef = useRef();
 
@@ -33,23 +34,45 @@ function ItemList() {
       </form>
       {pendingItems &&
         pendingItems.map(item => {
-          return null;
-          // <Item
-          //   item={item}
-          //   text={item.text}
-          //   status={item.status}
-          //   key={item.key}
-          //   onComplete={this.completeItem}
-          //   onDelete={this.props.deleteItem}
-          //   onPause={this.pauseItem}
-          // />
+          return (
+            <Item
+              item={item}
+              text={item.text}
+              status={item.status}
+              key={item.key}
+              // onComplete={this.completeItem}
+              // onDelete={this.props.deleteItem}
+              // onPause={this.pauseItem}
+            />
+          );
         })}
-      {/* {this.renderPaused()}
-      {this.renderReset()} */}
+      {/* {this.renderPaused()}*/}
+      {pausedItems !== undefined && pausedItems.length > 0 && (
+        <>
+          <h2>Do Later</h2>
+          {pausedItems &&
+            pausedItems.map(item => {
+              return (
+                <Item
+                  item={item}
+                  text={item.text}
+                  status={item.status}
+                  key={item.key}
+                  paused
+                />
+              );
+            })}
+        </>
+      )}
       {(completedItems.length > 0 || pausedItems.length > 0) && (
         <div className="reset">
-          {/* TODO fix reset */}
-          <button onClick={() => {}}>reset progress</button>
+          <button
+            onClick={() => {
+              dispatch({ type: "RESET_ALL" });
+            }}
+          >
+            reset progress
+          </button>
         </div>
       )}
     </div>

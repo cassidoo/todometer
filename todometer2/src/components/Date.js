@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import moment from "moment";
 
-import { useAppStateAndReducer } from "../AppContext";
+import { useAppReducer } from "../AppContext";
 
 function Date() {
-  let [state, dispatch] = useAppStateAndReducer();
+  let dispatch = useAppReducer();
   const date = {
     day: moment().date(),
     month: moment().format("MMM"),

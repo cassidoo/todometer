@@ -1,9 +1,7 @@
-import React, { useContext, createContext } from "react";
+import React from "react";
 import Date from "./components/Date";
 import ItemList from "./components/ItemList";
 import { AppStateProvider } from "./AppContext";
-
-import "./App.css";
 
 function App() {
   return (

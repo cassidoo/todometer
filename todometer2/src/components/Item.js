@@ -1,35 +1,37 @@
 import React from "react";
+import { useAppReducer } from "../AppContext";
 
-function ItemList({
-  text,
-  paused,
-  item,
-  onDelete,
-  onPause,
-  onComplete
-}) {
-  // TODO refactor these dumb repeated buttons
+function Item({ text, paused, item }) {
+  const dispatch = useAppReducer();
+
+  function deleteItem() {
+    dispatch({ type: "DELETE_ITEM", item });
+  }
+
+  function pauseItem() {
+    const pausedItem = Object.assign({}, item, {
+      status: "paused"
+    });
+    dispatch({ type: "UPDATE_ITEM", item: pausedItem });
+  }
+
+  function completeItem() {
+    const completedItem = Object.assign({}, item, {
+      status: "complete"
+    });
+    dispatch({ type: "UPDATE_ITEM", item: completedItem });
+  }
+
   return (
     <div className="item">
       <div className="item-name">{text}</div>
       <div className="buttons">
-        <button
-          className="delete"
-          onClick={() => onDelete(item)}
-        ></button>
-        {!paused && (
-          <button
-            className="pause"
-            onClick={() => onPause(item)}
-          ></button>
-        )}
-        <button
-          className="complete"
-          onClick={() => onComplete(item)}
-        ></button>
+        <button className="delete" onClick={deleteItem}></button>
+        {!paused && <button className="pause" onClick={pauseItem}></button>}
+        <button className="complete" onClick={completeItem}></button>
       </div>
     </div>
   );
 }
 
-export default ItemList;
+export default Item;
