@@ -14,12 +14,19 @@ body {
     position: relative;
     margin: 40px auto;
     width: 550px;
+
+    @media (max-width: 600px) {
+      width: 95%;
+    }
   }
 }
 
 ::-webkit-scrollbar {
   background-color: $bg;
   width: 1em;
+  @media (max-width: 600px) {
+    width: 0.5em;
+  }
 }
 
 ::-webkit-scrollbar-thumb:window-inactive,

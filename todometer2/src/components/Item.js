@@ -25,7 +25,7 @@ function Item({ text, paused, item }) {
   }
 
   return (
-    <div className={styles.item}>
+    <div className={`${styles.item} ${paused ? styles.pausedItem : ""}`}>
       <div className={styles.itemName}>{text}</div>
       <div className={styles.buttons}>
         <button className={styles.delete} onClick={deleteItem}></button>

@@ -13,8 +13,17 @@
   border-radius: 3px;
   box-sizing: border-box;
   font-size: $item-font-size;
+  @media (max-width: 600px) {
+    width: 95%;
+    margin: 20px auto;
+  }
+  &.pausedItem {
+    .itemName {
+      width: calc(100% - 80px);
+    }
+  }
   .itemName {
-    width: 400px;
+    width: calc(100% - 110px);
     word-break: break-all;
   }
   .buttons button {
