@@ -7,6 +7,7 @@
     "email": "hi@cassidoo.co",
     "url": "https://cassidoo.co"
   },
+  "homepage": ".",
   "build": {
     "appId": "com.electron.todometer",
     "productName": "todometer",
@@ -19,7 +20,7 @@
       "node_modules/**/*"
     ],
     "directories": {
-      "buildResources": "src/assets"
+      "buildResources": "assets"
     }
   },
   "main": "public/electron.js",
@@ -41,7 +42,7 @@
     "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
     "preelectron-pack": "yarn build",
-    "electron-pack": "electron-builder build -mw"
+    "compile-app": "electron-builder build -mw"
   },
   "eslintConfig": {
     "extends": "react-app"

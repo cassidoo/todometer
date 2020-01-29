@@ -12,12 +12,10 @@ function Date() {
     weekday: moment().format("dddd")
   };
 
-  function checkDate(local) {
-    if (local !== null && moment(local).isBefore(moment().format("MM-DD-YYYY"))) {
-      dispatch({ type: "RESET_ALL" });
-    }
-    localStorage.setItem("date", moment().format("MM-DD-YYYY"));
-  }
+  useEffect(() => {
+    setDate();
+    // eslint-disable-next-line
+  }, []);
 
   function setDate() {
     const local = localStorage.getItem("date");
@@ -25,10 +23,12 @@ function Date() {
     checkDate(local);
   }
 
-  useEffect(() => {
-    setDate();
-    // eslint-disable-next-line
-  }, []);
+  function checkDate(local) {
+    if (local !== null && moment(local).isBefore(moment().format("MM-DD-YYYY"))) {
+      dispatch({ type: "RESET_ALL" });
+    }
+    localStorage.setItem("date", moment().format("MM-DD-YYYY"));
+  }
 
   return (
     <div className={styles.date}>

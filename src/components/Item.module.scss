@@ -14,7 +14,6 @@
   box-sizing: border-box;
   font-size: $item-font-size;
   @media (max-width: 600px) {
-    width: 95%;
     margin: 20px auto;
   }
   &.pausedItem {
@@ -33,21 +32,21 @@
     border: none;
     &.delete {
       width: 24px;
-      background: no-repeat url("../assets/x.svg");
+      background: no-repeat url("../img/x.svg");
       &:after {
         background: $red;
       }
     }
     &.pause {
       width: 24px;
-      background: no-repeat url("../assets/pause.svg");
+      background: no-repeat url("../img/pause.svg");
       &:after {
         background: $yellow;
       }
     }
     &.complete {
       width: 30px;
-      background: no-repeat url("../assets/check.svg");
+      background: no-repeat url("../img/check.svg");
       &:after {
         background: $green;
       }

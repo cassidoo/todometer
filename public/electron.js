@@ -10,7 +10,6 @@ const {
 
 const moment = require("moment");
 const path = require("path");
-// const setupEvents = require("../installers/setupEvents");
 const { version } = require("../package.json");
 const isDev = require("electron-is-dev");
 
@@ -22,13 +21,14 @@ let mainWindow = {
 let willQuit = false;
 
 function createWindow() {
+  console.log(__dirname);
   mainWindow = new BrowserWindow({
     width: 800,
     minWidth: 320,
     height: 600,
     fullscreenable: true,
     backgroundColor: "#403F4D",
-    icon: path.join(__dirname, "/src/assets/png/128x128.png"),
+    icon: path.join(__dirname, "assets/png/128x128.png"),
     webPreferences: {
       nodeIntegration: true
     }
@@ -121,13 +121,6 @@ function menuSetup() {
 }
 
 app.on("ready", () => {
-  // TODO: I think I can kill this but tbd
-  // Squirrel events have to be handled before anything else
-  // if (setupEvents.handleSquirrelEvent()) {
-  //   // squirrel event handled and app will exit in 1000ms, so don't do anything else
-  //   return;
-  // }
-
   createWindow();
   menuSetup();
 
