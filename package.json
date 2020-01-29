@@ -13,7 +13,11 @@
     "productName": "todometer",
     "copyright": "Copyright © 2020 @cassidoo",
     "mac": {
-      "category": "public.app-category.utilities"
+      "category": "public.app-category.utilities",
+      "icon": "assets/mac/icon.png.icns"
+    },
+    "win": {
+      "icon": "assets/win/icon.png.ico"
     },
     "files": [
       "build/**/*",
@@ -42,7 +46,7 @@
     "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
     "preelectron-pack": "yarn build",
-    "compile-app": "electron-builder build -mw"
+    "electron-pack": "electron-builder build -mw"
   },
   "eslintConfig": {
     "extends": "react-app"

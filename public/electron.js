@@ -77,13 +77,13 @@ function menuSetup() {
         {
           type: "separator"
         },
-        {
-          /* For debugging */
-          label: "Dev tools",
-          click: () => {
-            mainWindow.webContents.openDevTools();
-          }
-        },
+        // {
+        //   /* For debugging */
+        //   label: "Dev tools",
+        //   click: () => {
+        //     mainWindow.webContents.openDevTools();
+        //   }
+        // },
         {
           label: "Quit",
           accelerator: "CommandOrControl+Q",
