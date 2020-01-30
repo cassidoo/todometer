@@ -3,10 +3,6 @@ import { loadState, saveState } from "./local-storage";
 
 export const AppContext = createContext();
 
-export function useAppStateAndReducer() {
-  return useContext(AppContext);
-}
-
 export function useAppState() {
   return useContext(AppContext)[0];
 }
