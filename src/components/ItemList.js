@@ -1,59 +1,40 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useAppReducer, useItems } from "../AppContext";
-import Item from "./Item";
 import Progress from "./Progress";
+import AddItemForm from "./AddItemForm";
+import Item from "./Item";
 import styles from "./ItemList.module.scss";
 
-// List of todo items, plus the form to populate them
+// List of todo items
 function ItemList() {
   const dispatch = useAppReducer();
   const pendingItems = useItems("pending");
   const completedItems = useItems("completed");
   const pausedItems = useItems("paused");
 
-  let inputRef = useRef();
-
-  function addItem(e) {
-    const newItem = {
-      text: inputRef.current.value,
-      key: Date.now(),
-      status: "pending"
-    };
-    if (!!newItem.text.trim()) {
-      dispatch({ type: "ADD_ITEM", item: newItem });
-    }
-    e.preventDefault();
-    inputRef.current.value = "";
-    inputRef.current.focus();
-  }
-
   return (
     <div className="item-list">
       <Progress />
-      <form className={styles.form} onSubmit={addItem}>
-        <input ref={inputRef} placeholder="Add new item" autoFocus />
-        <button type="submit" />
-      </form>
+      <AddItemForm />
       {pendingItems &&
         pendingItems.map(item => {
-          return (
-            <Item item={item} text={item.text} status={item.status} key={item.key} />
-          );
+          return <Item item={item} key={item.key} />;
         })}
       {pausedItems !== undefined && pausedItems.length > 0 && (
         <>
           <h2>Do Later</h2>
           {pausedItems &&
             pausedItems.map(item => {
-              return (
-                <Item
-                  item={item}
-                  text={item.text}
-                  status={item.status}
-                  key={item.key}
-                  paused
-                />
-              );
+              return <Item item={item} key={item.key} />;
+            })}
+        </>
+      )}
+      {completedItems !== undefined && completedItems.length > 0 && (
+        <>
+          <h2>Completed</h2>
+          {completedItems &&
+            completedItems.map(item => {
+              return <Item item={item} key={item.key} />;
             })}
         </>
       )}

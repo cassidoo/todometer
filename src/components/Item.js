@@ -3,24 +3,23 @@ import { useAppReducer } from "../AppContext";
 import styles from "./Item.module.scss";
 
 // Individial todo item
-function Item({ text, paused, item }) {
+function Item({ item }) {
   const dispatch = useAppReducer();
+  let text = item.text;
+  let paused = item.status === "paused";
+  let completed = item.status === "completed";
 
   function deleteItem() {
     dispatch({ type: "DELETE_ITEM", item });
   }
 
   function pauseItem() {
-    const pausedItem = Object.assign({}, item, {
-      status: "paused"
-    });
+    const pausedItem = { ...item, status: "paused" };
     dispatch({ type: "UPDATE_ITEM", item: pausedItem });
   }
 
   function completeItem() {
-    const completedItem = Object.assign({}, item, {
-      status: "completed"
-    });
+    const completedItem = { ...item, status: "completed" };
     dispatch({ type: "UPDATE_ITEM", item: completedItem });
   }
 
@@ -29,8 +28,12 @@ function Item({ text, paused, item }) {
       <div className={styles.itemName}>{text}</div>
       <div className={styles.buttons}>
         <button className={styles.delete} onClick={deleteItem}></button>
-        {!paused && <button className={styles.pause} onClick={pauseItem}></button>}
-        <button className={styles.complete} onClick={completeItem}></button>
+        {!paused && !completed && (
+          <button className={styles.pause} onClick={pauseItem}></button>
+        )}
+        {!completed && (
+          <button className={styles.complete} onClick={completeItem}></button>
+        )}
       </div>
     </div>
   );
