@@ -28,17 +28,6 @@
     }
   },
   "main": "public/electron.js",
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "electron-is-dev": "^1.1.0",
-    "moment": "^2.24.0",
-    "node-sass": "^4.13.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.3.0"
-  },
   "scripts": {
     "start": "rescripts start",
     "build": "rescripts build",
@@ -63,12 +52,23 @@
       "last 1 safari version"
     ]
   },
+  "dependencies": {
+    "electron-is-dev": "^1.1.0",
+    "moment": "^2.24.0"
+  },
   "devDependencies": {
     "@rescripts/cli": "^0.0.13",
     "@rescripts/rescript-env": "^0.0.11",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
     "concurrently": "^5.0.2",
     "electron": "^7.1.10",
     "electron-builder": "^22.3.2",
+    "node-sass": "^4.13.1",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "3.3.0",
     "wait-on": "^4.0.0"
   }
 }
