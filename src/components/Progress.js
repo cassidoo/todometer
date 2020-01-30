@@ -3,6 +3,7 @@ import { useItems, useAppState } from "../AppContext";
 
 import styles from "./Progress.module.scss";
 
+// Progress bar for completed/paused todo items
 function Progress() {
   const totalAmount = useAppState().items.length;
   const completedAmount = useItems("completed").length;

@@ -3,6 +3,7 @@ import moment from "moment";
 import { useAppReducer } from "../AppContext";
 import styles from "./Date.module.scss";
 
+// Current date at the top of the page
 function Date() {
   let dispatch = useAppReducer();
   const date = {

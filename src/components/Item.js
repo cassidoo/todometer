@@ -2,6 +2,7 @@ import React from "react";
 import { useAppReducer } from "../AppContext";
 import styles from "./Item.module.scss";
 
+// Individial todo item
 function Item({ text, paused, item }) {
   const dispatch = useAppReducer();
 

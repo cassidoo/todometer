@@ -4,6 +4,7 @@ import Item from "./Item";
 import Progress from "./Progress";
 import styles from "./ItemList.module.scss";
 
+// List of todo items, plus the form to populate them
 function ItemList() {
   const dispatch = useAppReducer();
   const pendingItems = useItems("pending");
