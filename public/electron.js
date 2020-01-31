@@ -1,4 +1,3 @@
-// import { app, BrowserWindow, Menu, dialog, powerMonitor, shell } from "electron";
 const {
   app,
   BrowserWindow,
@@ -8,7 +7,7 @@ const {
   shell
 } = require("electron");
 
-const moment = require("moment");
+const datefns = require("date-fns");
 const path = require("path");
 const { version } = require("../package.json");
 const isDev = require("electron-is-dev");
@@ -42,8 +41,9 @@ function createWindow() {
 }
 
 function manageRefresh() {
-  const time = moment("24:00:00", "hh:mm:ss").diff(moment(), "seconds");
-  setTimeout(midnightTask, time * 1000);
+  const newTime = datefns.differenceInMilliseconds(datefns.endOfToday(), new Date());
+
+  setTimeout(midnightTask, newTime);
 
   function midnightTask() {
     mainWindow.reload();

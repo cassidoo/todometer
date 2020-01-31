@@ -1,12 +1,12 @@
 import React from "react";
-import Date from "./components/Date";
+import TodoDate from "./components/TodoDate";
 import ItemList from "./components/ItemList";
 import { AppStateProvider } from "./AppContext";
 
 function App() {
   return (
     <AppStateProvider>
-      <Date />
+      <TodoDate />
       <ItemList />
     </AppStateProvider>
   );

@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
-import moment from "moment";
+import { format, parseISO, isBefore } from "date-fns";
 import { useAppReducer } from "../AppContext";
-import styles from "./Date.module.scss";
+import styles from "./TodoDate.module.scss";
 
 // Current date at the top of the page
-function Date() {
+function TodoDate() {
   let dispatch = useAppReducer();
   const date = {
-    day: moment().date(),
-    month: moment().format("MMM"),
-    year: moment().year(),
-    weekday: moment().format("dddd")
+    day: format(new Date(), "d"),
+    month: format(new Date(), "MMM"),
+    year: format(new Date(), "y"),
+    weekday: format(new Date(), "EEEE")
   };
 
   useEffect(() => {
@@ -25,10 +25,12 @@ function Date() {
   }
 
   function checkDate(local) {
-    if (local !== null && moment(local).isBefore(moment().format("MM-DD-YYYY"))) {
+    let currentDate = parseISO(format(new Date(), "yyyy-MM-dd"));
+    let localDate = parseISO(local);
+    if (local !== null && isBefore(localDate, currentDate)) {
       dispatch({ type: "RESET_ALL" });
     }
-    localStorage.setItem("date", moment().format("MM-DD-YYYY"));
+    localStorage.setItem("date", currentDate);
   }
 
   return (
@@ -45,4 +47,4 @@ function Date() {
   );
 }
 
-export default Date;
+export default TodoDate;

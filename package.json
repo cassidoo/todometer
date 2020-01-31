@@ -53,8 +53,8 @@
     ]
   },
   "dependencies": {
-    "electron-is-dev": "^1.1.0",
-    "moment": "^2.24.0"
+    "date-fns": "^2.9.0",
+    "electron-is-dev": "^1.1.0"
   },
   "devDependencies": {
     "@rescripts/cli": "^0.0.13",
