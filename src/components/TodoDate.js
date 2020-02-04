@@ -25,12 +25,14 @@ function TodoDate() {
   }
 
   function checkDate(local) {
-    let currentDate = parseISO(format(new Date(), "yyyy-MM-dd"));
-    let localDate = parseISO(local);
-    if (local !== null && isBefore(localDate, currentDate)) {
+    const currentDate = format(new Date(), "yyyy-MM-dd");
+    const currentDateToCompare = parseISO(currentDate);
+    const localDateToCompare = parseISO(local);
+
+    if (local !== null && isBefore(localDateToCompare, currentDateToCompare)) {
       dispatch({ type: "RESET_ALL" });
+      localStorage.setItem("date", currentDate);
     }
-    localStorage.setItem("date", currentDate);
   }
 
   return (
