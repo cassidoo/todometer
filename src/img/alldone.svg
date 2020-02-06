@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g id="icon">
+        <g id="Oval" transform="matrix(0.982325,0,0,0.982325,9.04948,9.04948)">
+            <circle cx="512" cy="512" r="512" style="fill:rgb(46,45,51);fill-opacity:0;stroke:rgb(46,45,51);stroke-width:16.29px;"/>
+        </g>
+        <g id="Group">
+            <path id="Rectangle-3" d="M174.845,540.135L234.406,480.573L383.005,629.172L770.153,242.025L829.868,301.74L383.159,748.448L174.845,540.135Z" style="fill:rgb(98,220,165);fill-opacity:0;stroke:rgb(46,45,51);stroke-width:16px;"/>
+        </g>
+    </g>
+</svg>
