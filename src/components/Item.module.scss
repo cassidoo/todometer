@@ -63,7 +63,10 @@
       height: 0;
     }
     &:focus {
-      outline: none;
+      outline: 1px solid $item-color;
+      &:after {
+        animation: click 0.5s;
+      }
     }
     &:hover:after {
       animation: click 0.5s;

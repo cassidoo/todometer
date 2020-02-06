@@ -5,8 +5,8 @@
   justify-content: center;
   img {
     margin: 20px;
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     animation: slidedown 1s;
   }
 }
@@ -36,6 +36,9 @@
   }
   &:focus {
     outline: 2px solid $bg;
+    span {
+      animation: blink 0.5s;
+    }
   }
   &:hover {
     opacity: 0.9;
@@ -61,15 +64,6 @@
   }
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 @keyframes slidedown {
   0% {
     opacity: 0;
@@ -78,5 +72,17 @@
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes blink {
+  0% {
+    text-shadow: 0 0 2px white;
+  }
+  50% {
+    text-shadow: 0 0 10px white;
+  }
+  100% {
+    text-shadow: 0 0 2px white;
   }
 }

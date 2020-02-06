@@ -24,15 +24,22 @@ function Item({ item }) {
   }
 
   return (
-    <div className={`${styles.item} ${paused ? styles.pausedItem : ""}`}>
+    <div
+      className={`${styles.item} ${paused ? styles.pausedItem : ""}`}
+      tabindex="0"
+    >
       <div className={styles.itemName}>{text}</div>
       <div className={styles.buttons}>
-        <button className={styles.delete} onClick={deleteItem}></button>
+        <button className={styles.delete} onClick={deleteItem} tabindex="0"></button>
         {!paused && !completed && (
-          <button className={styles.pause} onClick={pauseItem}></button>
+          <button className={styles.pause} onClick={pauseItem} tabindex="0"></button>
         )}
         {!completed && (
-          <button className={styles.complete} onClick={completeItem}></button>
+          <button
+            className={styles.complete}
+            onClick={completeItem}
+            tabindex="0"
+          ></button>
         )}
       </div>
     </div>

@@ -42,7 +42,7 @@ function ItemList() {
           <AccordionItem>
             <AccordionButton className={styles.toggle}>
               <img src={arrow} alt="Do Later Toggle" />
-              Do Later
+              <span>Do Later</span>
             </AccordionButton>
             <AccordionPanel className={styles.panel}>
               {pausedItems &&
@@ -55,7 +55,7 @@ function ItemList() {
         {completedItems.length > 0 && (
           <AccordionItem>
             <AccordionButton className={styles.toggle}>
-              <img src={arrow} alt="Completed Toggle" /> Completed
+              <img src={arrow} alt="Completed Toggle" /> <span>Completed</span>
             </AccordionButton>
             <AccordionPanel className={styles.panel}>
               {completedItems &&
