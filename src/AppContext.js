@@ -12,18 +12,14 @@ export function useAppReducer() {
   return useContext(AppContext)[1];
 }
 
-export function useItems(filterType) {
-  let { items } = useAppState();
+export function useItems() {
+  const { items } = useAppState();
 
-  if (
-    filterType === "pending" ||
-    filterType === "completed" ||
-    filterType === "paused"
-  ) {
-    return items.filter(item => item.status === filterType);
-  } else {
-    throw new Error(`Unknown item filter.`);
-  }
+  const pending = items.filter(item => item.status === "pending");
+  const paused = items.filter(item => item.status === "paused");
+  const completed = items.filter(item => item.status === "completed");
+
+  return { pending, paused, completed };
 }
 
 const appStateReducer = (state, action) => {

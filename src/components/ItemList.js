@@ -18,17 +18,15 @@ import alldone from "../img/alldone.svg";
 // List of todo items
 function ItemList() {
   const dispatch = useAppReducer();
-  const pendingItems = useItems("pending");
-  const completedItems = useItems("completed");
-  const pausedItems = useItems("paused");
+  const { pending, paused, completed } = useItems();
 
   return (
     <div className="item-list">
       <Progress />
       <AddItemForm />
-      {pendingItems.length > 0 ? (
+      {pending.length > 0 ? (
         <>
-          {pendingItems.map(item => {
+          {pending.map(item => {
             return <Item item={item} key={item.key} />;
           })}
         </>
@@ -38,28 +36,28 @@ function ItemList() {
         </div>
       )}
       <Accordion collapsible multiple>
-        {pausedItems.length > 0 && (
+        {paused.length > 0 && (
           <AccordionItem>
             <AccordionButton className={styles.toggle}>
               <img src={arrow} alt="Do Later Toggle" />
               <span>Do Later</span>
             </AccordionButton>
             <AccordionPanel className={styles.panel}>
-              {pausedItems &&
-                pausedItems.map(item => {
+              {paused &&
+                paused.map(item => {
                   return <Item item={item} key={item.key} />;
                 })}
             </AccordionPanel>
           </AccordionItem>
         )}
-        {completedItems.length > 0 && (
+        {completed.length > 0 && (
           <AccordionItem>
             <AccordionButton className={styles.toggle}>
               <img src={arrow} alt="Completed Toggle" /> <span>Completed</span>
             </AccordionButton>
             <AccordionPanel className={styles.panel}>
-              {completedItems &&
-                completedItems.map(item => {
+              {completed &&
+                completed.map(item => {
                   return <Item item={item} key={item.key} />;
                 })}
             </AccordionPanel>
@@ -67,7 +65,7 @@ function ItemList() {
         )}
       </Accordion>
 
-      {(completedItems.length > 0 || pausedItems.length > 0) && (
+      {(completed.length > 0 || paused.length > 0) && (
         <div className={styles.reset}>
           <button
             onClick={() => {

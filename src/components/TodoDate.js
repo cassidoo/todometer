@@ -5,8 +5,8 @@ import styles from "./TodoDate.module.scss";
 
 // Current date at the top of the page
 function TodoDate() {
-  let dispatch = useAppReducer();
-  let { date } = useAppState();
+  const dispatch = useAppReducer();
+  const { date } = useAppState();
 
   const currentNewDate = {
     dayDisplay: format(new Date(), "d"),
@@ -20,7 +20,7 @@ function TodoDate() {
   useEffect(() => {
     const storedDateToCompare = parseISO(`${date.year}-${date.month}-${date.day}`);
 
-    const currentDate = `${currentNewDate.year}-${currentNewDate.month}-${currentNewDate.day}`; // format(new Date(), "yyyy-MM-dd");
+    const currentDate = `${currentNewDate.year}-${currentNewDate.month}-${currentNewDate.day}`;
     const currentDateToCompare = parseISO(currentDate);
 
     if (isBefore(storedDateToCompare, currentDateToCompare)) {
