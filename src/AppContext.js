@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { loadState, saveState } from "./local-storage";
+import { format } from "date-fns";
 
 export const AppContext = createContext();
 
@@ -85,13 +86,14 @@ export function AppStateProvider({ children }) {
     initialState = {
       items: [],
       date: {
-        day: "",
-        month: "",
-        year: "",
-        weekday: ""
+        day: format(new Date(), "dd"),
+        month: format(new Date(), "MM"),
+        year: format(new Date(), "y")
       }
     };
   }
+
+  saveState(initialState);
 
   const value = useReducer(appStateReducer, initialState);
   return (

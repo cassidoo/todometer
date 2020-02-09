@@ -26,19 +26,19 @@ function Item({ item }) {
   return (
     <div
       className={`${styles.item} ${paused ? styles.pausedItem : ""}`}
-      tabindex="0"
+      tabIndex="0"
     >
       <div className={styles.itemName}>{text}</div>
       <div className={styles.buttons}>
-        <button className={styles.delete} onClick={deleteItem} tabindex="0"></button>
+        <button className={styles.delete} onClick={deleteItem} tabIndex="0"></button>
         {!paused && !completed && (
-          <button className={styles.pause} onClick={pauseItem} tabindex="0"></button>
+          <button className={styles.pause} onClick={pauseItem} tabIndex="0"></button>
         )}
         {!completed && (
           <button
             className={styles.complete}
             onClick={completeItem}
-            tabindex="0"
+            tabIndex="0"
           ></button>
         )}
       </div>
