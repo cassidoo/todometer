@@ -23,6 +23,12 @@ export function useItems() {
 }
 
 const appStateReducer = (state, action) => {
+  let currentDate = {
+    day: format(new Date(), "dd"),
+    month: format(new Date(), "MM"),
+    year: format(new Date(), "y")
+  };
+
   switch (action.type) {
     case "ADD_ITEM": {
       const newState = { ...state, items: state.items.concat(action.item) };
@@ -61,12 +67,7 @@ const appStateReducer = (state, action) => {
           }
           return i;
         });
-      const newState = { ...state, items: newItems };
-      saveState(newState);
-      return newState;
-    }
-    case "SET_DATE": {
-      const newState = { ...state, date: action.date };
+      const newState = { ...state, items: newItems, date: currentDate };
       saveState(newState);
       return newState;
     }

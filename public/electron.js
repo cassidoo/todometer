@@ -7,7 +7,6 @@ const {
   shell
 } = require("electron");
 
-const datefns = require("date-fns");
 const path = require("path");
 const { version } = require("../package.json");
 const isDev = require("electron-is-dev");
@@ -40,16 +39,6 @@ function createWindow() {
   );
 }
 
-function manageRefresh() {
-  const newTime = datefns.differenceInMilliseconds(datefns.endOfToday(), new Date());
-
-  setTimeout(midnightTask, newTime);
-
-  function midnightTask() {
-    mainWindow.reload();
-  }
-}
-
 function menuSetup() {
   const menuTemplate = [
     {
@@ -77,13 +66,13 @@ function menuSetup() {
         {
           type: "separator"
         },
-        // {
-        //   /* For debugging */
-        //   label: "Dev tools",
-        //   click: () => {
-        //     mainWindow.webContents.openDevTools();
-        //   }
-        // },
+        {
+          /* For debugging */
+          label: "Dev tools",
+          click: () => {
+            mainWindow.webContents.openDevTools();
+          }
+        },
         {
           label: "Quit",
           accelerator: "CommandOrControl+Q",
@@ -136,8 +125,6 @@ app.on("ready", () => {
       mainWindow.hide();
     }
   });
-
-  manageRefresh();
 });
 
 app.on("activate", () => mainWindow.show());

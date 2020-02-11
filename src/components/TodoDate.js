@@ -1,12 +1,15 @@
 import React, { useEffect } from "react";
 import { format, parseISO, isBefore } from "date-fns";
 import { useAppReducer, useAppState } from "../AppContext";
+import useDateCheck from "../hooks/useDateCheck";
 import styles from "./TodoDate.module.scss";
 
 // Current date at the top of the page
 function TodoDate() {
   const dispatch = useAppReducer();
   const { date } = useAppState();
+
+  useDateCheck();
 
   const currentNewDate = {
     dayDisplay: format(new Date(), "d"),
@@ -24,14 +27,6 @@ function TodoDate() {
     const currentDateToCompare = parseISO(currentDate);
 
     if (isBefore(storedDateToCompare, currentDateToCompare)) {
-      dispatch({
-        type: "SET_DATE",
-        date: {
-          day: currentNewDate.day,
-          month: currentNewDate.month,
-          year: currentNewDate.year
-        }
-      });
       dispatch({ type: "RESET_ALL" });
     }
   });
