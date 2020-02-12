@@ -23,10 +23,12 @@ export function useItems() {
 }
 
 const appStateReducer = (state, action) => {
+  let nd = new Date();
+
   let currentDate = {
-    day: format(new Date(), "dd"),
-    month: format(new Date(), "MM"),
-    year: format(new Date(), "y")
+    day: format(nd, "dd"),
+    month: format(nd, "MM"),
+    year: format(nd, "y")
   };
 
   switch (action.type) {

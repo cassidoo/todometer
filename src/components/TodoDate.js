@@ -11,13 +11,15 @@ function TodoDate() {
 
   useDateCheck();
 
+  let nd = new Date();
+
   const currentNewDate = {
-    dayDisplay: format(new Date(), "d"),
-    day: format(new Date(), "dd"),
-    monthDisplay: format(new Date(), "MMM"),
-    month: format(new Date(), "MM"),
-    year: format(new Date(), "y"),
-    weekday: format(new Date(), "EEEE")
+    dayDisplay: format(nd, "d"),
+    day: format(nd, "dd"),
+    monthDisplay: format(nd, "MMM"),
+    month: format(nd, "MM"),
+    year: format(nd, "y"),
+    weekday: format(nd, "EEEE")
   };
 
   useEffect(() => {
