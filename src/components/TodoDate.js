@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { format, parseISO, isBefore } from "date-fns";
 import { useAppReducer, useAppState } from "../AppContext";
 import useDateCheck from "../hooks/useDateCheck";
+import useReminderNotification from "../hooks/useReminderNotification";
 import styles from "./TodoDate.module.scss";
 
 // Current date at the top of the page
@@ -10,6 +11,7 @@ function TodoDate() {
   const { date } = useAppState();
 
   useDateCheck();
+  useReminderNotification();
 
   let nd = new Date();
 

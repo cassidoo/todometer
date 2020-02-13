@@ -103,6 +103,61 @@ function menuSetup() {
         { role: "hide" },
         { role: "close" }
       ]
+    },
+    {
+      label: "Notifications",
+      submenu: [
+        {
+          label: "Enable reset notification",
+          type: "checkbox",
+          checked: true,
+          click: e => {
+            mainWindow.showResetNotification = e.checked;
+          }
+        },
+        {
+          label: "Reminder notifications",
+          submenu: [
+            {
+              label: "Never",
+              type: "radio",
+              checked: true,
+              click: e => {
+                if (e.checked) {
+                  mainWindow.resetNotification = "never";
+                }
+              }
+            },
+            {
+              label: "Every 15 minutes",
+              type: "radio",
+              click: e => {
+                if (e.checked) {
+                  mainWindow.resetNotification = "quarterhour";
+                }
+              }
+            },
+            {
+              label: "Every 30 minutes",
+              type: "radio",
+              click: e => {
+                if (e.checked) {
+                  mainWindow.resetNotification = "halfhour";
+                }
+              }
+            },
+            {
+              label: "Every hour",
+              type: "radio",
+              click: e => {
+                if (e.checked) {
+                  mainWindow.resetNotification = "hour";
+                }
+              }
+            }
+          ]
+        }
+      ]
     }
   ];
   const menu = Menu.buildFromTemplate(menuTemplate);
