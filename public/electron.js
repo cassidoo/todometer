@@ -22,7 +22,6 @@ let willQuit = false;
 let tray = null;
 
 function createWindow() {
-  console.log(__dirname);
   mainWindow = new BrowserWindow({
     width: 800,
     minWidth: 320,
@@ -43,14 +42,27 @@ function createWindow() {
 }
 
 function traySetup() {
-  tray = new Tray(nativeImage.createEmpty());
-  tray.setImage(
-    nativeImage.createFromPath(path.join(__dirname, "assets/png/32x32.png"))
-  );
+  tray = new Tray("assets/trayicon.png");
 
   const contextMenu = Menu.buildFromTemplate([
     {
-      label: "Open dat todometer",
+      label: "About todometer",
+      click: () => {
+        dialog.showMessageBox(mainWindow, {
+          type: "info",
+          title: "About",
+          message: "todometer is built by @cassidoo",
+          detail:
+            "You can find her on GitHub and Twitter as @cassidoo, or on her website cassidoo.co.",
+          icon: path.join(__dirname, "assets/png/64x64.png")
+        });
+      }
+    },
+    {
+      type: "separator"
+    },
+    {
+      label: "Open todometer",
       click: () => {
         mainWindow.show();
       }
@@ -200,10 +212,11 @@ app.on("ready", () => {
   });
 
   // On Mac, this will hide the window
-  // On Windows, the app will close
+  // On Windows, the app will close and quit
   mainWindow.on("close", e => {
-    if (willQuit) {
+    if (willQuit || process.platform === "win32") {
       mainWindow = null;
+      app.quit();
     } else {
       e.preventDefault();
       mainWindow.hide();

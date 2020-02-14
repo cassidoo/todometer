@@ -31,7 +31,7 @@
       "buildResources": "assets"
     }
   },
-  "main": "build/electron.js",
+  "main": "public/electron.js",
   "scripts": {
     "start": "rescripts start",
     "build": "rescripts build",
