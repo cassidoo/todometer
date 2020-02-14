@@ -100,7 +100,6 @@ function menuSetup() {
         { role: "reload" },
         { role: "togglefullscreen" },
         { role: "minimize" },
-        { role: "hide" },
         { role: "close" }
       ]
     },
@@ -172,6 +171,8 @@ app.on("ready", () => {
     mainWindow.reload();
   });
 
+  // On Mac, this will hide the window
+  // On Windows, the app will close
   mainWindow.on("close", e => {
     if (willQuit) {
       mainWindow = null;
