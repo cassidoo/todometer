@@ -3,6 +3,7 @@ const {
   BrowserWindow,
   Menu,
   dialog,
+  powerMonitor,
   shell
 } = require("electron");
 
@@ -167,7 +168,7 @@ app.on("ready", () => {
   createWindow();
   menuSetup();
 
-  require("electron").powerMonitor.on("resume", () => {
+  powerMonitor.on("resume", () => {
     mainWindow.reload();
   });
 
