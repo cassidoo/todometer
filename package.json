@@ -20,17 +20,18 @@
       "icon": "assets/win/icon.png.ico"
     },
     "linux": {
-      "icon": "assets/mac/icon.png.icns"
+      "target": "AppImage",
+      "icon": "assets/png/64x64.png"
     },
     "files": [
-      "build/**/*",
-      "node_modules/**/*"
+      "node_modules/**/*",
+      "package.json"
     ],
     "directories": {
       "buildResources": "assets"
     }
   },
-  "main": "public/electron.js",
+  "main": "build/electron.js",
   "scripts": {
     "start": "rescripts start",
     "build": "rescripts build",
@@ -38,7 +39,7 @@
     "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
     "pre-electron-pack": "yarn build",
-    "electron-pack": "electron-builder build --windows --mac --linux"
+    "electron-pack": "electron-builder build --dir --windows --mac --linux"
   },
   "eslintConfig": {
     "extends": "react-app"
