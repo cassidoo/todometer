@@ -19,6 +19,9 @@
     "win": {
       "icon": "assets/win/icon.png.ico"
     },
+    "linux": {
+      "icon": "assets/mac/icon.png.icns"
+    },
     "files": [
       "build/**/*",
       "node_modules/**/*"
