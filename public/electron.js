@@ -2,7 +2,9 @@ const {
   app,
   BrowserWindow,
   Menu,
+  Tray,
   dialog,
+  nativeImage,
   powerMonitor,
   shell
 } = require("electron");
@@ -17,6 +19,7 @@ let mainWindow = {
   }
 }; // temp object while app loads
 let willQuit = false;
+let tray = null;
 
 function createWindow() {
   console.log(__dirname);
@@ -37,6 +40,30 @@ function createWindow() {
       ? "http://localhost:3000"
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
+}
+
+function traySetup() {
+  tray = new Tray(nativeImage.createEmpty());
+  tray.setImage(
+    nativeImage.createFromPath(path.join(__dirname, "assets/png/32x32.png"))
+  );
+
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: "Open dat todometer",
+      click: () => {
+        mainWindow.show();
+      }
+    },
+    {
+      label: "Quit todometer",
+      click: () => {
+        app.quit();
+      }
+    }
+  ]);
+  tray.setToolTip("todometer");
+  tray.setContextMenu(contextMenu);
 }
 
 function menuSetup() {
@@ -166,6 +193,7 @@ function menuSetup() {
 app.on("ready", () => {
   createWindow();
   menuSetup();
+  traySetup();
 
   powerMonitor.on("resume", () => {
     mainWindow.reload();
