@@ -121,7 +121,6 @@ function menuSetup() {
             {
               label: "Never",
               type: "radio",
-              checked: true,
               click: e => {
                 if (e.checked) {
                   mainWindow.resetNotification = "never";
@@ -149,6 +148,7 @@ function menuSetup() {
             {
               label: "Every hour",
               type: "radio",
+              checked: true,
               click: e => {
                 if (e.checked) {
                   mainWindow.resetNotification = "hour";
