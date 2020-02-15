@@ -2,9 +2,7 @@ const {
   app,
   BrowserWindow,
   Menu,
-  Tray,
   dialog,
-  nativeImage,
   powerMonitor,
   shell
 } = require("electron");
@@ -19,7 +17,6 @@ let mainWindow = {
   }
 }; // temp object while app loads
 let willQuit = false;
-let tray = null;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -39,43 +36,6 @@ function createWindow() {
       ? "http://localhost:3000"
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
-}
-
-function traySetup() {
-  tray = new Tray("assets/trayicon.png");
-
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: "About todometer",
-      click: () => {
-        dialog.showMessageBox(mainWindow, {
-          type: "info",
-          title: "About",
-          message: "todometer is built by @cassidoo",
-          detail:
-            "You can find her on GitHub and Twitter as @cassidoo, or on her website cassidoo.co.",
-          icon: path.join(__dirname, "assets/png/64x64.png")
-        });
-      }
-    },
-    {
-      type: "separator"
-    },
-    {
-      label: "Open todometer",
-      click: () => {
-        mainWindow.show();
-      }
-    },
-    {
-      label: "Quit todometer",
-      click: () => {
-        app.quit();
-      }
-    }
-  ]);
-  tray.setToolTip("todometer");
-  tray.setContextMenu(contextMenu);
 }
 
 function menuSetup() {
@@ -205,7 +165,6 @@ function menuSetup() {
 app.on("ready", () => {
   createWindow();
   menuSetup();
-  traySetup();
 
   powerMonitor.on("resume", () => {
     mainWindow.reload();

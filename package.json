@@ -21,7 +21,7 @@
     },
     "linux": {
       "target": "AppImage",
-      "icon": "assets/png/64x64.png"
+      "icon": "assets/png/256x256.png"
     },
     "files": [
       "node_modules/**/*",
