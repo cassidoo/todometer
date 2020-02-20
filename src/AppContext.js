@@ -27,8 +27,11 @@ const appStateReducer = (state, action) => {
 
   let currentDate = {
     day: format(nd, "dd"),
+    dayDisplay: format(nd, "d"),
     month: format(nd, "MM"),
-    year: format(nd, "y")
+    monthDisplay: format(nd, "MMM"),
+    year: format(nd, "y"),
+    weekday: format(nd, "EEEE")
   };
 
   switch (action.type) {
@@ -82,12 +85,17 @@ export function AppStateProvider({ children }) {
   let initialState = loadState();
 
   if (initialState === undefined) {
+    let nd = new Date();
+
     initialState = {
       items: [],
       date: {
-        day: format(new Date(), "dd"),
-        month: format(new Date(), "MM"),
-        year: format(new Date(), "y")
+        day: format(nd, "dd"),
+        dayDisplay: format(nd, "d"),
+        month: format(nd, "MM"),
+        monthDisplay: format(nd, "MMM"),
+        year: format(nd, "y"),
+        weekday: format(nd, "EEEE")
       }
     };
   }
