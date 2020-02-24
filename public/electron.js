@@ -6,10 +6,18 @@ const {
   powerMonitor,
   shell
 } = require("electron");
+const Store = require("electron-store");
+const isDev = require("electron-is-dev");
 
 const path = require("path");
 const { version } = require("../package.json");
-const isDev = require("electron-is-dev");
+
+const store = new Store();
+
+global.notificationSettings = {
+  resetNotification: store.get("reset") || true,
+  reminderNotification: store.get("reminder") || "hour"
+};
 
 let mainWindow = {
   show: () => {
@@ -65,13 +73,13 @@ function menuSetup() {
         {
           type: "separator"
         },
-        {
-          /* For debugging */
-          label: "Dev tools",
-          click: () => {
-            mainWindow.webContents.openDevTools();
-          }
-        },
+        // {
+        //   /* For debugging */
+        //   label: "Dev tools",
+        //   click: () => {
+        //     mainWindow.webContents.openDevTools();
+        //   }
+        // },
         {
           label: "Quit",
           accelerator: "CommandOrControl+Q",
@@ -96,6 +104,17 @@ function menuSetup() {
     {
       label: "View",
       submenu: [
+        // {
+        //   label: "Light mode",
+        //   type: "checkbox",
+        //   checked: false,
+        //   click: e => {
+        //     mainWindow.isLightMode = e.checked;
+        //   }
+        // },
+        {
+          type: "separator"
+        },
         { role: "reload" },
         { role: "togglefullscreen" },
         { role: "minimize" },
@@ -108,9 +127,10 @@ function menuSetup() {
         {
           label: "Enable reset notification",
           type: "checkbox",
-          checked: true,
+          checked: store.get("reset"),
           click: e => {
-            mainWindow.showResetNotification = e.checked;
+            mainWindow.resetNotification = e.checked;
+            store.set("reset", e.checked);
           }
         },
         {
@@ -119,37 +139,44 @@ function menuSetup() {
             {
               label: "Never",
               type: "radio",
+              checked: store.get("reminder") === "never",
               click: e => {
                 if (e.checked) {
-                  mainWindow.resetNotification = "never";
+                  mainWindow.reminderNotification = "never";
+                  store.set("reminder", "never");
                 }
               }
             },
             {
               label: "Every 15 minutes",
               type: "radio",
+              checked: store.get("reminder") === "quarterhour",
               click: e => {
                 if (e.checked) {
-                  mainWindow.resetNotification = "quarterhour";
+                  mainWindow.reminderNotification = "quarterhour";
+                  store.set("reminder", "quarterhour");
                 }
               }
             },
             {
               label: "Every 30 minutes",
               type: "radio",
+              checked: store.get("reminder") === "halfhour",
               click: e => {
                 if (e.checked) {
-                  mainWindow.resetNotification = "halfhour";
+                  mainWindow.reminderNotification = "halfhour";
+                  store.set("reminder", "halfhour");
                 }
               }
             },
             {
               label: "Every hour",
               type: "radio",
-              checked: true,
+              checked: store.get("reminder") === "hour",
               click: e => {
                 if (e.checked) {
-                  mainWindow.resetNotification = "hour";
+                  mainWindow.reminderNotification = "hour";
+                  store.set("reminder", "hour");
                 }
               }
             }

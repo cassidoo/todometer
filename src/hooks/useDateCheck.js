@@ -14,10 +14,9 @@ export default function useDateCheck() {
       let currentDate = parseISO(
         `${format(nd, "y")}-${format(nd, "MM")}-${format(nd, "dd")}`
       );
-      console.log(remote.getCurrentWindow());
 
       if (isBefore(storedDate, currentDate)) {
-        if (remote.getCurrentWindow().showResetNotification) {
+        if (remote.getGlobal("notificationSettings").resetNotification) {
           new Notification("todometer reset time!", {
             body: "It's a new day! Your todos are being reset."
           });

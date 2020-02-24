@@ -5,7 +5,7 @@ import { useItems } from "../AppContext";
 function getTimeCondition(nd) {
   let condition = false;
 
-  switch (remote.getCurrentWindow().resetNotification) {
+  switch (remote.getGlobal("notificationSettings").reminderNotification) {
     case "hour":
       condition = nd.getMinutes() === 0 && nd.getSeconds() === 0;
       break;

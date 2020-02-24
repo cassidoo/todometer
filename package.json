@@ -59,7 +59,8 @@
   "dependencies": {
     "@reach/accordion": "^0.8.0",
     "date-fns": "^2.9.0",
-    "electron-is-dev": "^1.1.0"
+    "electron-is-dev": "^1.1.0",
+    "electron-store": "^5.1.0"
   },
   "devDependencies": {
     "@rescripts/cli": "^0.0.13",
@@ -73,7 +74,7 @@
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "3.3.0",
+    "react-scripts": "3.4.0",
     "wait-on": "^4.0.0"
   }
 }
