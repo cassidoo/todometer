@@ -4,7 +4,8 @@ const {
   Menu,
   dialog,
   powerMonitor,
-  shell
+  shell,
+  Notification
 } = require("electron");
 const Store = require("electron-store");
 const isDev = require("electron-is-dev");
@@ -181,6 +182,16 @@ function menuSetup() {
               }
             }
           ]
+        },
+        {
+          label: "Show example notification",
+          click: e => {
+            let exNotification = new Notification({
+              title: "todometer reminder!",
+              body: "Here's an example todometer notification!"
+            });
+            exNotification.show();
+          }
         }
       ]
     }

@@ -37,8 +37,7 @@ export default function useReminderNotification() {
           paused.length
         } paused for later)`;
 
-        // eslint-disable-next-line
-        let reminderNotification = new Notification("todometer reminder!", {
+        new Notification("todometer reminder!", {
           body: text
         });
       }
