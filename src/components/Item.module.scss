@@ -16,11 +16,6 @@
   @media (max-width: 600px) {
     margin: 20px auto;
   }
-  &.pausedItem {
-    .itemName {
-      width: calc(100% - 80px);
-    }
-  }
   .itemName {
     width: calc(100% - 110px);
     overflow: auto;
@@ -42,51 +37,67 @@
       border-radius: 3px;
     }
   }
-  .buttons button {
-    position: relative;
-    margin: 0 0 0 10px;
-    height: 24px;
-    border: none;
-    &.delete {
-      width: 24px;
-      background: no-repeat url("../img/x.svg");
-      &:after {
-        background: $red;
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100px;
+
+    &.completedButtons {
+      justify-content: flex-end;
+    }
+
+    button {
+      position: relative;
+      height: 24px;
+      border: none;
+      &.delete {
+        width: 24px;
+        background: no-repeat url("../img/x.svg");
+        &:after {
+          background: $red;
+        }
       }
-    }
-    &.pause {
-      width: 24px;
-      background: no-repeat url("../img/pause.svg");
-      &:after {
-        background: $yellow;
+      &.pause {
+        width: 24px;
+        background: no-repeat url("../img/pause.svg");
+        &:after {
+          background: $yellow;
+        }
       }
-    }
-    &.complete {
-      width: 30px;
-      background: no-repeat url("../img/check.svg");
-      &:after {
-        background: $green;
+      &.resume {
+        width: 24px;
+        background: no-repeat url("../img/resume.svg");
+        &:after {
+          background: $yellow;
+        }
       }
-    }
-    &:after {
-      display: block;
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 100%;
-      width: 0;
-      height: 0;
-    }
-    &:focus {
-      outline: 1px solid $item-color;
+      &.complete {
+        width: 30px;
+        background: no-repeat url("../img/check.svg");
+        &:after {
+          background: $green;
+        }
+      }
       &:after {
+        display: block;
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 100%;
+        width: 0;
+        height: 0;
+      }
+      &:focus {
+        outline: 1px solid $item-color;
+        &:after {
+          animation: click 0.5s;
+        }
+      }
+      &:hover:after {
         animation: click 0.5s;
       }
-    }
-    &:hover:after {
-      animation: click 0.5s;
     }
   }
 }

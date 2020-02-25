@@ -2,7 +2,7 @@ import React from "react";
 import { useAppReducer } from "../AppContext";
 import styles from "./Item.module.scss";
 
-// Individial todo item
+// Individual todo item
 function Item({ item }) {
   const dispatch = useAppReducer();
   let text = item.text;
@@ -18,21 +18,32 @@ function Item({ item }) {
     dispatch({ type: "UPDATE_ITEM", item: pausedItem });
   }
 
+  function resumeItem() {
+    const pendingItem = { ...item, status: "pending" };
+    dispatch({ type: "UPDATE_ITEM", item: pendingItem });
+  }
+
   function completeItem() {
     const completedItem = { ...item, status: "completed" };
     dispatch({ type: "UPDATE_ITEM", item: completedItem });
   }
 
   return (
-    <div
-      className={`${styles.item} ${paused ? styles.pausedItem : ""}`}
-      tabIndex="0"
-    >
+    <div className={styles.item} tabIndex="0">
       <div className={styles.itemName}>{text}</div>
-      <div className={styles.buttons}>
+      <div
+        className={`${styles.buttons} ${completed ? styles.completedButtons : ""}`}
+      >
         <button className={styles.delete} onClick={deleteItem} tabIndex="0"></button>
         {!paused && !completed && (
           <button className={styles.pause} onClick={pauseItem} tabIndex="0"></button>
+        )}
+        {paused && !completed && (
+          <button
+            className={styles.resume}
+            onClick={resumeItem}
+            tabIndex="0"
+          ></button>
         )}
         {!completed && (
           <button
