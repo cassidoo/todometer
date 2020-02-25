@@ -129,7 +129,7 @@ function menuSetup() {
           type: "checkbox",
           checked: store.get("reset"),
           click: e => {
-            mainWindow.resetNotification = e.checked;
+            global.notificationSettings.resetNotification = e.checked;
             store.set("reset", e.checked);
           }
         },
@@ -142,7 +142,7 @@ function menuSetup() {
               checked: store.get("reminder") === "never",
               click: e => {
                 if (e.checked) {
-                  mainWindow.reminderNotification = "never";
+                  global.notificationSettings.reminderNotification = "never";
                   store.set("reminder", "never");
                 }
               }
@@ -153,7 +153,7 @@ function menuSetup() {
               checked: store.get("reminder") === "quarterhour",
               click: e => {
                 if (e.checked) {
-                  mainWindow.reminderNotification = "quarterhour";
+                  global.notificationSettings.reminderNotification = "quarterhour";
                   store.set("reminder", "quarterhour");
                 }
               }
@@ -164,7 +164,7 @@ function menuSetup() {
               checked: store.get("reminder") === "halfhour",
               click: e => {
                 if (e.checked) {
-                  mainWindow.reminderNotification = "halfhour";
+                  global.notificationSettings.reminderNotification = "halfhour";
                   store.set("reminder", "halfhour");
                 }
               }
