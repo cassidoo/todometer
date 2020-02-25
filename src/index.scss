@@ -1,0 +1,37 @@
+@import "./styles/variables";
+
+body {
+  margin: 0;
+  padding: 0;
+  background: $bg;
+  color: $font-color;
+  font-family: "Helvetica", "Arial", sans-serif;
+  font-weight: lighter;
+  overflow-y: scroll;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  .App {
+    position: relative;
+    margin: 40px auto;
+    width: 550px;
+
+    @media (max-width: 600px) {
+      width: 95%;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  background-color: $bg;
+  width: 1em;
+  @media (max-width: 600px) {
+    width: 0.5em;
+  }
+}
+
+::-webkit-scrollbar-thumb:window-inactive,
+::-webkit-scrollbar-thumb {
+  background: $input-color;
+  border: 3px solid $bg;
+  border-radius: 3px;
+}

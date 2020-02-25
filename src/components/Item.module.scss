@@ -1,0 +1,92 @@
+@import "../styles/variables";
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 10px 0;
+  padding: 20px;
+  width: 100%;
+  min-height: 70px;
+  background: $item-color;
+  border: none;
+  border-radius: 3px;
+  box-sizing: border-box;
+  font-size: $item-font-size;
+  @media (max-width: 600px) {
+    margin: 20px auto;
+  }
+  &.pausedItem {
+    .itemName {
+      width: calc(100% - 80px);
+    }
+  }
+  .itemName {
+    width: calc(100% - 110px);
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      background-color: $item-color;
+      height: 0.75em;
+      @media (max-width: 600px) {
+        height: 0.25em;
+      }
+    }
+
+    &::-webkit-scrollbar-thumb:window-inactive,
+    &::-webkit-scrollbar-thumb {
+      background: $bg;
+      border: 3px solid $item-color;
+      border-left: none;
+      border-right: none;
+      border-radius: 3px;
+    }
+  }
+  .buttons button {
+    position: relative;
+    margin: 0 0 0 10px;
+    height: 24px;
+    border: none;
+    &.delete {
+      width: 24px;
+      background: no-repeat url("../img/x.svg");
+      &:after {
+        background: $red;
+      }
+    }
+    &.pause {
+      width: 24px;
+      background: no-repeat url("../img/pause.svg");
+      &:after {
+        background: $yellow;
+      }
+    }
+    &.complete {
+      width: 30px;
+      background: no-repeat url("../img/check.svg");
+      &:after {
+        background: $green;
+      }
+    }
+    &:after {
+      display: block;
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 100%;
+      width: 0;
+      height: 0;
+    }
+    &:focus {
+      outline: 1px solid $item-color;
+      &:after {
+        animation: click 0.5s;
+      }
+    }
+    &:hover:after {
+      animation: click 0.5s;
+    }
+  }
+}

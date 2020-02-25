@@ -1,0 +1,45 @@
+@import "../styles/variables";
+
+.form {
+  position: relative;
+  input {
+    margin: 0 0 10px 0;
+    padding: 20px 70px 20px 20px;
+    width: 100%;
+    height: 70px;
+    background: $input-color;
+    border: none;
+    border-radius: 3px;
+    box-sizing: border-box;
+    color: $font-color;
+    font-size: $item-font-size;
+    outline: none;
+  }
+  button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    background: no-repeat url("../img/plus.svg");
+    border: none;
+    &:after {
+      display: block;
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      background: #fff;
+      transform: translate(-50%, -50%);
+      border-radius: 100%;
+      width: 0;
+      height: 0;
+    }
+    &:focus {
+      outline: none;
+    }
+    &:hover:after {
+      animation: click 0.5s;
+    }
+  }
+}
