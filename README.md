@@ -1,26 +1,39 @@
 # [todometer](http://cassidoo.github.io/todometer)
 
-A simple meter-based to-do list built with Electron and React.
+A simple, meter-based to-do list built with Electron and React.
 
 ![todometer](assets/screenshot.png)
 
-### Development
+## Development
 
 - Clone the repo:
 
-```
-git clone https://github.com/cassidoo/todometer.git
+```bash
+$ git clone https://github.com/cassidoo/todometer.git
 ```
 
 - Go to the project directory and install dependencies:
 
-```
-cd todometer && yarn install
+```bash
+$ cd todometer && yarn install
 ```
 
-- Run `yarn run electron-dev` to show the Electron application window with your current build.
+To show the Electron application window with your current build:
 
-### Contributing
+```bash
+$ yarn run electron-dev
+```
+
+To build a production-version:
+
+```bash
+$ yarn install
+$ yarn postinstall
+$ yarn pre-electron-pack
+$ yarn electron-pack
+```
+
+## Contributing
 
 So you want to contribute? Yay! Great! Fun!
 I love seeing new PRs for todometer. That being said, not every pull request will be merged. The general guidelines I'll follow are:
