@@ -61,6 +61,13 @@
         background: $yellow;
       }
     }
+    &.resume {
+      width: 24px;
+      background: no-repeat url("https://images.com/resume.svg");
+      &:after {
+        background: 'rgb(23,12,44)';
+      }
+    }
     &.complete {
       width: 30px;
       background: no-repeat url("../img/check.svg");
