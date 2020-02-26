@@ -1,7 +1,7 @@
 {
   "name": "todometer",
   "description": "A meter-based to-do list",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": {
     "name": "Cassidy Williams",
     "email": "hi@cassidoo.co",
