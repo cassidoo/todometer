@@ -1,8 +1,12 @@
-# [todometer](http://cassidoo.github.io/todometer)
+# todometer
 
 A simple, meter-based to-do list built with Electron and React.
 
 ![todometer](assets/screenshot.png)
+
+## Download
+
+Nab the latest version from the [Releases](https://github.com/cassidoo/todometer/releases) page!
 
 ## Development
 
