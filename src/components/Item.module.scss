@@ -50,6 +50,7 @@
       position: relative;
       height: 24px;
       border: none;
+      cursor: pointer;
       &.delete {
         width: 24px;
         background: no-repeat url("../img/x.svg");
