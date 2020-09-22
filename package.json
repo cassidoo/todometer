@@ -60,7 +60,8 @@
     "@reach/accordion": "^0.8.0",
     "date-fns": "^2.9.0",
     "electron-is-dev": "^1.1.0",
-    "electron-store": "^5.1.0"
+    "electron-store": "^5.1.0",
+    "react-bootstrap": "^1.3.0"
   },
   "devDependencies": {
     "@rescripts/cli": "^0.0.13",

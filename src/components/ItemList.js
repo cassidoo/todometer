@@ -18,7 +18,7 @@ import alldone from "../img/alldone.svg";
 // List of todo items
 function ItemList() {
   const dispatch = useAppReducer();
-  const { pending, paused, completed } = useItems();
+  const { pending, paused, completed, routine } = useItems();
 
   return (
     <div className="item-list">
@@ -31,10 +31,31 @@ function ItemList() {
           })}
         </>
       ) : (
-        <div className={styles.alldone}>
-          <img src={alldone} alt="Nothing to do!" />
-        </div>
+        <div></div>
       )}
+
+      {routine.length > 0 ? (
+        <>
+           <div className={styles.alldone}>
+          <img src={alldone} alt="Routine" />
+        </div>
+          {routine.map(item => {
+            return <Item item={item} key={item.key} />;
+          })}
+        </>
+      ) : (
+        <div></div>
+      )}
+
+      {(routine.length == 0) && (pending.length == 0) ? (
+           <div className={styles.alldone}>
+           <img src={alldone} alt="Routine" />
+           </div> 
+      ) : (
+        <><div></div></>
+
+      )}
+
       <Accordion collapsible multiple>
         {paused.length > 0 && (
           <AccordionItem>

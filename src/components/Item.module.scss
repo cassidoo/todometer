@@ -64,6 +64,14 @@
           background: $yellow;
         }
       }
+      &.routine {
+        width: 30px;
+        fill: #00a4d6;
+        background: no-repeat url("../img/replay.svg");
+        &:after {
+          background: #00a4d6;
+        }
+      }
       &.resume {
         width: 24px;
         background: no-repeat url("../img/resume.svg");

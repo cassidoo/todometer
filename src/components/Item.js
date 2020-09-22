@@ -8,9 +8,15 @@ function Item({ item }) {
   let text = item.text;
   let paused = item.status === "paused";
   let completed = item.status === "completed";
+  let routine = item.status == "routine";
 
   function deleteItem() {
     dispatch({ type: "DELETE_ITEM", item });
+  }
+
+  function routineItem(){
+    const routinedItem = { ...item, status: "routine" };
+    dispatch({ type: "UPDATE_ITEM", item: routinedItem });
   }
 
   function pauseItem() {
@@ -25,6 +31,14 @@ function Item({ item }) {
 
   function completeItem() {
     const completedItem = { ...item, status: "completed" };
+    if (item.status == "routine") {
+      const newItem = {
+        text: item.text,
+        key: Date.now(),
+        status: "routine"
+      };
+      dispatch({ type: "ADD_ITEM", item: newItem });
+    }
     dispatch({ type: "UPDATE_ITEM", item: completedItem });
   }
 
@@ -37,7 +51,11 @@ function Item({ item }) {
         <button className={styles.delete} onClick={deleteItem} tabIndex="0"></button>
         {!paused && !completed && (
           <button className={styles.pause} onClick={pauseItem} tabIndex="0"></button>
-        )}
+          )}
+        { !paused && !routine && !completed && (
+          <button className={styles.routine} onClick={routineItem} tabIndex="0"></button>
+          )
+        }
         {paused && !completed && (
           <button
             className={styles.resume}

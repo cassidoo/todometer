@@ -18,8 +18,9 @@ export function useItems() {
   const pending = items.filter(item => item.status === "pending");
   const paused = items.filter(item => item.status === "paused");
   const completed = items.filter(item => item.status === "completed");
+  const routine = items.filter(item => item.status === "routine");
 
-  return { pending, paused, completed };
+  return { pending, paused, completed, routine };
 }
 
 const appStateReducer = (state, action) => {
