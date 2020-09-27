@@ -23,6 +23,7 @@
     height: 30px;
     background: no-repeat url("../img/plus.svg");
     border: none;
+    cursor: pointer;
     &:after {
       display: block;
       content: "";
