@@ -64,10 +64,10 @@
           background: $yellow;
         }
       }
-      &.routine {
+      &.logging {
         width: 30px;
         fill: #00a4d6;
-        background: no-repeat url("../img/replay.svg");
+        background: no-repeat url("../img/logging.svg");
         &:after {
           background: #00a4d6;
         }

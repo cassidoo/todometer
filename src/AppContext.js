@@ -19,8 +19,10 @@ export function useItems() {
   const paused = items.filter(item => item.status === "paused");
   const completed = items.filter(item => item.status === "completed");
   const routine = items.filter(item => item.status === "routine");
+  const logging = items.filter(item => item.status === "logging");
 
-  return { pending, paused, completed, routine };
+
+  return { pending, paused, completed, routine, logging };
 }
 
 const appStateReducer = (state, action) => {
@@ -63,20 +65,30 @@ const appStateReducer = (state, action) => {
       return newState;
     }
     case "RESET_ALL": {
-      const newItems = state.items
-        .filter(item => item.status !== "completed")
+      let updateItems = state.items
         .map(i => {
-          if (i.status === "paused") {
+          if (i.status === "completed") {
             return Object.assign({}, i, {
-              status: "pending"
+              status: "routine"
             });
           }
           return i;
         });
-      const newState = { ...state, items: newItems, date: currentDate };
+
+      state.items
+      .filter(item => item.status === "completed")
+      .map(i => {
+        const newItem = {
+          text: i.text,
+          key: Date.now(),
+          status: "logging"
+        };
+        updateItems = updateItems.concat(newItem);
+      });
+      const newState = { ...state, items: updateItems, date: currentDate };
       saveState(newState);
       return newState;
-    }
+      }
     default:
       return state;
   }

@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { remote } from "electron";
 import { useItems } from "../AppContext";
+import { useAppState, useAppReducer } from "../AppContext";
+
 
 function getTimeCondition(nd) {
   let condition = false;
@@ -23,7 +25,8 @@ function getTimeCondition(nd) {
 }
 
 export default function useReminderNotification() {
-  const { pending, paused } = useItems();
+  const { pending, paused, completed} = useItems();
+  const dispatch = useAppReducer();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -31,12 +34,13 @@ export default function useReminderNotification() {
 
       // sends a notification if reminder notifications are enabled,
       // and todos are not completed
-      if (getTimeCondition(nd) && (pending.length > 0 || paused.length > 0)) {
+      if (getTimeCondition(nd) && (completed.length > 0)) {
         let text = `Don't forget, you have ${pending.length +
           paused.length} tasks to do today (${pending.length} incomplete, ${
           paused.length
         } paused for later)`;
-
+        dispatch({ type: "RESET_ALL" });
+        window.location.reload();
         new Notification("todometer reminder!", {
           body: text
         });

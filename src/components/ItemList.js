@@ -18,7 +18,7 @@ import alldone from "../img/alldone.svg";
 // List of todo items
 function ItemList() {
   const dispatch = useAppReducer();
-  const { pending, paused, completed, routine } = useItems();
+  const { pending, completed, routine, logging } = useItems();
 
   return (
     <div className="item-list">
@@ -34,49 +34,23 @@ function ItemList() {
         <div></div>
       )}
 
-      {routine.length > 0 ? (
-        <>
-           <div className={styles.alldone}>
-          <img src={alldone} alt="Routine" />
-        </div>
-          {routine.map(item => {
-            return <Item item={item} key={item.key} />;
-          })}
-        </>
-      ) : (
-        <div></div>
-      )}
-
-      {(routine.length == 0) && (pending.length == 0) ? (
-           <div className={styles.alldone}>
-           <img src={alldone} alt="Routine" />
-           </div> 
-      ) : (
-        <><div></div></>
-
-      )}
-
       <Accordion collapsible multiple>
-        {paused.length > 0 && (
+        {(routine.length > 0 || completed.length > 0) && (
           <AccordionItem>
             <AccordionButton className={styles.toggle}>
-              <img src={arrow} alt="Do Later Toggle" />
-              <span>Do Later</span>
+              <img src={arrow} alt="Routine" />
+              <span>Routine</span>
             </AccordionButton>
             <AccordionPanel className={styles.panel}>
-              {paused &&
-                paused.map(item => {
+              {routine.length > 0 ? (
+                routine.map(item => {
                   return <Item item={item} key={item.key} />;
-                })}
-            </AccordionPanel>
-          </AccordionItem>
-        )}
-        {completed.length > 0 && (
-          <AccordionItem>
-            <AccordionButton className={styles.toggle}>
-              <img src={arrow} alt="Completed Toggle" /> <span>Completed</span>
-            </AccordionButton>
-            <AccordionPanel className={styles.panel}>
+                })):(
+                  <div className={styles.alldone}>
+                  <img src={alldone} alt="Routine" />
+                  </div> 
+                )}
+                <Progress />
               {completed &&
                 completed.map(item => {
                   return <Item item={item} key={item.key} />;
@@ -84,9 +58,24 @@ function ItemList() {
             </AccordionPanel>
           </AccordionItem>
         )}
-      </Accordion>
 
-      {(completed.length > 0 || paused.length > 0) && (
+        {logging.length > 0 && (
+          <AccordionItem>
+            <AccordionButton className={styles.toggle}>
+              <img src={arrow} alt="Logging Toggle" /> <span>Logging</span>
+            </AccordionButton>
+            <AccordionPanel className={styles.panel}>
+              {logging &&
+                logging.map(item => {
+                  return <Item item={item} key={item.key} />;
+                })}
+            </AccordionPanel>
+          </AccordionItem>
+        )}
+      </Accordion>
+      
+
+      {(completed.length > 0 || logging.length > 0) && (
         <div className={styles.reset}>
           <button
             onClick={() => {

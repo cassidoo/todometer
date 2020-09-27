@@ -5,10 +5,13 @@ import styles from "./Progress.module.scss";
 
 // Progress bar for completed/paused todo items
 function Progress() {
-  const totalAmount = useAppState().items.length;
-  const { paused, completed } = useItems();
-  const completedAmount = completed.length;
+  const { routine, completed, pending, paused } = useItems();
   const pausedAmount = paused.length;
+  const pendingAmount = pending.length;
+  const completedAmount = completed.length;
+  const routineAmount = routine.length;
+  const totalAmount = pendingAmount + completedAmount + routineAmount;
+
 
   let completedPercentage = completedAmount / totalAmount;
   let pausedPercentage = pausedAmount / totalAmount + completedPercentage;
