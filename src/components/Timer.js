@@ -17,7 +17,9 @@ function Timer() {
 
   let completedPercentage = completedAmount / totalAmount;
   let timePercent = 1;
-  if (timePercentage.length === 0) {
+  if (timePercentage.length > 0) {
+    timePercent = timePercentage[0].timePercentage
+  } else {
     const newItem = {
       timePercentage: 1,
       key: 0,
@@ -25,9 +27,7 @@ function Timer() {
     };
     dispatch({ type: "ADD_ITEM", item: newItem });
     timePercent = 1;
-
-  } else {
-    timePercent = timePercentage[0].timePercentage};
+  };
 
   return (
     <div className={styles.progress}>
