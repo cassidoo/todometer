@@ -1,8 +1,32 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { loadState, saveState } from "./local-storage";
 import { format } from "date-fns";
+import { remote } from "electron";
 
 export const AppContext = createContext();
+
+
+export function getTimepercentage(nd) {
+  let percentage = 1;
+  let left = 0
+
+  switch (remote.getGlobal("notificationSettings").reminderNotification) {
+    case "hour":
+      percentage = 1 - ( nd.getMinutes() / 60 )
+      break;
+    case "halfhour":
+      left = nd.getMinutes() % 30
+      percentage = 1 - (left / 30)
+      break;
+    case "quarterhour":
+      left = nd.getMinutes() % 15
+      percentage = 1 - (left / 15)
+      break;
+    default:
+      break;
+  }
+  return percentage;
+}
 
 export function useAppState() {
   return useContext(AppContext)[0];
@@ -20,9 +44,9 @@ export function useItems() {
   const completed = items.filter(item => item.status === "completed");
   const routine = items.filter(item => item.status === "routine");
   const logging = items.filter(item => item.status === "logging");
+  const timePercentage = items.filter(item => item.status === "timer");
 
-
-  return { pending, paused, completed, routine, logging };
+  return { pending, paused, completed, routine, logging, timePercentage };
 }
 
 const appStateReducer = (state, action) => {
@@ -89,6 +113,22 @@ const appStateReducer = (state, action) => {
       saveState(newState);
       return newState;
       }
+
+    case "TIME_CHECK": {
+      nd = new Date()
+      let newTime = getTimepercentage(nd);
+      const newItems = state.items.map(i => {
+        if (i.status === "timer") {
+          return Object.assign({}, i, {
+            timePercentage: newTime
+          });
+        }
+        return i;
+      });
+      const newState = { ...state, items: newItems};
+      saveState(newState);
+      return newState
+    }
     default:
       return state;
   }
@@ -99,9 +139,14 @@ export function AppStateProvider({ children }) {
 
   if (initialState === undefined) {
     let nd = new Date();
+    let timer = {
+      key: Date.now(),
+      status: "timer",
+      timePercentage: 1
+    };
 
     initialState = {
-      items: [],
+      items: [timer],
       date: {
         day: format(nd, "dd"),
         dayDisplay: format(nd, "d"),

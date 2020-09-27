@@ -31,7 +31,7 @@ export default function useReminderNotification() {
   useEffect(() => {
     const interval = setInterval(() => {
       let nd = new Date();
-
+      dispatch({ type: "TIME_CHECK" });
       // sends a notification if reminder notifications are enabled,
       // and todos are not completed
       if (getTimeCondition(nd) && (completed.length > 0)) {

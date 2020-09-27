@@ -9,6 +9,7 @@ import "@reach/accordion/styles.css";
 
 import { useAppReducer, useItems } from "../AppContext";
 import Progress from "./Progress";
+import Timer from "./Timer";
 import AddItemForm from "./AddItemForm";
 import Item from "./Item";
 import styles from "./ItemList.module.scss";
@@ -50,7 +51,7 @@ function ItemList() {
                   <img src={alldone} alt="Routine" />
                   </div> 
                 )}
-                <Progress />
+                <Timer />
               {completed &&
                 completed.map(item => {
                   return <Item item={item} key={item.key} />;
