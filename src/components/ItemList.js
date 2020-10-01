@@ -67,7 +67,7 @@ function ItemList() {
             </AccordionButton>
             <AccordionPanel className={styles.panel}>
               {logging &&
-                logging.map(item => {
+                logging.reverse().map(item => {
                   return <Item item={item} key={item.key} />;
                 })}
             </AccordionPanel>

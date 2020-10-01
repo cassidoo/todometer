@@ -40,7 +40,6 @@ export default function useReminderNotification() {
           paused.length
         } paused for later)`;
         dispatch({ type: "RESET_ALL" });
-        window.location.reload();
         new Notification("todometer reminder!", {
           body: text
         });

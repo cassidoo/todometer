@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Electron Tutorial - Markdown Editor</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link href="css/simplemde.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div id="wrapper" class="toggled">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul id="recent-files" class="sidebar-nav">
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <h1 style="display: inline-block;" id='file-name'></h1>
+                <div id="create-file-view">
+                    <input id="file-name-box" style="width:80%;" type="text" placeholder="Enter file name">
+                    <button id="save-file-button">Save</button>
+                </div>
+                <span id="alert" style="display: none;" class="badge badge-success">
+                    saved</span><br>
+                <textarea class="text-box" id="text-area"></textarea>
+                <button id="save-file" class="btn btn-primary">Save File</button>
+                <button id="cancel-file-edit" class="btn btn-dark">Cancel</button>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Bootstrap core JavaScript -->
+    <script>window.$ = window.jQuery = require('./vendor/jquery/jquery.min.js');</script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="js/notify.min.js"></script>
+    <!-- Renderer Script -->
+    <script> require('./js/renderer.js');</script>
+
+</body>
+
+</html>

@@ -1,6 +1,17 @@
 import React from "react";
 import { useAppReducer } from "../AppContext";
 import styles from "./Item.module.scss";
+import Memo from "./Memo"
+import arrow from "../img/arrow.svg";
+
+
+import {
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel
+} from "@reach/accordion";
+
 
 // Individual todo item
 function Item({ item }) {
@@ -46,10 +57,51 @@ function Item({ item }) {
       dispatch({ type: "UPDATE_ITEM", item: loggingItem });
     }
   }
+  function createBrowserWindow() {
+    const remote = require('electron').remote;
+    const BrowserWindow = remote.BrowserWindow;
+    const path = require('path');
+    const url = require('url');
+
+
+    let current_win = BrowserWindow.getFocusedWindow();
+    const pos = current_win.getPosition();
+
+    const win = new BrowserWindow({
+      parent: current_win,
+      height: 300,
+      width: 800,
+      x: pos[0] + 100,
+      y: pos[1] + 100,
+    });
+    win.loadFile('memo.html');
+    win.openDevTools(); //opens inspect console
+    document.getElementById("max-btn").addEventListener("click", function (e) {
+          if (!win.isMaximized()) {
+            win.maximize();          
+          } else {
+            win.unmaximize();
+          }
+    });
+  }
 
   return (
     <div className={styles.item} tabIndex="0">
+      <Accordion collapsible multiple>
+            <AccordionItem>
+                <AccordionButton className={styles.toggle}>
+                  <img src={arrow} alt="Logging Toggle" />
+                </AccordionButton>
+                <AccordionPanel className={styles.panel}>
+                  {
+                    [item].map(i => {
+                      return <Memo item={i} key={i.key} />;
+                    })}
+                </AccordionPanel>
+              </AccordionItem>
+              </Accordion>
       <div className={styles.itemName}>{text}</div>
+      
       <div
         className={`${styles.buttons} ${completed ? styles.completedButtons : ""}`}
       >
@@ -70,14 +122,14 @@ function Item({ item }) {
             tabIndex="0"
           ></button>
         )}
-        {!logging && !completed && (
+        {!completed && (
           <button 
               className={styles.delete}
               onClick={deleteItem} 
-              tabIndex="0">
+              tabIndex="3"
+              >
           </button>
         )}
-        
         {completed && (
           <button 
               className={styles.logging}
@@ -85,7 +137,6 @@ function Item({ item }) {
               tabIndex="0">
           </button>
         )}
-        
       </div>
     </div>
   );

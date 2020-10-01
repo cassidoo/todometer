@@ -60,6 +60,7 @@
     "@reach/accordion": "^0.8.0",
     "date-fns": "^2.9.0",
     "electron-is-dev": "^1.1.0",
+    "electron-modal": "^1.0.0",
     "electron-store": "^5.1.0",
     "react-bootstrap": "^1.3.0"
   },
@@ -72,10 +73,13 @@
     "concurrently": "^5.0.2",
     "electron": "^7.1.10",
     "electron-builder": "^22.3.2",
+    "lowdb": "^1.0.0",
     "node-sass": "^4.13.1",
+    "notifyjs": "^3.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "3.4.0",
+    "react-scripts": "^3.4.3",
+    "simplemde": "^1.11.2",
     "wait-on": "^4.0.0"
   }
 }
