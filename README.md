@@ -1,5 +1,7 @@
 # todometer
 
+une modification
+
 A simple, meter-based to-do list built with Electron and React.
 
 ![todometer](assets/screenshot.png)
