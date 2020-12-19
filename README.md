@@ -1,6 +1,7 @@
 # todometer
 
-une modification
+modification
+une nouvelle modification
 
 A simple, meter-based to-do list built with Electron and React.
 
