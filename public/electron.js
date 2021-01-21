@@ -198,7 +198,8 @@ function menuSetup() {
       ]
     }
   ];
-  Menu.buildFromTemplate(menuTemplate);
+  const menu = Menu.buildFromTemplate(menuTemplate);
+  Menu.setApplicationMenu(menu)
 }
 
 app.on("ready", () => {
