@@ -37,7 +37,9 @@ function createWindow() {
     icon: path.join(__dirname, "assets/png/128x128.png"),
     webPreferences: {
       nodeIntegration: true
-    }
+    },
+    titleBarStyle: 'hidden',
+    frame: false
   });
 
   mainWindow.loadURL(

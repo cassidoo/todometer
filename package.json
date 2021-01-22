@@ -36,7 +36,7 @@
     "start": "rescripts start",
     "build": "rescripts build",
     "test": "rescripts test",
-    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-dev": "concurrently \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
     "pre-electron-pack": "yarn build",
     "electron-pack": "electron-builder build --dir --windows --mac --linux"
@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "@reach/accordion": "^0.8.0",
+    "custom-electron-titlebar": "^3.2.4",
     "date-fns": "^2.9.0",
     "electron-is-dev": "^1.1.0",
     "electron-store": "^5.1.0"
@@ -69,6 +70,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "concurrently": "^5.0.2",
+    "cross-env": "^7.0.0",
     "electron": "^7.1.10",
     "electron-builder": "^22.3.2",
     "node-sass": "^4.13.1",
