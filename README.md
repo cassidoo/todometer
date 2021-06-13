@@ -1,6 +1,6 @@
 # todometer
 
-A simple, meter-based to-do list built with Electron and React.
+A simple, meter-based to-do list list for the might y used
 
 ![todometer](assets/screenshot.png)
 
