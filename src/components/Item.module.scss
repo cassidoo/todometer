@@ -78,6 +78,14 @@
           background: $green;
         }
       }
+      &.undo {
+        width: 40px;
+        margin-left: 15px;
+        background: no-repeat url("../img/undo.svg");
+        &:after {
+          background: $yellow;
+        }
+      }
       &:after {
         display: block;
         content: "";
