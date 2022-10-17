@@ -34,11 +34,12 @@ function Item({ item }) {
       <div
         className={`${styles.buttons} ${completed ? styles.completedButtons : ""}`}
       >
+        {completed && <button className={styles.empty} tabIndex="0"></button>}
         <button className={styles.delete} onClick={deleteItem} tabIndex="0"></button>
         {!paused && !completed && (
           <button className={styles.pause} onClick={pauseItem} tabIndex="0"></button>
         )}
-        {paused && !completed && (
+        {(paused || completed) && (
           <button
             className={styles.resume}
             onClick={resumeItem}
