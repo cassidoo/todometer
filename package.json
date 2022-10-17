@@ -57,24 +57,23 @@
     ]
   },
   "dependencies": {
-    "@reach/accordion": "^0.8.0",
-    "date-fns": "^2.9.0",
-    "electron-is-dev": "^1.1.0",
-    "electron-store": "^5.1.0"
+    "@reach/accordion": "^0.18.0",
+    "date-fns": "^2.29.3",
+    "electron-is-dev": "^2.0.0",
+    "electron-store": "^8.1.0"
   },
   "devDependencies": {
     "@rescripts/cli": "^0.0.13",
     "@rescripts/rescript-env": "^0.0.11",
     "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "concurrently": "^5.0.2",
-    "electron": "^7.1.10",
-    "electron-builder": "^22.3.2",
-    "node-sass": "^4.13.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.4.0",
+    "@testing-library/react": "^13.4.0",
+    "concurrently": "^7.4.0",
+    "electron": "^21.1.1",
+    "electron-builder": "^23.6.0",
+    "node-sass": "^7.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
     "wait-on": "^4.0.0"
   }
 }
