@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { format, parseISO, isBefore } from "date-fns";
 import { useAppState, useAppReducer } from "../AppContext";
-const { remote } = require("electron");
+const { ipcRenderer } = require("electron");
 
 export default function useDateCheck() {
   const { date } = useAppState();
@@ -9,6 +9,13 @@ export default function useDateCheck() {
   const storedDate = parseISO(`${date.year}-${date.month}-${date.day}`);
 
   useEffect(() => {
+    let resetNotification = null;
+
+    ipcRenderer.on('ping', (event, fromMain) => {
+      console.log('reset notification changed', event)
+      resetNotification = fromMain.resetNotification;
+    })
+
     const interval = setInterval(() => {
       let nd = new Date();
       let currentDate = parseISO(
@@ -16,7 +23,7 @@ export default function useDateCheck() {
       );
 
       if (isBefore(storedDate, currentDate)) {
-        if (remote.getGlobal("notificationSettings").resetNotification) {
+        if (resetNotification) {
           new Notification("todometer reset time!", {
             body: "It's a new day! Your todos are being reset."
           });
