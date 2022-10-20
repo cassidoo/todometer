@@ -37,7 +37,8 @@ function createWindow() {
     backgroundColor: "#403F4D",
     icon: path.join(__dirname, "assets/png/128x128.png"),
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      contextIsolation: false
     }
   });
 
