@@ -10,8 +10,7 @@ import {
 import Store from "electron-store";
 import isDev from "electron-is-dev";
 import path from "path";
-
-const version = "2";
+import { version } from "../../package.json";
 
 const store = new Store();
 
