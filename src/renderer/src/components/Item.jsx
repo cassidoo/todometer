@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppReducer } from "../AppContext";
+import { useAppReducer } from "../AppContext.jsx";
 import styles from "./Item.module.scss";
 
 // Individual todo item

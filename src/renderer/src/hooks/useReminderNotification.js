@@ -1,11 +1,13 @@
 import { useEffect } from "react";
-import { remote } from "electron";
-import { useItems } from "../AppContext";
+//import {getGlobal} from "@electron/remote";
+import { useItems } from "../AppContext.jsx";
+
+const getGlobal = ()=>({reminderNotification:''})
 
 function getTimeCondition(nd) {
   let condition = false;
 
-  switch (remote.getGlobal("notificationSettings").reminderNotification) {
+  switch (getGlobal("notificationSettings").reminderNotification) {
     case "hour":
       condition = nd.getMinutes() === 0 && nd.getSeconds() === 0;
       break;

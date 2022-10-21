@@ -11,7 +11,9 @@ const Store = require("electron-store");
 const isDev = require("electron-is-dev");
 
 const path = require("path");
-const { version } = require("../package.json");
+const { version } = require("../../package.json");
+
+require('@electron/remote/main').initialize()
 
 const store = new Store();
 
@@ -42,7 +44,7 @@ function createWindow() {
 
   mainWindow.loadURL(
     isDev
-      ? "http://localhost:3000"
+      ? "http://localhost:5173"
       : `file://${path.join(__dirname, "../build/index.html")}`
   );
 }
@@ -74,13 +76,13 @@ function menuSetup() {
         {
           type: "separator"
         },
-        // {
-        //   /* For debugging */
-        //   label: "Dev tools",
-        //   click: () => {
-        //     mainWindow.webContents.openDevTools();
-        //   }
-        // },
+        {
+          /* For debugging */
+          label: "Dev tools",
+          click: () => {
+            mainWindow.webContents.openDevTools();
+          }
+        },
         {
           label: "Quit",
           accelerator: "CommandOrControl+Q",

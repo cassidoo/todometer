@@ -7,10 +7,10 @@ import {
 } from "@reach/accordion";
 import "@reach/accordion/styles.css";
 
-import { useAppReducer, useItems } from "../AppContext";
-import Progress from "./Progress";
-import AddItemForm from "./AddItemForm";
-import Item from "./Item";
+import { useAppReducer, useItems } from "../AppContext.jsx";
+import Progress from "./Progress.jsx";
+import AddItemForm from "./AddItemForm.jsx";
+import Item from "./Item.jsx";
 import styles from "./ItemList.module.scss";
 import arrow from "../img/arrow.svg";
 import alldone from "../img/alldone.svg";

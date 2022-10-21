@@ -1,7 +1,7 @@
 import React from "react";
-import { useAppState } from "../AppContext";
-import useDateCheck from "../hooks/useDateCheck";
-import useReminderNotification from "../hooks/useReminderNotification";
+import { useAppState } from "../AppContext.jsx";
+import useDateCheck from "../hooks/useDateCheck.js";
+import useReminderNotification from "../hooks/useReminderNotification.js";
 import styles from "./TodoDate.module.scss";
 
 // Current date at the top of the page

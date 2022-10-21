@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { format, parseISO, isBefore } from "date-fns";
-import { useAppState, useAppReducer } from "../AppContext";
-const { remote } = require("electron");
+import { useAppState, useAppReducer } from "../AppContext.jsx";
+//import {getGlobal} from "@electron/remote";
+
+const getGlobal = ()=>({resetNotification:null})
 
 export default function useDateCheck() {
   const { date } = useAppState();
@@ -16,7 +18,7 @@ export default function useDateCheck() {
       );
 
       if (isBefore(storedDate, currentDate)) {
-        if (remote.getGlobal("notificationSettings").resetNotification) {
+        if (getGlobal("notificationSettings").resetNotification) {
           new Notification("todometer reset time!", {
             body: "It's a new day! Your todos are being reset."
           });

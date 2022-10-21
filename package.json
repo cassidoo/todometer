@@ -31,9 +31,10 @@
       "buildResources": "assets"
     }
   },
-  "main": "public/electron.js",
+  "main": "src/main/index.js",
   "scripts": {
-    "start": "rescripts start",
+    "start": "electron-vite preview",
+    "dev": "electron-vite dev",
     "build": "rescripts build",
     "test": "rescripts test",
     "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
@@ -63,15 +64,16 @@
     "electron-store": "^5.1.0"
   },
   "devDependencies": {
-    "@rescripts/cli": "^0.0.13",
-    "@rescripts/rescript-env": "^0.0.11",
+    "@electron/remote": "^2.0.8",
+    "electron-vite": "^1.0.11",
+    "@vitejs/plugin-react": "^2.1.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "concurrently": "^5.0.2",
-    "electron": "^7.1.10",
-    "electron-builder": "^22.3.2",
-    "node-sass": "^4.13.1",
+    "electron": "^21.2.0",
+    "electron-builder": "^23.6.0",
+    "sass": "^1.55.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-scripts": "3.4.0",
