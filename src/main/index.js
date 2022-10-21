@@ -33,7 +33,7 @@ function createWindow() {
     height: 600,
     fullscreenable: true,
     backgroundColor: "#403F4D",
-    icon: path.join(__dirname, "assets/png/128x128.png"),
+    icon: path.join(app.getAppPath(), "assets/png/128x128.png"),
     webPreferences: {
       nodeIntegration: true,
     },
@@ -42,7 +42,7 @@ function createWindow() {
   mainWindow.loadURL(
     isDev
       ? "http://localhost:5173"
-      : `file://${path.join(__dirname, "../build/index.html")}`
+      :  new URL("../renderer/dist/index.html", "file://" + __dirname).toString()
   );
 }
 
@@ -60,7 +60,7 @@ function menuSetup() {
               message: "todometer is built by @cassidoo",
               detail:
                 "You can find her on GitHub and Twitter as @cassidoo, or on her website cassidoo.co.",
-              icon: path.join(__dirname, "assets/png/64x64.png"),
+              icon: path.join(app.getAppPath(), "assets/png/64x64.png")
             });
           },
         },
