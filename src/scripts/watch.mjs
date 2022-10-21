@@ -99,6 +99,7 @@ function createWebWatchServer() {
 // start webserver
 const server = await createWebWatchServer();
 await server.listen();
+server.printUrls();
 // start preload watcher
 await createPreloadWatcher(server);
 // start main watcher
