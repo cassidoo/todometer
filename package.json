@@ -36,8 +36,11 @@
   "scripts": {
     "start": "electron .",
     "dev": "node src/scripts/watch.mjs",
+    "build": "npm run build:main & npm run build:preload & npm run build:renderer",
     "update-vendors": "node src/scripts/update-electron-vendors.mjs",
-    "build": "vite build",
+    "build:main": "cd ./src/main && vite build",
+    "build:preload": "cd ./src/preload && vite build",
+    "build:renderer": "cd ./src/renderer && vite build",
     "test": "rescripts test",
     "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
