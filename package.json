@@ -2,6 +2,8 @@
   "name": "todometer",
   "description": "A meter-based to-do list",
   "version": "2.0.1",
+  "main": "src/main/dist/index.cjs",
+  "type": "module",
   "author": {
     "name": "Cassidy Williams",
     "email": "hi@cassidoo.co",
@@ -31,19 +33,16 @@
       "buildResources": "assets"
     }
   },
-  "main": "src/main/index.js",
   "scripts": {
-    "start": "electron-vite preview",
-    "dev": "electron-vite dev",
-    "build": "rescripts build",
+    "start": "electron .",
+    "dev": "node src/scripts/watch.mjs",
+    "update-vendors": "node src/scripts/update-electron-vendors.mjs",
+    "build": "vite build",
     "test": "rescripts test",
     "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
     "pre-electron-pack": "yarn build",
     "electron-pack": "electron-builder build --dir --windows --mac --linux"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [
@@ -61,22 +60,24 @@
     "@reach/accordion": "^0.8.0",
     "date-fns": "^2.9.0",
     "electron-is-dev": "^1.1.0",
-    "electron-store": "^5.1.0"
+    "electron-store": "^5.1.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@electron/remote": "^2.0.8",
-    "electron-vite": "^1.0.11",
-    "@vitejs/plugin-react": "^2.1.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^2.1.0",
     "concurrently": "^5.0.2",
     "electron": "^21.2.0",
     "electron-builder": "^23.6.0",
     "sass": "^1.55.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.4.0",
+    "vite": "^3.1.8",
     "wait-on": "^4.0.0"
   }
 }

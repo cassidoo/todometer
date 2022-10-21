@@ -1,3 +1,7 @@
+## dev notes
+reinstalled fresh vite app, adding code that was already there back once the vite setup works.
+prop-types is a peerdep of @reach/accordion
+
 # todometer
 
 A simple, meter-based to-do list built with Electron and React.
