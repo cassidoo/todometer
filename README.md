@@ -1,6 +1,7 @@
 ## dev notes
 reinstalled fresh vite app, adding code that was already there back once the vite setup works.
 prop-types is a peerdep of @reach/accordion
+moved main to import instead of require, and removed electron/remote (using ipc instead)
 
 # todometer
 

@@ -66,7 +66,6 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@electron/remote": "^2.0.8",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
