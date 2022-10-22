@@ -39,7 +39,7 @@
   "scripts": {
     "dev": "node src/scripts/watch.mjs",
     "build": "npm run build:main & npm run build:preload & npm run build:renderer",
-    "update-vendors": "node src/scripts/update-electron-vendors.mjs",
+    "update-vendors": "cross-env ELECTRON_RUN_AS_NODE=1 electron src/scripts/update-electron-vendors.mjs",
     "build:main": "cd ./src/main && vite build",
     "build:preload": "cd ./src/preload && vite build",
     "build:renderer": "cd ./src/renderer && vite build",
@@ -65,6 +65,7 @@
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.1.0",
+    "cross-env": "^7.0.3",
     "electron": "^21.2.0",
     "electron-builder": "^23.6.0",
     "jsdom": "^20.0.1",
