@@ -1,7 +1,10 @@
 import { contextBridge, ipcRenderer } from "electron";
 
 process.once("loaded", () => {
-  contextBridge.exposeInMainWorld("pinger", {
-    ping: (args) => ipcRenderer.invoke("pinger", args),
-  });
+  // expose methods from main to the renderer. They are available on "window"
+  contextBridge.exposeInMainWorld("onNotificationSettingsChange", (callback) =>
+    ipcRenderer.on("notificationSettingsChange", (event, args) => {
+      callback(args);
+    })
+  );
 });

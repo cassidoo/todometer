@@ -6,7 +6,6 @@ import {
   powerMonitor,
   shell,
   Notification,
-  ipcMain,
 } from "electron";
 import Store from "electron-store";
 import isDev from "electron-is-dev";
@@ -15,9 +14,9 @@ import { version } from "../../package.json";
 
 const store = new Store();
 
-global.notificationSettings = {
+let notificationSettings = {
   resetNotification: store.get("reset") || true,
-  reminderNotification: store.get("reminder") || "hour",
+  reminderNotification: store.get("reminder") || "hour"
 };
 
 let mainWindow = {
@@ -131,7 +130,8 @@ function menuSetup() {
           type: "checkbox",
           checked: store.get("reset"),
           click: (e) => {
-            global.notificationSettings.resetNotification = e.checked;
+            notificationSettings.resetNotification = e.checked;
+            mainWindow.webContents.send('notificationSettingsChange', notificationSettings)
             store.set("reset", e.checked);
           },
         },
@@ -144,7 +144,8 @@ function menuSetup() {
               checked: store.get("reminder") === "never",
               click: (e) => {
                 if (e.checked) {
-                  global.notificationSettings.reminderNotification = "never";
+                  notificationSettings.reminderNotification = "never";
+                  mainWindow.webContents.send('notificationSettingsChange', notificationSettings)
                   store.set("reminder", "never");
                 }
               },
@@ -155,8 +156,8 @@ function menuSetup() {
               checked: store.get("reminder") === "quarterhour",
               click: (e) => {
                 if (e.checked) {
-                  global.notificationSettings.reminderNotification =
-                    "quarterhour";
+                  notificationSettings.reminderNotification = "quarterhour";
+                  mainWindow.webContents.send('notificationSettingsChange', notificationSettings)
                   store.set("reminder", "quarterhour");
                 }
               },
@@ -167,7 +168,8 @@ function menuSetup() {
               checked: store.get("reminder") === "halfhour",
               click: (e) => {
                 if (e.checked) {
-                  global.notificationSettings.reminderNotification = "halfhour";
+                  notificationSettings.reminderNotification = "halfhour";
+                  mainWindow.webContents.send('notificationSettingsChange', notificationSettings)
                   store.set("reminder", "halfhour");
                 }
               },
@@ -178,7 +180,8 @@ function menuSetup() {
               checked: store.get("reminder") === "hour",
               click: (e) => {
                 if (e.checked) {
-                  mainWindow.reminderNotification = "hour";
+                  notificationSettings.reminderNotification = "hour";
+                  mainWindow.webContents.send('notificationSettingsChange', notificationSettings)
                   store.set("reminder", "hour");
                 }
               },
@@ -206,6 +209,10 @@ app.on("ready", () => {
   createWindow();
   menuSetup();
 
+  mainWindow.webContents.on('did-finish-load', () => {
+    mainWindow.webContents.send('notificationSettingsChange', notificationSettings)
+  })
+
   powerMonitor.on("resume", () => {
     mainWindow.reload();
   });
@@ -225,11 +232,3 @@ app.on("ready", () => {
 
 app.on("activate", () => mainWindow.show());
 app.on("before-quit", () => (willQuit = true));
-
-app.on("ready", () => {
-  console.log("ready");
-  ipcMain.handle("pinger", (event, args) => {
-    console.log({event, args});
-    return "pong " + args
-  })
-});
