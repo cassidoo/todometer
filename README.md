@@ -1,8 +1,3 @@
-## dev notes
-reinstalled fresh vite app, adding code that was already there back once the vite setup works.
-prop-types is a peerdep of @reach/accordion
-moved main to import instead of require, and removed electron/remote (using ipc instead)
-
 # todometer
 
 A simple, meter-based to-do list built with Electron and React.
@@ -24,22 +19,22 @@ $ git clone https://github.com/cassidoo/todometer.git
 - Go to the project directory and install dependencies:
 
 ```bash
-$ cd todometer && yarn install
+$ cd todometer && npm install
 ```
 
 To show the Electron application window with your current build:
 
 ```bash
-$ yarn run electron-dev
+$ npm run dev
 ```
 
 To build a production-version:
 
 ```bash
-$ yarn install
-$ yarn postinstall
-$ yarn pre-electron-pack
-$ yarn electron-pack
+$ npm install
+$ npm run postinstall
+$ npm run pre-electron-pack
+$ npm run electron-pack
 ```
 
 ## Contributing

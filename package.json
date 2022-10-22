@@ -37,7 +37,6 @@
     }
   },
   "scripts": {
-    "start": "electron .",
     "dev": "node src/scripts/watch.mjs",
     "build": "npm run build:main & npm run build:preload & npm run build:renderer",
     "update-vendors": "node src/scripts/update-electron-vendors.mjs",
@@ -45,8 +44,7 @@
     "build:preload": "cd ./src/preload && vite build",
     "build:renderer": "cd ./src/renderer && vite build",
     "test": "cd ./src/renderer && vitest src",
-    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
-    "postinstall": "electron-builder install-app-deps",
+    "postinstall": "electron-builder install-app-deps && npm run update-vendors",
     "pre-electron-pack": "npm run build",
     "electron-pack": "electron-builder build --dir --windows --mac --linux"
   },
@@ -79,13 +77,11 @@
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.1.0",
-    "concurrently": "^5.0.2",
     "electron": "^21.2.0",
     "electron-builder": "^23.6.0",
     "jsdom": "^20.0.1",
     "sass": "^1.55.0",
     "vite": "^3.1.8",
-    "vitest": "^0.24.3",
-    "wait-on": "^4.0.0"
+    "vitest": "^0.24.3"
   }
 }
