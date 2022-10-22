@@ -35,14 +35,14 @@ function createWindow() {
     backgroundColor: "#403F4D",
     icon: path.join(app.getAppPath(), "assets/png/128x128.png"),
     webPreferences: {
-      preload: path.join(app.getAppPath(), "src/preload/dist/index.cjs"),
+      preload: path.join(app.getAppPath(), "dist/preload/index.cjs"),
     },
   });
 
   mainWindow.loadURL(
     isDev
       ? "http://localhost:5173"
-      : new URL("../renderer/dist/index.html", "file://" + __dirname).toString()
+      : new URL("../dist/renderer/index.html", "file://" + __dirname).toString()
   );
 }
 

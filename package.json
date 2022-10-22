@@ -27,9 +27,9 @@
     },
     "files": [
       "node_modules/**/*",
-      "src/main/dist/**",
-      "src/preload/dist/**",
-      "src/renderer/dist/**",
+      "dist/main/**",
+      "dist/preload/**",
+      "dist/renderer/**",
       "package.json"
     ],
     "directories": {
@@ -46,7 +46,7 @@
     "test": "cd ./src/renderer && vitest src",
     "postinstall": "electron-builder install-app-deps && npm run update-vendors",
     "pre-electron-pack": "npm run build",
-    "electron-pack": "electron-builder build --dir --windows --mac --linux"
+    "electron-pack": "electron-builder build --dir --windows --linux --mac"
   },
   "dependencies": {
     "@reach/accordion": "^0.8.0",
