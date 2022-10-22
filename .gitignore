@@ -3,15 +3,15 @@
 /.pnp
 .pnp.js
 
-# temporarily doing this
-yarn.lock
-
 # testing
 /coverage
 
 # production
 /build
 dist
+
+# cache
+.electron-vendors.cache.json
 
 # misc
 .DS_Store
