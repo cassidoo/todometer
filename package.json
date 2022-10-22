@@ -2,7 +2,7 @@
   "name": "todometer",
   "description": "A meter-based to-do list",
   "version": "2.0.1",
-  "main": "src/main/dist/index.cjs",
+  "main": "dist/main/index.cjs",
   "type": "module",
   "author": {
     "name": "Cassidy Williams",

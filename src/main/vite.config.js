@@ -1,15 +1,8 @@
 import { node } from "../../.electron-vendors.cache.json";
-import { join } from "path";
-
 import { defineConfig } from "vite";
 import { builtinModules } from "module";
 
 const PACKAGE_ROOT = __dirname;
-
-// why is this needed? Isn't `node` typed as "string" already?
-if (typeof node !== "string") {
-  throw new Error(`The imported vendor version was not a string`);
-}
 
 // https://vitejs.dev/config/
 // import.meta vite specific vars have not been injected yet here.
@@ -21,16 +14,11 @@ export default defineConfig({
   mode: process.env.MODE,
   root: PACKAGE_ROOT,
   envDir: process.cwd(),
-  resolve: {
-    alias: {
-      "/@/": join(PACKAGE_ROOT) + "/",
-    },
-  },
   build: {
     ssr: true,
     target: `node${node}`,
     sourcemap: "inline",
-    outDir: "dist",
+    outDir: "../../dist/main",
     emptyOutDir: true,
     assetsDir: ".",
     // set to development in the watch script
