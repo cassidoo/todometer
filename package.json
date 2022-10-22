@@ -27,6 +27,9 @@
     },
     "files": [
       "node_modules/**/*",
+      "src/main/dist/**",
+      "src/preload/dist/**",
+      "src/renderer/dist/**",
       "package.json"
     ],
     "directories": {
@@ -44,7 +47,7 @@
     "test": "cd ./src/renderer && vitest src",
     "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "postinstall": "electron-builder install-app-deps",
-    "pre-electron-pack": "yarn build",
+    "pre-electron-pack": "npm run build",
     "electron-pack": "electron-builder build --dir --windows --mac --linux"
   },
   "browserslist": {
