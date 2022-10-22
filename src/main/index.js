@@ -16,7 +16,7 @@ const store = new Store();
 
 let notificationSettings = {
   resetNotification: store.get("reset") || true,
-  reminderNotification: store.get("reminder") || "hour"
+  reminderNotification: store.get("reminder") || "hour",
 };
 
 let mainWindow = {
@@ -35,14 +35,14 @@ function createWindow() {
     backgroundColor: "#403F4D",
     icon: path.join(app.getAppPath(), "assets/png/128x128.png"),
     webPreferences: {
-      preload: path.join(app.getAppPath(), "src/preload/dist/index.cjs")
+      preload: path.join(app.getAppPath(), "src/preload/dist/index.cjs"),
     },
   });
 
   mainWindow.loadURL(
     isDev
       ? "http://localhost:5173"
-      :  new URL("../renderer/dist/index.html", "file://" + __dirname).toString()
+      : new URL("../renderer/dist/index.html", "file://" + __dirname).toString()
   );
 }
 
@@ -60,7 +60,7 @@ function menuSetup() {
               message: "todometer is built by @cassidoo",
               detail:
                 "You can find her on GitHub and Twitter as @cassidoo, or on her website cassidoo.co.",
-              icon: path.join(app.getAppPath(), "assets/png/64x64.png")
+              icon: path.join(app.getAppPath(), "assets/png/64x64.png"),
             });
           },
         },
@@ -130,7 +130,10 @@ function menuSetup() {
           checked: store.get("reset"),
           click: (e) => {
             notificationSettings.resetNotification = e.checked;
-            mainWindow.webContents.send('notificationSettingsChange', notificationSettings)
+            mainWindow.webContents.send(
+              "notificationSettingsChange",
+              notificationSettings
+            );
             store.set("reset", e.checked);
           },
         },
@@ -144,7 +147,10 @@ function menuSetup() {
               click: (e) => {
                 if (e.checked) {
                   notificationSettings.reminderNotification = "never";
-                  mainWindow.webContents.send('notificationSettingsChange', notificationSettings)
+                  mainWindow.webContents.send(
+                    "notificationSettingsChange",
+                    notificationSettings
+                  );
                   store.set("reminder", "never");
                 }
               },
@@ -156,7 +162,10 @@ function menuSetup() {
               click: (e) => {
                 if (e.checked) {
                   notificationSettings.reminderNotification = "quarterhour";
-                  mainWindow.webContents.send('notificationSettingsChange', notificationSettings)
+                  mainWindow.webContents.send(
+                    "notificationSettingsChange",
+                    notificationSettings
+                  );
                   store.set("reminder", "quarterhour");
                 }
               },
@@ -168,7 +177,10 @@ function menuSetup() {
               click: (e) => {
                 if (e.checked) {
                   notificationSettings.reminderNotification = "halfhour";
-                  mainWindow.webContents.send('notificationSettingsChange', notificationSettings)
+                  mainWindow.webContents.send(
+                    "notificationSettingsChange",
+                    notificationSettings
+                  );
                   store.set("reminder", "halfhour");
                 }
               },
@@ -180,7 +192,10 @@ function menuSetup() {
               click: (e) => {
                 if (e.checked) {
                   notificationSettings.reminderNotification = "hour";
-                  mainWindow.webContents.send('notificationSettingsChange', notificationSettings)
+                  mainWindow.webContents.send(
+                    "notificationSettingsChange",
+                    notificationSettings
+                  );
                   store.set("reminder", "hour");
                 }
               },
@@ -208,9 +223,12 @@ app.on("ready", () => {
   createWindow();
   menuSetup();
 
-  mainWindow.webContents.on('did-finish-load', () => {
-    mainWindow.webContents.send('notificationSettingsChange', notificationSettings)
-  })
+  mainWindow.webContents.on("did-finish-load", () => {
+    mainWindow.webContents.send(
+      "notificationSettingsChange",
+      notificationSettings
+    );
+  });
 
   powerMonitor.on("resume", () => {
     mainWindow.reload();

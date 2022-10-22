@@ -1,4 +1,3 @@
-import React from "react";
 import { useAppState } from "../AppContext.jsx";
 import useDateCheck from "../hooks/useDateCheck.js";
 import useReminderNotification from "../hooks/useReminderNotification.js";

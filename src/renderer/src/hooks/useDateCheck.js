@@ -10,7 +10,7 @@ export default function useDateCheck() {
   useEffect(() => {
     let resetNotification = null;
 
-    window.onNotificationSettingsChange((data) => {
+    window?.onNotificationSettingsChange?.((data) => {
       resetNotification = data.resetNotification;
     });
 
@@ -23,7 +23,7 @@ export default function useDateCheck() {
       if (isBefore(storedDate, currentDate)) {
         if (resetNotification) {
           new Notification("todometer reset time!", {
-            body: "It's a new day! Your todos are being reset."
+            body: "It's a new day! Your todos are being reset.",
           });
         }
         dispatch({ type: "RESET_ALL" });

@@ -64,6 +64,8 @@
     "date-fns": "^2.9.0",
     "electron-is-dev": "^1.1.0",
     "electron-store": "^5.1.0",
+    "eslint": "^8.26.0",
+    "eslint-plugin-react": "^7.31.10",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

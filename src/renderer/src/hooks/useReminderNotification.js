@@ -27,7 +27,7 @@ export default function useReminderNotification() {
   useEffect(() => {
     let notificationInterval = null;
 
-    window.onNotificationSettingsChange((data) => {
+    window?.onNotificationSettingsChange?.((data) => {
       notificationInterval = data.reminderNotification;
     });
 

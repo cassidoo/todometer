@@ -1,4 +1,4 @@
-import React from "react";
+import { test, expect } from "vitest";
 import { render } from "@testing-library/react";
 import { format } from "date-fns";
 import App from "./App.jsx";

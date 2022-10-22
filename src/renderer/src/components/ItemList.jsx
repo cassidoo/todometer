@@ -1,9 +1,8 @@
-import React from "react";
 import {
   Accordion,
   AccordionItem,
   AccordionButton,
-  AccordionPanel
+  AccordionPanel,
 } from "@reach/accordion";
 import "@reach/accordion/styles.css";
 
@@ -26,7 +25,7 @@ function ItemList() {
       <AddItemForm />
       {pending.length > 0 ? (
         <>
-          {pending.map(item => {
+          {pending.map((item) => {
             return <Item item={item} key={item.key} />;
           })}
         </>
@@ -44,7 +43,7 @@ function ItemList() {
             </AccordionButton>
             <AccordionPanel className={styles.panel}>
               {paused &&
-                paused.map(item => {
+                paused.map((item) => {
                   return <Item item={item} key={item.key} />;
                 })}
             </AccordionPanel>
@@ -57,7 +56,7 @@ function ItemList() {
             </AccordionButton>
             <AccordionPanel className={styles.panel}>
               {completed &&
-                completed.map(item => {
+                completed.map((item) => {
                   return <Item item={item} key={item.key} />;
                 })}
             </AccordionPanel>
