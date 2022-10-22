@@ -6,6 +6,7 @@ import {
   powerMonitor,
   shell,
   Notification,
+  ipcMain,
 } from "electron";
 import Store from "electron-store";
 import isDev from "electron-is-dev";
@@ -36,6 +37,7 @@ function createWindow() {
     icon: path.join(app.getAppPath(), "assets/png/128x128.png"),
     webPreferences: {
       nodeIntegration: true,
+      preload: path.join(app.getAppPath(), "src/preload/dist/index.cjs")
     },
   });
 
@@ -223,3 +225,11 @@ app.on("ready", () => {
 
 app.on("activate", () => mainWindow.show());
 app.on("before-quit", () => (willQuit = true));
+
+app.on("ready", () => {
+  console.log("ready");
+  ipcMain.handle("pinger", (event, args) => {
+    console.log({event, args});
+    return "pong " + args
+  })
+});
