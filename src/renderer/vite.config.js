@@ -49,4 +49,14 @@ export default defineConfig({
     reportCompressedSize: false,
   },
   plugins: [react()],
+  test: {
+    include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./src/setupTests.js",
+    cache: {
+      // store the cache in the root node_modules folder
+      dir: "../../node_modules/.vitest",
+    },
+  },
 });
