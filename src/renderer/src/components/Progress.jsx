@@ -1,5 +1,4 @@
-import React from "react";
-import { useItems, useAppState } from "../AppContext";
+import { useItems, useAppState } from "../AppContext.jsx";
 
 import styles from "./Progress.module.scss";
 

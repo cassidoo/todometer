@@ -1,5 +1,4 @@
-import React from "react";
-import { useAppReducer } from "../AppContext";
+import { useAppReducer } from "../AppContext.jsx";
 import styles from "./Item.module.scss";
 
 // Individual todo item
@@ -32,12 +31,22 @@ function Item({ item }) {
     <div className={styles.item} tabIndex="0">
       <div className={styles.itemName}>{text}</div>
       <div
-        className={`${styles.buttons} ${completed ? styles.completedButtons : ""}`}
+        className={`${styles.buttons} ${
+          completed ? styles.completedButtons : ""
+        }`}
       >
         {completed && <button className={styles.empty} tabIndex="0"></button>}
-        <button className={styles.delete} onClick={deleteItem} tabIndex="0"></button>
+        <button
+          className={styles.delete}
+          onClick={deleteItem}
+          tabIndex="0"
+        ></button>
         {!paused && !completed && (
-          <button className={styles.pause} onClick={pauseItem} tabIndex="0"></button>
+          <button
+            className={styles.pause}
+            onClick={pauseItem}
+            tabIndex="0"
+          ></button>
         )}
         {(paused || completed) && (
           <button

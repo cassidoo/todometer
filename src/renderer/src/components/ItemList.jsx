@@ -1,16 +1,15 @@
-import React from "react";
 import {
   Accordion,
   AccordionItem,
   AccordionButton,
-  AccordionPanel
+  AccordionPanel,
 } from "@reach/accordion";
 import "@reach/accordion/styles.css";
 
-import { useAppReducer, useItems } from "../AppContext";
-import Progress from "./Progress";
-import AddItemForm from "./AddItemForm";
-import Item from "./Item";
+import { useAppReducer, useItems } from "../AppContext.jsx";
+import Progress from "./Progress.jsx";
+import AddItemForm from "./AddItemForm.jsx";
+import Item from "./Item.jsx";
 import styles from "./ItemList.module.scss";
 import arrow from "../img/arrow.svg";
 import alldone from "../img/alldone.svg";
@@ -26,7 +25,7 @@ function ItemList() {
       <AddItemForm />
       {pending.length > 0 ? (
         <>
-          {pending.map(item => {
+          {pending.map((item) => {
             return <Item item={item} key={item.key} />;
           })}
         </>
@@ -44,7 +43,7 @@ function ItemList() {
             </AccordionButton>
             <AccordionPanel className={styles.panel}>
               {paused &&
-                paused.map(item => {
+                paused.map((item) => {
                   return <Item item={item} key={item.key} />;
                 })}
             </AccordionPanel>
@@ -57,7 +56,7 @@ function ItemList() {
             </AccordionButton>
             <AccordionPanel className={styles.panel}>
               {completed &&
-                completed.map(item => {
+                completed.map((item) => {
                   return <Item item={item} key={item.key} />;
                 })}
             </AccordionPanel>

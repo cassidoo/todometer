@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useReducer } from "react";
-import { loadState, saveState } from "./local-storage";
+import { createContext, useContext, useReducer } from "react";
+import { loadState, saveState } from "./local-storage.js";
 import { format } from "date-fns";
 
 export const AppContext = createContext();
@@ -15,9 +15,9 @@ export function useAppReducer() {
 export function useItems() {
   const { items } = useAppState();
 
-  const pending = items.filter(item => item.status === "pending");
-  const paused = items.filter(item => item.status === "paused");
-  const completed = items.filter(item => item.status === "completed");
+  const pending = items.filter((item) => item.status === "pending");
+  const paused = items.filter((item) => item.status === "paused");
+  const completed = items.filter((item) => item.status === "completed");
 
   return { pending, paused, completed };
 }
@@ -31,7 +31,7 @@ const appStateReducer = (state, action) => {
     month: format(nd, "MM"),
     monthDisplay: format(nd, "MMM"),
     year: format(nd, "y"),
-    weekday: format(nd, "EEEE")
+    weekday: format(nd, "EEEE"),
   };
 
   switch (action.type) {
@@ -41,10 +41,10 @@ const appStateReducer = (state, action) => {
       return newState;
     }
     case "UPDATE_ITEM": {
-      const newItems = state.items.map(i => {
+      const newItems = state.items.map((i) => {
         if (i.key === action.item.key) {
           return Object.assign({}, i, {
-            status: action.item.status
+            status: action.item.status,
           });
         }
         return i;
@@ -56,18 +56,18 @@ const appStateReducer = (state, action) => {
     case "DELETE_ITEM": {
       const newState = {
         ...state,
-        items: state.items.filter(item => item.key !== action.item.key)
+        items: state.items.filter((item) => item.key !== action.item.key),
       };
       saveState(newState);
       return newState;
     }
     case "RESET_ALL": {
       const newItems = state.items
-        .filter(item => item.status !== "completed")
-        .map(i => {
+        .filter((item) => item.status !== "completed")
+        .map((i) => {
           if (i.status === "paused") {
             return Object.assign({}, i, {
-              status: "pending"
+              status: "pending",
             });
           }
           return i;
@@ -95,8 +95,8 @@ export function AppStateProvider({ children }) {
         month: format(nd, "MM"),
         monthDisplay: format(nd, "MMM"),
         year: format(nd, "y"),
-        weekday: format(nd, "EEEE")
-      }
+        weekday: format(nd, "EEEE"),
+      },
     };
   }
 

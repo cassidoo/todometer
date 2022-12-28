@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { useAppReducer } from "../AppContext";
+import { useRef } from "react";
+import { useAppReducer } from "../AppContext.jsx";
 
 import styles from "./AddItemForm.module.scss";
 
@@ -12,9 +12,9 @@ function AddItemForm() {
     const newItem = {
       text: inputRef.current.value,
       key: Date.now(),
-      status: "pending"
+      status: "pending",
     };
-    if (!!newItem.text.trim()) {
+    if (newItem.text.trim()) {
       dispatch({ type: "ADD_ITEM", item: newItem });
     }
     e.preventDefault();
