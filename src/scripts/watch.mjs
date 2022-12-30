@@ -6,7 +6,7 @@ import { spawn } from "child_process";
 const mode = (process.env.MODE = process.env.MODE ?? "development");
 
 const exitProcess = () => {
-  process.exit(0);
+	process.exit(0);
 };
 
 /**
@@ -14,86 +14,86 @@ const exitProcess = () => {
  * On file changes: hot reload
  */
 function createWebWatchServer() {
-  const server = createServer({
-    mode,
-    customLogger: createLogger("info", { prefix: `[web]` }),
-    configFile: "src/renderer/vite.config.js",
-  });
+	const server = createServer({
+		mode,
+		customLogger: createLogger("info", { prefix: `[web]` }),
+		configFile: "src/renderer/vite.config.js",
+	});
 
-  return server;
+	return server;
 }
 
 /**
  * Setup watcher for `preload/`
  * On file changes: reload the web page
  */
- function createPreloadWatcher(viteServer) {
-  const watcher = build({
-    mode,
-    configFile: "src/preload/vite.config.js",
-    build: {
-      /**
-       * Set to {} to enable rollup watcher
-       * @see https://vitejs.dev/config/build-options.html#build-watch
-       */
-      watch: {},
-    },
-    plugins: [
-      {
-        name: "web-reload-on-preload-change",
-        writeBundle() {
-          viteServer.ws.send({ type: "full-reload" });
-        },
-      },
-    ],
-  });
+function createPreloadWatcher(viteServer) {
+	const watcher = build({
+		mode,
+		configFile: "src/preload/vite.config.js",
+		build: {
+			/**
+			 * Set to {} to enable rollup watcher
+			 * @see https://vitejs.dev/config/build-options.html#build-watch
+			 */
+			watch: {},
+		},
+		plugins: [
+			{
+				name: "web-reload-on-preload-change",
+				writeBundle() {
+					viteServer.ws.send({ type: "full-reload" });
+				},
+			},
+		],
+	});
 
-  return watcher;
+	return watcher;
 }
 
 /**
  * Setup watcher for `main/`
  * On file changes: shut down and relaunch electron
  */
- function createMainWatcher() {
-  let electronProcess = null;
+function createMainWatcher() {
+	let electronProcess = null;
 
-  const watcher = build({
-    mode,
-    configFile: "src/main/vite.config.js",
-    build: {
-      /**
-       * Set to {} to enable rollup watcher
-       * @see https://vitejs.dev/config/build-options.html#build-watch
-       */
-      watch: {},
-    },
-    plugins: [
-      {
-        name: "full-reload-on-main-change",
-        writeBundle() {
-          /** Kill electron if process already exist */
-          if (electronProcess !== null) {
-            electronProcess.removeListener("exit", exitProcess);
-            electronProcess.kill("SIGINT");
-            electronProcess = null;
-          }
+	const watcher = build({
+		mode,
+		configFile: "src/main/vite.config.js",
+		build: {
+			/**
+			 * Set to {} to enable rollup watcher
+			 * @see https://vitejs.dev/config/build-options.html#build-watch
+			 */
+			watch: {},
+		},
+		plugins: [
+			{
+				name: "full-reload-on-main-change",
+				writeBundle() {
+					/** Kill electron if process already exist */
+					if (electronProcess !== null) {
+						electronProcess.removeListener("exit", exitProcess);
+						electronProcess.kill("SIGINT");
+						electronProcess = null;
+					}
 
-          /** Spawn new electron process */
-          // I read the docs for spawn.options.stio and still don't know how it works
-          // https://nodejs.org/api/child_process.html#optionsstdio
-          electronProcess = spawn(String(electronPath), ["."], {
-            stdio: "inherit",
-          });
+					/** Spawn new electron process */
+					// I read the docs for spawn.options.stio and still don't know how it works
+					// https://nodejs.org/api/child_process.html#optionsstdio
+					electronProcess = spawn(String(electronPath), ["."], {
+						stdio: "inherit",
+					});
 
-          /** Stops the watch script when the application has been quit */
-          electronProcess.addListener("exit", exitProcess);
-        },
-      },
-    ],
-  });
+					/** Stops the watch script when the application has been quit */
+					electronProcess.addListener("exit", exitProcess);
+				},
+			},
+		],
+	});
 
-  return watcher;
+	return watcher;
 }
 
 // start webserver
