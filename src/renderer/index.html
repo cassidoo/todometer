@@ -1,30 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="monetization" content="$ilp.uphold.com/rEgHHBQGDUDP" />
-    <meta name="description" content="todometer: a meter-based to-do list" />
-    <meta name="theme-color" content="#403f4d" />
-    <link rel="icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/logo128.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>todometer</title>
-    <style>
-      #loading {
-        margin: 40px auto;
-        font-family: "Helvetica", "Arial", sans-serif;
-        font-weight: lighter;
-        color: #fbfafb;
-        text-align: center;
-      }
-    </style>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root">
-      <div id="loading">loading...</div>
-    </div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="monetization" content="$ilp.uphold.com/rEgHHBQGDUDP" />
+		<meta name="description" content="todometer: a meter-based to-do list" />
+		<meta
+			http-equiv="Content-Security-Policy"
+			content="script-src 'self' 'unsafe-inline';"
+		/>
+		<meta name="theme-color" content="#403f4d" />
+		<link rel="icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" href="/logo128.png" />
+		<link rel="manifest" href="/manifest.json" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>todometer</title>
+		<style>
+			#loading {
+				margin: 40px auto;
+				font-family: "Helvetica", "Arial", sans-serif;
+				font-weight: lighter;
+				color: #fbfafb;
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<noscript>You need to enable JavaScript to run this app.</noscript>
+		<div id="root">
+			<div id="loading">loading...</div>
+		</div>
+		<script type="module" src="/src/main.jsx"></script>
+	</body>
 </html>
