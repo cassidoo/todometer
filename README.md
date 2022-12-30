@@ -28,7 +28,7 @@ To show the Electron application window with your current build:
 $ npm run dev
 ```
 
-To build a production-version:
+To build a production version:
 
 ```bash
 $ npm install
