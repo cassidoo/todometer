@@ -156,6 +156,21 @@ function menuSetup() {
 							},
 						},
 						{
+							label: "Every 5 minutes",
+							type: "radio",
+							checked: store.get("reminder") === "fiveminutes",
+							click: (e) => {
+								if (e.checked) {
+									notificationSettings.reminderNotification = "fiveminutes";
+									mainWindow.webContents.send(
+										"notificationSettingsChange",
+										notificationSettings
+									);
+									store.set("reminder", "fiveminutes");
+								}
+							},
+						},
+						{
 							label: "Every 15 minutes",
 							type: "radio",
 							checked: store.get("reminder") === "quarterhour",

@@ -14,6 +14,9 @@ function getTimeCondition(nd, notificationInterval) {
 		case "quarterhour":
 			condition = nd.getMinutes() % 15 === 0 && nd.getSeconds() === 0;
 			break;
+		case "fiveminutes":
+			condition = nd.getMinutes() % 5 === 0 && nd.getSeconds() === 0;
+			break;
 		default:
 			break;
 	}
