@@ -13,7 +13,7 @@
 	"build": {
 		"appId": "com.electron.todometer",
 		"productName": "todometer",
-		"copyright": "Copyright © 2020 @cassidoo",
+		"copyright": "Copyright © 2023 @cassidoo",
 		"mac": {
 			"category": "public.app-category.utilities",
 			"icon": "assets/mac/icon.png.icns"
