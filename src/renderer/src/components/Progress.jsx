@@ -1,6 +1,6 @@
 import { useItems, useAppState } from "../AppContext.jsx";
 
-import styles from "./Progress.module.scss";
+import styles from "./Progress.module.css";
 
 // Progress bar for completed/paused todo items
 function Progress() {

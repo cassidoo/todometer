@@ -1,5 +1,3 @@
-@import "../styles/variables";
-
 .alldone {
   display: flex;
   justify-content: center;
@@ -17,8 +15,8 @@
   margin: 1em 0 0.5em;
   padding: 0;
   border: none;
-  background: $bg;
-  color: $font-color;
+  background: var(--bg);
+  color: var(--font-color);
   cursor: pointer;
   font-size: 1.5em;
   font-weight: bold;
@@ -35,7 +33,7 @@
     transform: rotate(90deg);
   }
   &:focus {
-    outline: 2px solid $bg;
+    outline: 2px solid var(--bg);
     span {
       animation: blink 0.5s;
     }
@@ -54,9 +52,9 @@
   button {
     background: transparent;
     border: none;
-    color: $font-color;
+    color: var(--font-color);
     cursor: pointer;
-    font-size: $item-font-size;
+    font-size: var(--item-font-size);
     animation: slidedown 1s;
     &:hover {
       opacity: 0.9;

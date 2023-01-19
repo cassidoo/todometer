@@ -1,11 +1,9 @@
-@import "../styles/variables";
-
 .progress {
   position: relative;
   width: 100%;
   height: 15px;
   margin: 0 0 20px;
-  background: $input-color;
+  background: var(--input-color);
   border-radius: 3px;
 }
 
@@ -17,9 +15,9 @@
   border-radius: 3px;
   transition: width 500ms;
   &.paused {
-    background: $yellow;
+    background: var(--yellow);
   }
   &.completed {
-    background: $green;
+    background: var(--green);
   }
 }
