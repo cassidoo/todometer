@@ -45,7 +45,7 @@
       height: 24px;
       border: none;
 
-      /* // used as placeholder so the icon spacing is consistent even if there only 2/3 of the buttons in the row */
+      /* used as placeholder so the icon spacing is consistent even if there only 2/3 of the buttons in the row */
       &.empty {
         width: 24px;
         background: transparent;
