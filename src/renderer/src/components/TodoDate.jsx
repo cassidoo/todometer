@@ -1,7 +1,7 @@
 import { useAppState } from "../AppContext.jsx";
 import useDateCheck from "../hooks/useDateCheck.js";
 import useReminderNotification from "../hooks/useReminderNotification.js";
-import styles from "./TodoDate.module.scss";
+import styles from "./TodoDate.module.css";
 
 // Current date at the top of the page
 function TodoDate() {

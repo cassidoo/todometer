@@ -1,5 +1,3 @@
-@import "../styles/variables";
-
 .item {
   display: flex;
   align-items: center;
@@ -8,11 +6,11 @@
   padding: 20px;
   width: 100%;
   min-height: 70px;
-  background: $item-color;
+  background: --var(item-color);
   border: none;
   border-radius: 3px;
   box-sizing: border-box;
-  font-size: $item-font-size;
+  font-size: --var(item-font-size);
   @media (max-width: 600px) {
     margin: 20px auto;
   }
@@ -21,7 +19,7 @@
     overflow: auto;
 
     &::-webkit-scrollbar {
-      background-color: $item-color;
+      background-color: --var(item-color);
       height: 0.75em;
       @media (max-width: 600px) {
         height: 0.25em;
@@ -30,8 +28,8 @@
 
     &::-webkit-scrollbar-thumb:window-inactive,
     &::-webkit-scrollbar-thumb {
-      background: $bg;
-      border: 3px solid $item-color;
+      background: --var(bg);
+      border: 3px solid --var(item-color);
       border-left: none;
       border-right: none;
       border-radius: 3px;
@@ -47,7 +45,7 @@
       height: 24px;
       border: none;
 
-      // used as placeholder so the icon spacing is consistent even if there only 2/3 of the buttons in the row
+      /* used as placeholder so the icon spacing is consistent even if there only 2/3 of the buttons in the row */
       &.empty {
         width: 24px;
         background: transparent;
@@ -56,28 +54,28 @@
         width: 24px;
         background: no-repeat url("../img/x.svg");
         &:after {
-          background: $red;
+          background: --var(red);
         }
       }
       &.pause {
         width: 24px;
         background: no-repeat url("../img/pause.svg");
         &:after {
-          background: $yellow;
+          background: --var(yellow);
         }
       }
       &.resume {
         width: 24px;
         background: no-repeat url("../img/resume.svg");
         &:after {
-          background: $yellow;
+          background: --var(yellow);
         }
       }
       &.complete {
         width: 30px;
         background: no-repeat url("../img/check.svg");
         &:after {
-          background: $green;
+          background: --var(green);
         }
       }
       &:after {
@@ -92,7 +90,7 @@
         height: 0;
       }
       &:focus {
-        outline: 1px solid $item-color;
+        outline: 1px solid --var(item-color);
         &:after {
           animation: click 0.5s;
         }

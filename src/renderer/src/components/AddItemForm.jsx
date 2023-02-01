@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useAppReducer } from "../AppContext.jsx";
 
-import styles from "./AddItemForm.module.scss";
+import styles from "./AddItemForm.module.css";
 
 // Form to populate todo items
 function AddItemForm() {

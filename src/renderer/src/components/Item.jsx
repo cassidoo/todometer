@@ -1,5 +1,5 @@
 import { useAppReducer } from "../AppContext.jsx";
-import styles from "./Item.module.scss";
+import styles from "./Item.module.css";
 
 // Individual todo item
 function Item({ item }) {

@@ -1,10 +1,8 @@
-@import "styles/variables";
-
 body {
   margin: 0;
   padding: 0;
-  background: $bg;
-  color: $font-color;
+  background: var(--bg);
+  color: var(--font-color);
   font-family: "Helvetica", "Arial", sans-serif;
   font-weight: lighter;
   overflow-y: scroll;
@@ -22,7 +20,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-  background-color: $bg;
+  background-color: var(--bg);
   width: 1em;
   @media (max-width: 600px) {
     width: 0.5em;
@@ -31,7 +29,7 @@ body {
 
 ::-webkit-scrollbar-thumb:window-inactive,
 ::-webkit-scrollbar-thumb {
-  background: $input-color;
-  border: 3px solid $bg;
+  background: var(--input-color);
+  border: 3px solid var(--bg);
   border-radius: 3px;
 }

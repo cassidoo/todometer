@@ -67,7 +67,8 @@
 		"eslint": "^8.26.0",
 		"eslint-plugin-react": "^7.31.10",
 		"jsdom": "^20.0.1",
-		"sass": "^1.55.0",
+		"postcss": "^8.4.21",
+		"postcss-nested": "^6.0.0",
 		"vite": "^3.1.8",
 		"vitest": "^0.24.3"
 	}
