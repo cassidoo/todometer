@@ -1,0 +1,21 @@
+.date {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 0 40px 0;
+	font-size: var(--heading-font-size);
+	.calendar {
+		display: flex;
+		align-items: center;
+		.day {
+			font-size: var(--big-font-size);
+			font-weight: bold;
+		}
+		.my {
+			padding: 0 0 0 5px;
+			.month {
+				font-weight: bold;
+			}
+		}
+	}
+}

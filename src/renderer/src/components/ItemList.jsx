@@ -10,7 +10,7 @@ import { useAppReducer, useItems } from "../AppContext.jsx";
 import Progress from "./Progress.jsx";
 import AddItemForm from "./AddItemForm.jsx";
 import Item from "./Item.jsx";
-import styles from "./ItemList.module.scss";
+import styles from "./ItemList.module.css";
 import arrow from "../img/arrow.svg";
 import alldone from "../img/alldone.svg";
 

@@ -1,0 +1,86 @@
+.alldone {
+	display: flex;
+	justify-content: center;
+	img {
+		margin: 20px;
+		width: 100px;
+		height: 100px;
+		animation: slidedown 1s;
+	}
+}
+
+.toggle {
+	display: flex;
+	align-items: center;
+	margin: 1em 0 0.5em;
+	padding: 0;
+	border: none;
+	background: var(--bg);
+	color: var(--font-color);
+	cursor: pointer;
+	font-size: 1.5em;
+	font-weight: bold;
+	animation: slidedown 1s;
+	img {
+		padding: 0 5px 0 0;
+		width: 1em;
+		height: 1em;
+		box-sizing: border-box;
+		transition: transform 0.2s;
+	}
+	&[data-state="open"] img {
+		padding: 5px 0 0 0;
+		transform: rotate(90deg);
+	}
+	&:focus {
+		outline: 2px solid var(--bg);
+		span {
+			animation: blink 0.5s;
+		}
+	}
+	&:hover {
+		opacity: 0.9;
+	}
+}
+
+.panel {
+	animation: slidedown 0.2s ease;
+}
+
+.reset {
+	text-align: center;
+	button {
+		background: transparent;
+		border: none;
+		color: var(--font-color);
+		cursor: pointer;
+		font-size: var(--item-font-size);
+		animation: slidedown 1s;
+		&:hover {
+			opacity: 0.9;
+		}
+	}
+}
+
+@keyframes slidedown {
+	0% {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes blink {
+	0% {
+		text-shadow: 0 0 2px white;
+	}
+	50% {
+		text-shadow: 0 0 10px white;
+	}
+	100% {
+		text-shadow: 0 0 2px white;
+	}
+}

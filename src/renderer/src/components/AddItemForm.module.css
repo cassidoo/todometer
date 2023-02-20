@@ -1,5 +1,3 @@
-@import "../styles/variables";
-
 .form {
   position: relative;
   input {
@@ -7,12 +5,12 @@
     padding: 20px 70px 20px 20px;
     width: 100%;
     height: 70px;
-    background: $input-color;
+    background: var(--input-color);
     border: none;
     border-radius: 3px;
     box-sizing: border-box;
-    color: $font-color;
-    font-size: $item-font-size;
+    color: var(--font-color);
+    font-size: var(--item-font-size);
     outline: none;
   }
   button {
