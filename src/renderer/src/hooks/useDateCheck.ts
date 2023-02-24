@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { format, parseISO, isBefore } from "date-fns";
-import { useAppState, useAppReducer } from "../AppContext.tsx";
+import { useAppState, useAppReducer } from "../AppContext";
 
 export default function useDateCheck() {
   const { date } = useAppState();
