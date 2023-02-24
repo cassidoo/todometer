@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useReducer } from "react";
-import { loadState, saveState } from "./local-storage.js";
+import { loadState, saveState } from "./local-storage";
 import { format } from "date-fns";
 
 export type TodoItem = {
@@ -107,7 +107,7 @@ const appStateReducer = (state: AppState, action: Action) => {
 };
 
 export function AppStateProvider({ children }: { children: ReactNode }) {
-  let initialState = loadState();
+  let initialState: AppState = loadState();
 
   if (initialState === undefined) {
     let nd = new Date();
