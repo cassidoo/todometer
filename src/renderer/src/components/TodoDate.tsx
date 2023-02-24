@@ -1,4 +1,4 @@
-import { useAppState } from "../AppContext.tsx";
+import { useAppState } from "../AppContext";
 import useDateCheck from "../hooks/useDateCheck.js";
 import useReminderNotification from "../hooks/useReminderNotification.js";
 import styles from "./TodoDate.module.css";

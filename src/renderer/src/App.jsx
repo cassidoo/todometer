@@ -1,4 +1,4 @@
-import TodoDate from "./components/TodoDate.jsx";
+import TodoDate from "./components/TodoDate.tsx";
 import ItemList from "./components/ItemList.tsx";
 import { AppStateProvider } from "./AppContext.tsx";
 
