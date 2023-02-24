@@ -2,7 +2,7 @@ import { createContext, ReactNode, useContext, useReducer } from "react";
 import { loadState, saveState } from "./local-storage.js";
 import { format } from "date-fns";
 
-type TodoItem = {
+export type TodoItem = {
   key: number;
   status: "pending" | "paused" | "completed";
   text: string;
