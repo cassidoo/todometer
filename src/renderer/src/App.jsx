@@ -3,12 +3,12 @@ import ItemList from "./components/ItemList.jsx";
 import { AppStateProvider } from "./AppContext.jsx";
 
 function App() {
-  return (
-    <AppStateProvider>
-      <TodoDate />
-      <ItemList />
-    </AppStateProvider>
-  );
+	return (
+		<AppStateProvider>
+			<TodoDate />
+			<ItemList />
+		</AppStateProvider>
+	);
 }
 
 export default App;
