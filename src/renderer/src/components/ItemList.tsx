@@ -6,7 +6,7 @@ import {
 } from "@reach/accordion";
 import "@reach/accordion/styles.css";
 
-import { useAppReducer, useItems } from "../AppContext.tsx";
+import { useAppReducer, useItems } from "../AppContext";
 import Progress from "./Progress.jsx";
 import AddItemForm from "./AddItemForm.jsx";
 import Item from "./Item";
