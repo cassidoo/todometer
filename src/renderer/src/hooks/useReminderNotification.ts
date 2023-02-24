@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useItems } from "../AppContext.tsx";
+import { useItems } from "../AppContext";
 
 function getTimeCondition(nd, notificationInterval) {
   let condition = false;
