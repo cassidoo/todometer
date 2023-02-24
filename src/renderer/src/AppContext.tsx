@@ -2,7 +2,7 @@ import { createContext, useContext, useReducer } from "react";
 import { loadState, saveState } from "./local-storage.js";
 import { format } from "date-fns";
 
-export const AppContext = createContext();
+export const AppContext = createContext(undefined);
 
 export function useAppState() {
   return useContext(AppContext)[0];

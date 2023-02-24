@@ -1,6 +1,6 @@
 import TodoDate from "./components/TodoDate.jsx";
 import ItemList from "./components/ItemList.jsx";
-import { AppStateProvider } from "./AppContext.jsx";
+import { AppStateProvider } from "./AppContext.tsx";
 
 function App() {
   return (
