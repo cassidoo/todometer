@@ -1,8 +1,27 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, ReactNode, useContext, useReducer } from "react";
 import { loadState, saveState } from "./local-storage.js";
 import { format } from "date-fns";
 
-export const AppContext = createContext(undefined);
+type TodoItem = {
+  key: number;
+  status: "pending" | "paused" | "completed";
+  text: string;
+};
+
+type AppState = {
+  items: TodoItem[];
+  date: {
+    day: string;
+    dayDisplay: string;
+    month: string;
+    monthDisplay: string;
+    year: string;
+    weekday: string;
+  };
+};
+type Context = [AppState, React.Dispatch<Action>];
+
+export const AppContext = createContext<Context>(undefined);
 
 export function useAppState() {
   return useContext(AppContext)[0];
@@ -22,7 +41,13 @@ export function useItems() {
   return { pending, paused, completed };
 }
 
-const appStateReducer = (state, action) => {
+type Action =
+  | { type: "ADD_ITEM"; item: TodoItem }
+  | { type: "UPDATE_ITEM"; item: TodoItem }
+  | { type: "DELETE_ITEM"; item: TodoItem }
+  | { type: "RESET_ALL" };
+
+const appStateReducer = (state: AppState, action: Action) => {
   let nd = new Date();
 
   let currentDate = {
@@ -81,7 +106,7 @@ const appStateReducer = (state, action) => {
   }
 };
 
-export function AppStateProvider({ children }) {
+export function AppStateProvider({ children }: { children: ReactNode }) {
   let initialState = loadState();
 
   if (initialState === undefined) {
