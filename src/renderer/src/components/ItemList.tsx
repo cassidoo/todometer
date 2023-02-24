@@ -8,7 +8,7 @@ import "@reach/accordion/styles.css";
 
 import { useAppReducer, useItems } from "../AppContext";
 import Progress from "./Progress.jsx";
-import AddItemForm from "./AddItemForm.jsx";
+import AddItemForm from "./AddItemForm";
 import Item from "./Item";
 import styles from "./ItemList.module.css";
 import arrow from "../img/arrow.svg";

@@ -1,18 +1,20 @@
 import { useRef } from "react";
-import { useAppReducer } from "../AppContext.tsx";
+import { useAppReducer } from "../AppContext";
 import styles from "./AddItemForm.module.css";
 
 // Form to populate todo items
 function AddItemForm() {
   const dispatch = useAppReducer();
-  let inputRef = useRef();
+  let inputRef = useRef<HTMLInputElement>(null);
 
-  function addItem(e) {
+  function addItem(e: React.FormEvent<HTMLFormElement>) {
+    if (!inputRef.current) return;
+
     const newItem = {
       text: inputRef.current.value,
       key: Date.now(),
       status: "pending",
-    };
+    } as const;
     if (newItem.text.trim()) {
       dispatch({ type: "ADD_ITEM", item: newItem });
     }
