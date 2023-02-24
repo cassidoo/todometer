@@ -1,75 +1,78 @@
 {
-	"name": "todometer",
-	"description": "A meter-based to-do list",
-	"version": "2.0.1",
-	"main": "dist/main/index.cjs",
-	"type": "module",
-	"author": {
-		"name": "Cassidy Williams",
-		"email": "hi@cassidoo.co",
-		"url": "https://cassidoo.co"
-	},
-	"homepage": ".",
-	"build": {
-		"appId": "com.electron.todometer",
-		"productName": "todometer",
-		"copyright": "Copyright © 2023 @cassidoo",
-		"mac": {
-			"category": "public.app-category.utilities",
-			"icon": "assets/mac/icon.png.icns"
-		},
-		"win": {
-			"icon": "assets/win/icon.png.ico"
-		},
-		"linux": {
-			"target": "AppImage",
-			"icon": "assets/png/256x256.png"
-		},
-		"files": [
-			"node_modules/**/*",
-			"dist/main/**",
-			"dist/preload/**",
-			"dist/renderer/**",
-			"package.json"
-		],
-		"directories": {
-			"buildResources": "assets"
-		}
-	},
-	"scripts": {
-		"dev": "node src/scripts/watch.mjs",
-		"build": "npm run build:main & npm run build:preload & npm run build:renderer",
-		"update-vendors": "cross-env ELECTRON_RUN_AS_NODE=1 electron src/scripts/update-electron-vendors.mjs",
-		"build:main": "cd ./src/main && vite build",
-		"build:preload": "cd ./src/preload && vite build",
-		"build:renderer": "cd ./src/renderer && vite build",
-		"test": "cd ./src/renderer && vitest src",
-		"postinstall": "electron-builder install-app-deps && npm run update-vendors",
-		"pre-electron-pack": "npm run build",
-		"electron-pack": "electron-builder build --dir --windows --linux --mac"
-	},
-	"dependencies": {
-		"@reach/accordion": "^0.8.0",
-		"date-fns": "^2.9.0",
-		"electron-is-dev": "^1.1.0",
-		"electron-store": "^5.1.0",
-		"prop-types": "^15.8.1",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0"
-	},
-	"devDependencies": {
-		"@testing-library/jest-dom": "^5.16.5",
-		"@testing-library/react": "^13.4.0",
-		"@vitejs/plugin-react": "^2.1.0",
-		"cross-env": "^7.0.3",
-		"electron": "^22.0.2",
-		"electron-builder": "^23.6.0",
-		"eslint": "^8.26.0",
-		"eslint-plugin-react": "^7.31.10",
-		"jsdom": "^20.0.1",
-		"postcss": "^8.4.21",
-		"postcss-nested": "^6.0.0",
-		"vite": "^3.1.8",
-		"vitest": "^0.24.3"
-	}
+  "name": "todometer",
+  "description": "A meter-based to-do list",
+  "version": "2.0.1",
+  "main": "dist/main/index.cjs",
+  "type": "module",
+  "author": {
+    "name": "Cassidy Williams",
+    "email": "hi@cassidoo.co",
+    "url": "https://cassidoo.co"
+  },
+  "homepage": ".",
+  "build": {
+    "appId": "com.electron.todometer",
+    "productName": "todometer",
+    "copyright": "Copyright © 2023 @cassidoo",
+    "mac": {
+      "category": "public.app-category.utilities",
+      "icon": "assets/mac/icon.png.icns"
+    },
+    "win": {
+      "icon": "assets/win/icon.png.ico"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/png/256x256.png"
+    },
+    "files": [
+      "node_modules/**/*",
+      "dist/main/**",
+      "dist/preload/**",
+      "dist/renderer/**",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
+  },
+  "scripts": {
+    "dev": "node src/scripts/watch.mjs",
+    "build": "npm run build:main & npm run build:preload & npm run build:renderer",
+    "update-vendors": "cross-env ELECTRON_RUN_AS_NODE=1 electron src/scripts/update-electron-vendors.mjs",
+    "build:main": "cd ./src/main && vite build",
+    "build:preload": "cd ./src/preload && vite build",
+    "build:renderer": "cd ./src/renderer && vite build",
+    "test": "cd ./src/renderer && vitest src",
+    "postinstall": "electron-builder install-app-deps && npm run update-vendors",
+    "pre-electron-pack": "npm run build",
+    "electron-pack": "electron-builder build --dir --windows --linux --mac"
+  },
+  "dependencies": {
+    "@reach/accordion": "^0.8.0",
+    "date-fns": "^2.9.0",
+    "electron-is-dev": "^1.1.0",
+    "electron-store": "^5.1.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^2.1.0",
+    "cross-env": "^7.0.3",
+    "electron": "^22.0.2",
+    "electron-builder": "^23.6.0",
+    "eslint": "^8.26.0",
+    "eslint-plugin-react": "^7.31.10",
+    "jsdom": "^20.0.1",
+    "postcss": "^8.4.21",
+    "postcss-nested": "^6.0.0",
+    "typescript": "^4.9.5",
+    "vite": "^3.1.8",
+    "vitest": "^0.24.3"
+  }
 }
