@@ -1,6 +1,6 @@
 import { useAppState } from "../AppContext";
-import useDateCheck from "../hooks/useDateCheck.js";
-import useReminderNotification from "../hooks/useReminderNotification.js";
+import useDateCheck from "../hooks/useDateCheck";
+import useReminderNotification from "../hooks/useReminderNotification";
 import styles from "./TodoDate.module.css";
 
 // Current date at the top of the page
