@@ -29,7 +29,7 @@ function Item({ item }) {
 
 	return (
 		<div className={styles.item} tabIndex="0">
-			<div className={styles.itemName}>{text}</div>
+			<div className={styles.itemname}>{text}</div>
 			<div
 				className={`${styles.buttons} ${
 					completed ? styles.completedButtons : ""
