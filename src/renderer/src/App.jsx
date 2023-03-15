@@ -1,5 +1,6 @@
 import TodoDate from "./components/TodoDate.jsx";
 import ItemList from "./components/ItemList.jsx";
+import NotificationHandler from "./components/NotificationHandler.jsx";
 import { AppStateProvider } from "./AppContext.jsx";
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
 		<AppStateProvider>
 			<TodoDate />
 			<ItemList />
+			<NotificationHandler />
 		</AppStateProvider>
 	);
 }

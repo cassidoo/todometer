@@ -223,13 +223,14 @@ function menuSetup() {
 						let exNotification = new Notification({
 							title: "todometer reminder!",
 							body: "Here's an example todometer notification!",
-							silent: false,
-							sound: path.join(
-								app.getAppPath(),
-								"assets/notification/pingyping.wav"
-							),
 						});
 						exNotification.show();
+
+						mainWindow.webContents.send("send-notification", {
+							message: "Hello from the main process!",
+							title: "My App",
+							// soundFilePath: "./assets/sound/notification.mp3",
+						});
 					},
 				},
 			],

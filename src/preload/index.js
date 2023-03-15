@@ -7,4 +7,10 @@ process.once("loaded", () => {
 			callback(args);
 		})
 	);
+
+	contextBridge.exposeInMainWorld("onExampleNotification", (callback) =>
+		ipcRenderer.on("send-notification", (event, args) => {
+			callback(args);
+		})
+	);
 });

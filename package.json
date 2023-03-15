@@ -49,6 +49,7 @@
 		"electron-pack": "electron-builder build --dir --windows --linux --mac"
 	},
 	"dependencies": {
+		"@meetfranz/electron-notification-state": "^1.0.0",
 		"@reach/accordion": "^0.8.0",
 		"date-fns": "^2.9.0",
 		"electron-is-dev": "^1.1.0",

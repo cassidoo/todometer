@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useItems } from "../AppContext.jsx";
+import notificationPing from "../notification/pingyping.mp3";
 
 function getTimeCondition(nd, notificationInterval) {
 	let condition = false;
@@ -52,6 +53,7 @@ export default function useReminderNotification() {
 				new Notification("todometer reminder!", {
 					body: text,
 				});
+				new Audio(notificationPing).play();
 			}
 		}, 1000);
 

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { format, parseISO, isBefore } from "date-fns";
 import { useAppState, useAppReducer } from "../AppContext.jsx";
+import notificationPing from "../notification/pingyping.mp3";
 
 export default function useDateCheck() {
 	const { date } = useAppState();
@@ -24,7 +25,9 @@ export default function useDateCheck() {
 				if (resetNotification) {
 					new Notification("todometer reset time!", {
 						body: "It's a new day! Your todos are being reset.",
+						silent: true,
 					});
+					new Audio(notificationPing).play();
 				}
 				dispatch({ type: "RESET_ALL" });
 				window.location.reload();
