@@ -5,7 +5,7 @@ import {
 	dialog,
 	powerMonitor,
 	shell,
-	Notification,
+	
 } from "electron";
 import Store from "electron-store";
 import isDev from "electron-is-dev";
