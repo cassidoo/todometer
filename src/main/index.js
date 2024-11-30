@@ -4,7 +4,7 @@ import {
 	Menu,
 	dialog,
 	powerMonitor,
-	shell,
+	
 	
 } from "electron";
 import Store from "electron-store";
