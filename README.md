@@ -8,7 +8,7 @@ A simple, meter-based to-do list built with Electron and React.
 
 Nab the latest version from the [Releases](https://github.com/cassidoo/todometer/releases) page!
 
-## Development
+##   Development 
 
 - Clone the repo:
 
