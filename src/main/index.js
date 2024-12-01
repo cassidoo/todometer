@@ -4,7 +4,8 @@ import {
 	Menu,
 	dialog,
 	powerMonitor,
-	
+	notification,
+	shell,
 	
 } from "electron";
 import Store from "electron-store";
