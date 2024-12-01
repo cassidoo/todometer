@@ -54,3 +54,4 @@ Regarding that last point, I don't expect all pull requests to be absolutely nec
 
 Please don't be hurt if your PR isn't merged. You're lovely for working on it. If you are thinking about working on something, feel free to make an issue beforehand so that you can make sure it'll be worth your time!
 modify
+ikejid
