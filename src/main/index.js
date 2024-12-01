@@ -29,7 +29,7 @@ let willQuit = false;
 function createWindow() {
 	mainWindow = new BrowserWindow({
 		width: 800,
-		minWidth: 320,
+		minWidth: 520,
 		height: 600,
 		fullscreenable: true,
 		backgroundColor: "#403F4D",
