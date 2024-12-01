@@ -3,7 +3,7 @@ import {
 	BrowserWindow,
 	Menu,
 	dialog,
-	powerMonitor,
+	
 	
 	
 } from "electron";
