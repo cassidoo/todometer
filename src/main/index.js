@@ -7,11 +7,14 @@ import {
 	shell,
 	Notification,
 } from "electron";
-import Store from "electron-store";
-import isDev from "electron-is-dev";
+import * as StoreModule from "electron-store";
+import * as isDevModule from "electron-is-dev";
 import path from "path";
 import { version } from "../../package.json";
 
+const unwrapDefault = (mod) => mod?.default?.default ?? mod?.default ?? mod;
+const Store = unwrapDefault(StoreModule);
+const isDev = unwrapDefault(isDevModule);
 const store = new Store();
 
 let notificationSettings = {

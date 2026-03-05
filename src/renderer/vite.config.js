@@ -16,6 +16,7 @@ export default defineConfig({
   mode: process.env.MODE,
   root: PACKAGE_ROOT,
   envDir: process.cwd(),
+  cacheDir: "../../node_modules/.vite",
   base: "./",
   server: {
     fs: {
@@ -45,9 +46,5 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: "./src/setupTests.js",
-    cache: {
-      // store the cache in the root node_modules folder
-      dir: "../../node_modules/.vitest",
-    },
   },
 });
