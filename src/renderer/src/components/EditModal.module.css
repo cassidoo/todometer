@@ -1,0 +1,81 @@
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent overlay */
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s 0.3s;
+}
+
+.modal.open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease;
+}
+
+.modalContent {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  color: #333; /* Darker color for readability */
+}
+
+.input {
+  width: 100%;
+  padding: 20px 70px 20px 20px;
+  height: 70px;
+  background: #f0f0f0; /* Lighter background for input */
+  border: 1px solid #ccc; /* Border for input field */
+  border-radius: 3px;
+  box-sizing: border-box;
+  color: #333; /* Dark text color */
+  font-size: 1rem; /* Fixed font size */
+  outline: none;
+  margin-bottom: 15px;
+}
+
+button {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff; /* Blue background for buttons */
+  color: white; /* White text on buttons */
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 8px;
+}
+
+button:hover {
+  background-color: #0056b3; /* Darker blue when hovered */
+}
+
+button:focus {
+  outline: none;
+}
+
+button.cancel {
+  background-color: #ccc; /* Light grey for cancel button */
+}
+
+button.cancel:hover {
+  background-color: #bbb; /* Darker grey on hover */
+}

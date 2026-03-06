@@ -78,6 +78,16 @@
 				}
 			}
 
+      &.edit {
+        width: 24px;
+        height: 24px;
+        background-color: var(--orange);
+        mask: url("../img/edit.svg") no-repeat center;
+        mask-size: contain;
+        -webkit-mask: url("../img/edit.svg") no-repeat center;
+        -webkit-mask-size: contain;
+      }
+
 			&.complete {
 				width: 30px;
 				background: no-repeat url("../img/check.svg");

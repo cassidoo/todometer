@@ -40,19 +40,14 @@ const appStateReducer = (state, action) => {
 			saveState(newState);
 			return newState;
 		}
-		case "UPDATE_ITEM": {
-			const newItems = state.items.map((i) => {
-				if (i.key === action.item.key) {
-					return Object.assign({}, i, {
-						status: action.item.status,
-					});
-				}
-				return i;
-			});
-			const newState = { ...state, items: newItems };
-			saveState(newState);
-			return newState;
-		}
+    case "UPDATE_ITEM": {
+      const newItems = state.items.map((i) =>
+        i.key === action.item.key ? { ...i, ...action.item } : i
+      );
+      const newState = { ...state, items: newItems };
+      saveState(newState);
+      return newState;
+    }
 		case "DELETE_ITEM": {
 			const newState = {
 				...state,
