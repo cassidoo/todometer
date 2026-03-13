@@ -45,6 +45,7 @@ const appStateReducer = (state, action) => {
 				if (i.key === action.item.key) {
 					return Object.assign({}, i, {
 						status: action.item.status,
+						text: action.item.text
 					});
 				}
 				return i;

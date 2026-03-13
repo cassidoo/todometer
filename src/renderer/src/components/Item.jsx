@@ -1,15 +1,27 @@
+import { useState, useRef } from "react";
 import { useAppReducer } from "../AppContext.jsx";
 import styles from "./Item.module.css";
 
 // Individual todo item
 function Item({ item }) {
 	const dispatch = useAppReducer();
+	
+	const [isEditMode, setIsEditMode] = useState(false);
+	const editValueRef = useRef(item.text);
+	
 	let text = item.text;
 	let paused = item.status === "paused";
 	let completed = item.status === "completed";
 
 	function deleteItem() {
 		dispatch({ type: "DELETE_ITEM", item });
+	}
+
+	function editItem() {
+		const editedValue = editValueRef.current.value === "" ? text : editValueRef.current.value;
+		const editedItem = { ...item, text: editedValue };
+		dispatch({ type: "UPDATE_ITEM", item: editedItem });
+		setIsEditMode(false);
 	}
 
 	function pauseItem() {
@@ -29,13 +41,37 @@ function Item({ item }) {
 
 	return (
 		<div className={styles.item} tabIndex="0">
-			<div className={styles.itemname}>{text}</div>
-			<div
+			{isEditMode && (
+				<form 
+					className={styles.editform}
+					onSubmit={() => editItem()}>
+					  <input
+						ref={editValueRef}
+						defaultValue={text}
+						autoFocus
+						onBlur={() => editItem()}
+					  />
+				</form>
+			  )}
+			  {!isEditMode && (
+				<div
+				  className={styles.itemname}
+				  onDoubleClick={() => setIsEditMode(true)}
+				>
+				  {text}
+				</div>
+			  )}
+			  {!isEditMode && (
+				<div
 				className={`${styles.buttons} ${
 					completed ? styles.completedButtons : ""
 				}`}
 			>
-				{completed && <button className={styles.empty} tabIndex="0"></button>}
+				<button
+					className={styles.edit}
+					onClick={() => setIsEditMode(true)}
+					tabIndex="0"
+				></button>
 				<button
 					className={styles.delete}
 					onClick={deleteItem}
@@ -62,7 +98,9 @@ function Item({ item }) {
 						tabIndex="0"
 					></button>
 				)}
+				{completed && <button className={styles.empty} tabIndex="0"></button>}
 			</div>
+			  )}
 		</div>
 	);
 }
