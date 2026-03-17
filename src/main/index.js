@@ -18,8 +18,8 @@ const isDev = unwrapDefault(isDevModule);
 const store = new Store();
 
 let notificationSettings = {
-	resetNotification: store.get("reset") || true,
-	reminderNotification: store.get("reminder") || "hour",
+	resetNotification: store.get("reset") ?? true,
+	reminderNotification: store.get("reminder") ?? "hour",
 };
 
 let mainWindow = {
@@ -45,7 +45,10 @@ function createWindow() {
 	mainWindow.loadURL(
 		isDev
 			? "http://localhost:5173"
-			: new URL("../dist/renderer/index.html", "file://" + __dirname).toString()
+			: new URL(
+					"../dist/renderer/index.html",
+					"file://" + __dirname,
+				).toString(),
 	);
 }
 
@@ -60,9 +63,9 @@ function menuSetup() {
 						dialog.showMessageBox(mainWindow, {
 							type: "info",
 							title: "About",
-							message: "todometer is built by @cassidoo",
-							detail:
-								"You can find her on most things @cassidoo, or on her website cassidoo.co.",
+							message:
+								"todometer is open source and lovingly built by cassidoo",
+							detail: "You can find her on her website cassidoo.co.",
 							icon: path.join(app.getAppPath(), "assets/png/64x64.png"),
 						});
 					},
@@ -119,9 +122,11 @@ function menuSetup() {
 					type: "separator",
 				},
 				{ role: "reload" },
+				{ role: "resetZoom" },
+				{ role: "zoomIn" },
+				{ role: "zoomOut" },
 				{ role: "togglefullscreen" },
 				{ role: "minimize" },
-				{ role: "close" },
 			],
 		},
 		{
@@ -135,7 +140,7 @@ function menuSetup() {
 						notificationSettings.resetNotification = e.checked;
 						mainWindow.webContents.send(
 							"notificationSettingsChange",
-							notificationSettings
+							notificationSettings,
 						);
 						store.set("reset", e.checked);
 					},
@@ -152,7 +157,7 @@ function menuSetup() {
 									notificationSettings.reminderNotification = "never";
 									mainWindow.webContents.send(
 										"notificationSettingsChange",
-										notificationSettings
+										notificationSettings,
 									);
 									store.set("reminder", "never");
 								}
@@ -167,7 +172,7 @@ function menuSetup() {
 									notificationSettings.reminderNotification = "fiveminutes";
 									mainWindow.webContents.send(
 										"notificationSettingsChange",
-										notificationSettings
+										notificationSettings,
 									);
 									store.set("reminder", "fiveminutes");
 								}
@@ -182,7 +187,7 @@ function menuSetup() {
 									notificationSettings.reminderNotification = "quarterhour";
 									mainWindow.webContents.send(
 										"notificationSettingsChange",
-										notificationSettings
+										notificationSettings,
 									);
 									store.set("reminder", "quarterhour");
 								}
@@ -197,7 +202,7 @@ function menuSetup() {
 									notificationSettings.reminderNotification = "halfhour";
 									mainWindow.webContents.send(
 										"notificationSettingsChange",
-										notificationSettings
+										notificationSettings,
 									);
 									store.set("reminder", "halfhour");
 								}
@@ -212,7 +217,7 @@ function menuSetup() {
 									notificationSettings.reminderNotification = "hour";
 									mainWindow.webContents.send(
 										"notificationSettingsChange",
-										notificationSettings
+										notificationSettings,
 									);
 									store.set("reminder", "hour");
 								}
@@ -229,7 +234,7 @@ function menuSetup() {
 							silent: false,
 							sound: path.join(
 								app.getAppPath(),
-								"assets/notification/pingyping.wav"
+								"assets/notification/pingyping.wav",
 							),
 						});
 						exNotification.show();
@@ -249,7 +254,7 @@ app.on("ready", () => {
 	mainWindow.webContents.on("did-finish-load", () => {
 		mainWindow.webContents.send(
 			"notificationSettingsChange",
-			notificationSettings
+			notificationSettings,
 		);
 	});
 
