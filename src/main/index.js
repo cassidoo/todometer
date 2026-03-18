@@ -122,9 +122,27 @@ function menuSetup() {
 					type: "separator",
 				},
 				{ role: "reload" },
-				{ role: "resetZoom" },
-				{ role: "zoomIn" },
-				{ role: "zoomOut" },
+				{
+					label: "Zoom In",
+					accelerator: "CommandOrControl+=",
+					click: () => {
+						const wc = mainWindow.webContents;
+						wc.setZoomLevel(wc.getZoomLevel() + 0.5);
+					},
+				},
+				{
+					label: "Zoom Out",
+					accelerator: "CommandOrControl+-",
+					click: () => {
+						const wc = mainWindow.webContents;
+						wc.setZoomLevel(wc.getZoomLevel() - 0.5);
+					},
+				},
+				{
+					label: "Reset Zoom",
+					accelerator: "CommandOrControl+0",
+					click: () => mainWindow.webContents.setZoomLevel(0),
+				},
 				{ role: "togglefullscreen" },
 				{ role: "minimize" },
 			],
