@@ -6,6 +6,7 @@ import {
 	powerMonitor,
 	shell,
 	Notification,
+	ipcMain,
 } from "electron";
 import * as StoreModule from "electron-store";
 import * as isDevModule from "electron-is-dev";
@@ -16,6 +17,10 @@ const unwrapDefault = (mod) => mod?.default?.default ?? mod?.default ?? mod;
 const Store = unwrapDefault(StoreModule);
 const isDev = unwrapDefault(isDevModule);
 const store = new Store();
+
+if (process.platform === "win32") {
+	app.setAppUserModelId(process.execPath);
+}
 
 let notificationSettings = {
 	resetNotification: store.get("reset") ?? true,
@@ -28,6 +33,36 @@ let mainWindow = {
 	},
 }; // temp object while app loads
 let willQuit = false;
+const notificationSoundPath = path.join(app.getAppPath(), "assets/bloop.mp3");
+
+function playNotificationSound() {
+	if (
+		!mainWindow ||
+		typeof mainWindow.isDestroyed !== "function" ||
+		mainWindow.isDestroyed()
+	) {
+		return;
+	}
+
+	mainWindow.webContents.send("playNotificationSound", notificationSoundPath);
+}
+
+function showNotification({ title, body, silent = false }) {
+	if (!Notification.isSupported()) {
+		return;
+	}
+
+	if (!silent) {
+		playNotificationSound();
+	}
+
+	const notification = new Notification({
+		title,
+		body,
+		silent: process.platform === "win32" ? true : silent,
+	});
+	notification.show();
+}
 
 function createWindow() {
 	mainWindow = new BrowserWindow({
@@ -246,16 +281,11 @@ function menuSetup() {
 				{
 					label: "Show example notification",
 					click: (e) => {
-						let exNotification = new Notification({
+						showNotification({
 							title: "todometer reminder!",
 							body: "Here's an example todometer notification!",
 							silent: false,
-							sound: path.join(
-								app.getAppPath(),
-								"assets/notification/pingyping.wav",
-							),
 						});
-						exNotification.show();
 					},
 				},
 			],
@@ -268,6 +298,18 @@ function menuSetup() {
 app.on("ready", () => {
 	createWindow();
 	menuSetup();
+
+	ipcMain.on("showNotification", (_event, payload) => {
+		if (!payload || typeof payload !== "object") {
+			return;
+		}
+
+		const title = String(payload.title ?? "todometer");
+		const body = String(payload.body ?? "");
+		const silent = Boolean(payload.silent);
+
+		showNotification({ title, body, silent });
+	});
 
 	mainWindow.webContents.on("did-finish-load", () => {
 		mainWindow.webContents.send(

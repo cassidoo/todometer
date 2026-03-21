@@ -30,6 +30,7 @@
 			"dist/main/**",
 			"dist/preload/**",
 			"dist/renderer/**",
+			"assets/bloop.mp3",
 			"package.json"
 		],
 		"directories": {

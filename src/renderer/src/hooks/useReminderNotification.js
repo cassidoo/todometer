@@ -49,8 +49,10 @@ export default function useReminderNotification() {
 					paused.length
 				} paused for later)`;
 
-				new Notification("todometer reminder!", {
+				window?.showSystemNotification?.({
+					title: "todometer reminder!",
 					body: text,
+					silent: false,
 				});
 			}
 		}, 1000);

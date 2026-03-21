@@ -17,13 +17,15 @@ export default function useDateCheck() {
 		const interval = setInterval(() => {
 			let nd = new Date();
 			let currentDate = parseISO(
-				`${format(nd, "y")}-${format(nd, "MM")}-${format(nd, "dd")}`
+				`${format(nd, "y")}-${format(nd, "MM")}-${format(nd, "dd")}`,
 			);
 
 			if (isBefore(storedDate, currentDate)) {
 				if (resetNotification) {
-					new Notification("todometer reset time!", {
+					window?.showSystemNotification?.({
+						title: "todometer reset time!",
 						body: "It's a new day! Your todos are being reset.",
+						silent: false,
 					});
 				}
 				dispatch({ type: "RESET_ALL" });
