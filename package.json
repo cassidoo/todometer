@@ -51,7 +51,7 @@
 		"electron-pack": "electron-builder build --dir --windows --linux --mac"
 	},
 	"dependencies": {
-		"@reach/accordion": "^0.18.0",
+		"@radix-ui/react-accordion": "^1.2.11",
 		"date-fns": "^4.1.0",
 		"electron-is-dev": "^3.0.1",
 		"electron-store": "^11.0.2",
@@ -60,6 +60,8 @@
 		"react-dom": "^19.2.4"
 	},
 	"devDependencies": {
+		"@eslint-react/eslint-plugin": "^3.0.0",
+		"@eslint/js": "^10.0.1",
 		"@testing-library/dom": "^10.4.1",
 		"@testing-library/jest-dom": "^6.9.1",
 		"@testing-library/react": "^16.3.2",
@@ -68,10 +70,11 @@
 		"electron": "^40.7.0",
 		"electron-builder": "^26.8.1",
 		"eslint": "^10.0.2",
-		"eslint-plugin-react": "^7.37.5",
+		"globals": "^17.4.0",
 		"jsdom": "^28.1.0",
 		"postcss": "^8.5.8",
 		"postcss-nested": "^7.0.2",
+		"typescript": "^5.8.3",
 		"vite": "^7.3.1",
 		"vitest": "^4.0.18"
 	}

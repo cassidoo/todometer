@@ -1,10 +1,4 @@
-import {
-	Accordion,
-	AccordionItem,
-	AccordionButton,
-	AccordionPanel,
-} from "@reach/accordion";
-import "@reach/accordion/styles.css";
+import * as Accordion from "@radix-ui/react-accordion";
 
 import { useAppReducer, useItems } from "../AppContext.jsx";
 import Progress from "./Progress.jsx";
@@ -34,35 +28,40 @@ function ItemList() {
 					<img src={alldone} alt="Nothing to do!" />
 				</div>
 			)}
-			<Accordion collapsible multiple>
+			<Accordion.Root type="multiple" collapsible>
 				{paused.length > 0 && (
-					<AccordionItem>
-						<AccordionButton className={styles.toggle}>
-							<img src={arrow} alt="Do Later Toggle" />
-							<span>Do Later</span>
-						</AccordionButton>
-						<AccordionPanel className={styles.panel}>
+					<Accordion.Item value="do-later">
+						<Accordion.Header>
+							<Accordion.Trigger className={styles.toggle}>
+								<img src={arrow} alt="Do Later Toggle" />
+								<span>Do Later</span>
+							</Accordion.Trigger>
+						</Accordion.Header>
+						<Accordion.Content className={styles.panel}>
 							{paused &&
 								paused.map((item) => {
 									return <Item item={item} key={item.key} />;
 								})}
-						</AccordionPanel>
-					</AccordionItem>
+						</Accordion.Content>
+					</Accordion.Item>
 				)}
 				{completed.length > 0 && (
-					<AccordionItem>
-						<AccordionButton className={styles.toggle}>
-							<img src={arrow} alt="Completed Toggle" /> <span>Completed</span>
-						</AccordionButton>
-						<AccordionPanel className={styles.panel}>
+					<Accordion.Item value="completed">
+						<Accordion.Header>
+							<Accordion.Trigger className={styles.toggle}>
+								<img src={arrow} alt="Completed Toggle" />{" "}
+								<span>Completed</span>
+							</Accordion.Trigger>
+						</Accordion.Header>
+						<Accordion.Content className={styles.panel}>
 							{completed &&
 								completed.map((item) => {
 									return <Item item={item} key={item.key} />;
 								})}
-						</AccordionPanel>
-					</AccordionItem>
+						</Accordion.Content>
+					</Accordion.Item>
 				)}
-			</Accordion>
+			</Accordion.Root>
 
 			{(completed.length > 0 || paused.length > 0) && (
 				<div className={styles.reset}>
