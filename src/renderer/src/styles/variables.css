@@ -3,14 +3,17 @@
 	--green: #62dca5;
 	--yellow: #f7f879;
 	--red: #e1675a;
+	--gray: rgb(250, 250, 250, 0.5);
+	--highlight: rgb(250, 250, 250, 0.1);
 
 	--input-color: #2e2d33;
 	--item-color: #4e4d5c;
-	--font-color: #fbfafb;
+	--font-color: rgb(250, 250, 250);
 
 	--big-font-size: 64px;
 	--heading-font-size: 24px;
 	--item-font-size: 20px;
+	--pulse-animation: click 0.5s;
 }
 
 @keyframes click {

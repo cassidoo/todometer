@@ -44,7 +44,9 @@ const appStateReducer = (state, action) => {
 			const newItems = state.items.map((i) => {
 				if (i.key === action.item.key) {
 					return Object.assign({}, i, {
-						status: action.item.status,
+						status:
+							action.item.status !== undefined ? action.item.status : i.status,
+						text: action.item.text !== undefined ? action.item.text : i.text,
 					});
 				}
 				return i;

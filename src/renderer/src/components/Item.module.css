@@ -7,10 +7,19 @@
 	width: 100%;
 	min-height: 70px;
 	background: var(--item-color);
-	border: none;
+	border: 2px solid transparent;
 	border-radius: 3px;
 	box-sizing: border-box;
 	font-size: var(--item-font-size);
+
+	&.editing {
+		border: 2px dashed var(--gray);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--font-color);
+		outline-offset: 2px;
+	}
 
 	@media (max-width: 600px) {
 		margin: 20px auto;
@@ -18,7 +27,26 @@
 
 	.itemname {
 		width: calc(100% - 110px);
-		overflow: auto;
+		overflow: visible;
+		padding: 0;
+		border: none;
+		background: transparent;
+		cursor: text;
+		text-align: left;
+		font: inherit;
+		color: inherit;
+		white-space: pre-wrap;
+		overflow-wrap: anywhere;
+
+		&:focus {
+			outline: none;
+		}
+
+		&:focus-visible {
+			border-radius: 3px;
+			outline: 1px solid var(--highlight);
+			outline-offset: 4px;
+		}
 
 		&::-webkit-scrollbar {
 			background-color: var(--item-color);
@@ -38,6 +66,28 @@
 		}
 	}
 
+	.editInput {
+		width: calc(100% - 110px);
+		background: transparent;
+		border: none;
+		outline: none;
+		color: inherit;
+		font-size: inherit;
+		font-family: inherit;
+		font-weight: inherit;
+		line-height: inherit;
+		resize: none;
+		overflow: hidden;
+		white-space: pre-wrap;
+		overflow-wrap: anywhere;
+		padding: 0;
+
+		&::selection {
+			background: var(--highlight);
+			color: inherit;
+		}
+	}
+
 	.buttons {
 		display: flex;
 		justify-content: space-between;
@@ -47,6 +97,8 @@
 			position: relative;
 			height: 24px;
 			border: none;
+			cursor: pointer;
+			overflow: visible;
 
 			/* used as placeholder so the icon spacing is consistent even if there only 2/3 of the buttons in the row */
 			&.empty {
@@ -96,17 +148,20 @@
 				border-radius: 100%;
 				width: 0;
 				height: 0;
+				pointer-events: none;
+				z-index: 1;
 			}
 
 			&:focus {
 				outline: 1px solid var(--item-color);
-				&:after {
-					animation: click 0.5s;
-				}
+			}
+
+			&:focus-visible::after {
+				animation: var(--pulse-animation);
 			}
 
 			&:hover::after {
-				animation: click 0.5s;
+				animation: var(--pulse-animation);
 			}
 		}
 	}
