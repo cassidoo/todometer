@@ -93,7 +93,7 @@
 		justify-content: space-between;
 		width: 100px;
 
-		button {
+		& button {
 			position: relative;
 			height: 24px;
 			border: none;

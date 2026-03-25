@@ -1,7 +1,7 @@
 .alldone {
 	display: flex;
 	justify-content: center;
-	img {
+	& img {
 		margin: 20px;
 		width: 100px;
 		height: 100px;
@@ -21,7 +21,7 @@
 	font-size: 1.5em;
 	font-weight: bold;
 	animation: slidedown 1s;
-	img {
+	& img {
 		padding: 0 5px 0 0;
 		width: 1em;
 		height: 1em;
@@ -34,7 +34,7 @@
 	}
 	&:focus {
 		outline: 2px solid var(--bg);
-		span {
+		& span {
 			animation: blink 0.5s;
 		}
 	}
@@ -49,7 +49,7 @@
 
 .reset {
 	text-align: center;
-	button {
+	& button {
 		background: transparent;
 		border: none;
 		color: var(--font-color);

@@ -73,7 +73,7 @@
 		"globals": "^17.4.0",
 		"jsdom": "^28.1.0",
 		"postcss": "^8.5.8",
-		"postcss-nested": "^7.0.2",
+		"postcss-nesting": "^13.0.1",
 		"typescript": "^5.8.3",
 		"vite": "^7.3.1",
 		"vitest": "^4.0.18"
