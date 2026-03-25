@@ -22,25 +22,48 @@ if (process.platform === "win32") {
 	app.setAppUserModelId(process.execPath);
 }
 
+const gotTheLock = app.requestSingleInstanceLock();
+
+if (!gotTheLock) {
+	app.quit();
+}
+
 let notificationSettings = {
 	resetNotification: store.get("reset") ?? true,
 	reminderNotification: store.get("reminder") ?? "hour",
 };
 
-let mainWindow = {
-	show: () => {
-		console.log("show");
-	},
-}; // temp object while app loads
+let mainWindow = null;
 let willQuit = false;
 const notificationSoundPath = path.join(app.getAppPath(), "assets/bloop.mp3");
 
+function hasMainWindow() {
+	return (
+		mainWindow &&
+		typeof mainWindow.isDestroyed === "function" &&
+		!mainWindow.isDestroyed()
+	);
+}
+
+function showAndFocusMainWindow() {
+	if (!hasMainWindow()) {
+		return false;
+	}
+
+	if (mainWindow.isMinimized()) {
+		mainWindow.restore();
+	}
+
+	if (!mainWindow.isVisible()) {
+		mainWindow.show();
+	}
+
+	mainWindow.focus();
+	return true;
+}
+
 function playNotificationSound() {
-	if (
-		!mainWindow ||
-		typeof mainWindow.isDestroyed !== "function" ||
-		mainWindow.isDestroyed()
-	) {
+	if (!hasMainWindow()) {
 		return;
 	}
 
@@ -295,45 +318,59 @@ function menuSetup() {
 	Menu.setApplicationMenu(menu);
 }
 
-app.on("ready", () => {
-	createWindow();
-	menuSetup();
-
-	ipcMain.on("showNotification", (_event, payload) => {
-		if (!payload || typeof payload !== "object") {
-			return;
-		}
-
-		const title = String(payload.title ?? "todometer");
-		const body = String(payload.body ?? "");
-		const silent = Boolean(payload.silent);
-
-		showNotification({ title, body, silent });
-	});
-
-	mainWindow.webContents.on("did-finish-load", () => {
-		mainWindow.webContents.send(
-			"notificationSettingsChange",
-			notificationSettings,
-		);
-	});
-
-	powerMonitor.on("resume", () => {
-		mainWindow.reload();
-	});
-
-	// On Mac, this will hide the window
-	// On Windows, the app will close and quit
-	mainWindow.on("close", (e) => {
-		if (willQuit || process.platform === "win32") {
-			mainWindow = null;
-			app.quit();
-		} else {
-			e.preventDefault();
-			mainWindow.hide();
+if (gotTheLock) {
+	app.on("second-instance", () => {
+		if (!showAndFocusMainWindow()) {
+			createWindow();
 		}
 	});
-});
 
-app.on("activate", () => mainWindow.show());
-app.on("before-quit", () => (willQuit = true));
+	app.on("ready", () => {
+		createWindow();
+		menuSetup();
+
+		ipcMain.on("showNotification", (_event, payload) => {
+			if (!payload || typeof payload !== "object") {
+				return;
+			}
+
+			const title = String(payload.title ?? "todometer");
+			const body = String(payload.body ?? "");
+			const silent = Boolean(payload.silent);
+
+			showNotification({ title, body, silent });
+		});
+
+		mainWindow.webContents.on("did-finish-load", () => {
+			mainWindow.webContents.send(
+				"notificationSettingsChange",
+				notificationSettings,
+			);
+		});
+
+		powerMonitor.on("resume", () => {
+			if (hasMainWindow()) {
+				mainWindow.reload();
+			}
+		});
+
+		// On Windows, closing exits; on macOS/Linux, closing hides unless quitting.
+		mainWindow.on("close", (e) => {
+			if (willQuit || process.platform === "win32") {
+				mainWindow = null;
+				app.quit();
+			} else {
+				e.preventDefault();
+				mainWindow.hide();
+			}
+		});
+	});
+
+	app.on("activate", () => {
+		if (!showAndFocusMainWindow()) {
+			createWindow();
+		}
+	});
+
+	app.on("before-quit", () => (willQuit = true));
+}
