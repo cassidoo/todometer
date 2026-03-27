@@ -28,9 +28,16 @@ if (!gotTheLock) {
 	app.quit();
 }
 
+const defaultNotificationSettings = {
+	resetNotification: true,
+	reminderNotification: "never",
+};
+
 let notificationSettings = {
-	resetNotification: store.get("reset") ?? true,
-	reminderNotification: store.get("reminder") ?? "hour",
+	resetNotification:
+		store.get("reset") ?? defaultNotificationSettings.resetNotification,
+	reminderNotification:
+		store.get("reminder") ?? defaultNotificationSettings.reminderNotification,
 };
 
 let mainWindow = null;
@@ -211,7 +218,7 @@ function menuSetup() {
 				{
 					label: "Enable reset notification",
 					type: "checkbox",
-					checked: store.get("reset"),
+					checked: notificationSettings.resetNotification,
 					click: (e) => {
 						notificationSettings.resetNotification = e.checked;
 						mainWindow.webContents.send(
@@ -227,7 +234,7 @@ function menuSetup() {
 						{
 							label: "Never",
 							type: "radio",
-							checked: store.get("reminder") === "never",
+							checked: notificationSettings.reminderNotification === "never",
 							click: (e) => {
 								if (e.checked) {
 									notificationSettings.reminderNotification = "never";
@@ -242,7 +249,8 @@ function menuSetup() {
 						{
 							label: "Every 5 minutes",
 							type: "radio",
-							checked: store.get("reminder") === "fiveminutes",
+							checked:
+								notificationSettings.reminderNotification === "fiveminutes",
 							click: (e) => {
 								if (e.checked) {
 									notificationSettings.reminderNotification = "fiveminutes";
@@ -257,7 +265,8 @@ function menuSetup() {
 						{
 							label: "Every 15 minutes",
 							type: "radio",
-							checked: store.get("reminder") === "quarterhour",
+							checked:
+								notificationSettings.reminderNotification === "quarterhour",
 							click: (e) => {
 								if (e.checked) {
 									notificationSettings.reminderNotification = "quarterhour";
@@ -272,7 +281,7 @@ function menuSetup() {
 						{
 							label: "Every 30 minutes",
 							type: "radio",
-							checked: store.get("reminder") === "halfhour",
+							checked: notificationSettings.reminderNotification === "halfhour",
 							click: (e) => {
 								if (e.checked) {
 									notificationSettings.reminderNotification = "halfhour";
@@ -287,7 +296,7 @@ function menuSetup() {
 						{
 							label: "Every hour",
 							type: "radio",
-							checked: store.get("reminder") === "hour",
+							checked: notificationSettings.reminderNotification === "hour",
 							click: (e) => {
 								if (e.checked) {
 									notificationSettings.reminderNotification = "hour";
