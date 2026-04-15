@@ -51,6 +51,10 @@
 		"electron-pack": "electron-builder build --dir --windows --linux --mac"
 	},
 	"dependencies": {
+		"@dnd-kit/abstract": "^0.4.0",
+		"@dnd-kit/dom": "^0.4.0",
+		"@dnd-kit/helpers": "^0.4.0",
+		"@dnd-kit/react": "^0.4.0",
 		"@radix-ui/react-accordion": "^1.2.11",
 		"date-fns": "^4.1.0",
 		"electron-is-dev": "^3.0.1",
