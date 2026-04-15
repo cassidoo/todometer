@@ -27,7 +27,7 @@
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			background: #fff;
+			background: var(--font-color);
 			transform: translate(-50%, -50%);
 			border-radius: 100%;
 			width: 0;

@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
+import { useSortable } from "@dnd-kit/react/sortable";
 import { useAppReducer } from "../AppContext.jsx";
 import styles from "./Item.module.css";
 
 // Individual todo item
-function Item({ item }) {
+function Item({ item, index, group }) {
 	const dispatch = useAppReducer();
 	const [isEditing, setIsEditing] = useState(false);
 	const [draftText, setDraftText] = useState(item.text);
@@ -12,6 +13,14 @@ function Item({ item }) {
 	let text = item.text;
 	let paused = item.status === "paused";
 	let completed = item.status === "completed";
+
+	const { ref, isDragSource } = useSortable({
+		id: item.key,
+		index,
+		group,
+		type: "item",
+		accept: "item",
+	});
 
 	useEffect(() => {
 		if (!isEditing) {
@@ -103,9 +112,11 @@ function Item({ item }) {
 
 	return (
 		<div
-			className={`${styles.item} ${isEditing ? styles.editing : ""}`}
+			ref={ref}
+			className={`${styles.item} ${isEditing ? styles.editing : ""} ${isDragSource ? styles.dragSource : ""}`}
 			tabIndex="0"
 			onKeyDown={handleItemKeyDown}
+			data-dragging={isDragSource || undefined}
 		>
 			{isEditing ? (
 				<textarea
@@ -117,6 +128,7 @@ function Item({ item }) {
 					}}
 					onBlur={commitEdit}
 					onKeyDown={handleEditKeyDown}
+					onPointerDown={(e) => e.stopPropagation()}
 					rows={Math.max(draftText.split("\n").length, 1)}
 				/>
 			) : (
@@ -125,6 +137,7 @@ function Item({ item }) {
 					ref={itemnameRef}
 					className={styles.itemname}
 					onClick={startEdit}
+					onPointerDown={(e) => e.stopPropagation()}
 				>
 					{text}
 				</button>
@@ -133,6 +146,7 @@ function Item({ item }) {
 				className={`${styles.buttons} ${
 					completed ? styles.completedButtons : ""
 				}`}
+				onPointerDown={(e) => e.stopPropagation()}
 			>
 				{completed && <button className={styles.empty} tabIndex="-1"></button>}
 				<button

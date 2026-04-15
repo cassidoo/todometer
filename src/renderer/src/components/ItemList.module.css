@@ -12,10 +12,11 @@
 .toggle {
 	display: flex;
 	align-items: center;
+	gap: 10px;
 	margin: 1em 0 0.5em;
 	padding: 0;
 	border: none;
-	background: var(--bg);
+	background: transparent;
 	color: var(--font-color);
 	cursor: pointer;
 	font-size: 1.5em;
@@ -33,9 +34,9 @@
 		transform: rotate(90deg);
 	}
 	&:focus {
-		outline: 2px solid var(--bg);
+		outline: 2px solid var(--input-color);
 		& span {
-			animation: blink 0.5s;
+			animation: pulse-scale 0.5s;
 		}
 	}
 	&:hover {
@@ -43,8 +44,25 @@
 	}
 }
 
-.panel {
+.panel[data-state="open"] {
 	animation: slidedown 0.2s ease;
+}
+
+.droppableSection {
+	min-height: 20px;
+}
+
+.headerDropZone {
+	border-radius: 3px;
+	transition: background 0.15s;
+}
+
+.headerDropTarget {
+	opacity: 0.5;
+}
+
+.headerDropTarget button {
+	animation: blink 2 0.5s;
 }
 
 .reset {
@@ -73,14 +91,32 @@
 	}
 }
 
-@keyframes blink {
+@keyframes pulse-scale {
 	0% {
-		text-shadow: 0 0 2px white;
+		transform: scale(1);
+	}
+	25% {
+		transform: scale(0.98);
 	}
 	50% {
-		text-shadow: 0 0 10px white;
+		transform: scale(1.02);
+	}
+	75% {
+		transform: scale(0.98);
 	}
 	100% {
-		text-shadow: 0 0 2px white;
+		transform: scale(1);
+	}
+}
+
+@keyframes blink {
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.5;
+	}
+	100% {
+		opacity: 1;
 	}
 }

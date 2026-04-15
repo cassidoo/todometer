@@ -11,9 +11,16 @@
 	border-radius: 3px;
 	box-sizing: border-box;
 	font-size: var(--item-font-size);
+	cursor: grab;
 
 	&.editing {
 		border: 2px dashed var(--gray);
+		cursor: auto;
+	}
+
+	&.dragSource {
+		opacity: 0.6;
+		cursor: grabbing;
 	}
 
 	&:focus-visible {
@@ -165,4 +172,43 @@
 			}
 		}
 	}
+}
+
+.dragOverlay {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 20px;
+	width: 100%;
+	min-height: 70px;
+	background: var(--item-color);
+	border: 2px solid transparent;
+	border-radius: 3px;
+	box-sizing: border-box;
+	font-size: var(--item-font-size);
+	color: var(--font-color);
+	cursor: grabbing;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+	position: relative;
+	overflow: hidden;
+}
+
+.dragOverlayLabel {
+	position: absolute;
+	padding: 20px;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	background: var(--highlight);
+	font-size: var(--item-font-size);
+	font-weight: bold;
+	pointer-events: none;
+}
+
+.dragOverlayLabel.paused {
+	color: var(--yellow);
+}
+.dragOverlayLabel.completed {
+	color: var(--green);
 }
