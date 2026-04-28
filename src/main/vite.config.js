@@ -25,6 +25,8 @@ export default defineConfig({
 			external: [
 				// Exclude Electron from built output
 				"electron",
+				// electron-updater must not be bundled (resolved at runtime)
+				"electron-updater",
 				// Exclude Node builtin modules.
 				...builtinModules.flatMap((p) => [p, `node:${p}`]),
 			],

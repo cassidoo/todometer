@@ -10,6 +10,7 @@ import {
 } from "electron";
 import * as StoreModule from "electron-store";
 import * as isDevModule from "electron-is-dev";
+import { autoUpdater } from "electron-updater";
 import path from "path";
 import { version } from "../../package.json";
 
@@ -42,6 +43,7 @@ let notificationSettings = {
 
 let mainWindow = null;
 let willQuit = false;
+let isCheckingForUpdatesManually = false;
 const notificationSoundPath = path.join(app.getAppPath(), "assets/bloop.mp3");
 
 function hasMainWindow() {
@@ -101,7 +103,7 @@ function createWindow() {
 		height: 600,
 		fullscreenable: true,
 		backgroundColor: "#403F4D",
-		icon: path.join(app.getAppPath(), "assets/png/128x128.png"),
+		icon: path.join(app.getAppPath(), "assets/png/128.png"),
 		webPreferences: {
 			preload: path.join(app.getAppPath(), "dist/preload/index.cjs"),
 		},
@@ -115,6 +117,102 @@ function createWindow() {
 					"file://" + __dirname,
 				).toString(),
 	);
+}
+
+function setupAutoUpdater() {
+	if (!app.isPackaged) {
+		return;
+	}
+
+	autoUpdater.autoDownload = true;
+	autoUpdater.autoInstallOnAppQuit = true;
+
+	autoUpdater.on("update-available", (info) => {
+		console.log("Update available:", info.version);
+		if (isCheckingForUpdatesManually && hasMainWindow()) {
+			dialog.showMessageBox(mainWindow, {
+				type: "info",
+				title: "Update Available",
+				message: `A new version (v${info.version}) is being downloaded.`,
+				detail: "You'll be notified when it's ready to install.",
+			});
+		}
+	});
+
+	autoUpdater.on("update-not-available", () => {
+		if (isCheckingForUpdatesManually && hasMainWindow()) {
+			dialog.showMessageBox(mainWindow, {
+				type: "info",
+				title: "No Updates",
+				message: "You're running the latest version of todometer!",
+			});
+		}
+		isCheckingForUpdatesManually = false;
+	});
+
+	autoUpdater.on("download-progress", (progress) => {
+		console.log(`Download progress: ${Math.round(progress.percent)}%`);
+	});
+
+	autoUpdater.on("update-downloaded", (info) => {
+		isCheckingForUpdatesManually = false;
+
+		if (!hasMainWindow()) {
+			return;
+		}
+
+		dialog
+			.showMessageBox(mainWindow, {
+				type: "info",
+				title: "Update Ready",
+				message: `Version ${info.version} has been downloaded.`,
+				detail: "Restart todometer now to apply the update?",
+				buttons: ["Restart", "Later"],
+				defaultId: 0,
+				cancelId: 1,
+			})
+			.then(({ response }) => {
+				if (response === 0) {
+					autoUpdater.quitAndInstall();
+				}
+			});
+	});
+
+	autoUpdater.on("error", (err) => {
+		console.error("Auto-updater error:", err);
+		if (isCheckingForUpdatesManually && hasMainWindow()) {
+			dialog.showMessageBox(mainWindow, {
+				type: "error",
+				title: "Update Error",
+				message: "Could not check for updates.",
+				detail: err?.message || "Please try again later.",
+			});
+		}
+		isCheckingForUpdatesManually = false;
+	});
+
+	autoUpdater.checkForUpdates().catch(() => {});
+}
+
+function checkForUpdatesManually() {
+	if (!app.isPackaged) {
+		if (hasMainWindow()) {
+			dialog.showMessageBox(mainWindow, {
+				type: "info",
+				title: "Dev Mode",
+				message: "Auto-updates are disabled in development mode.",
+			});
+		}
+		return;
+	}
+
+	if (process.platform === "linux" && !process.env.APPIMAGE) {
+		shell.openExternal("https://github.com/cassidoo/todometer/releases/latest");
+		return;
+	}
+
+	isCheckingForUpdatesManually = true;
+	autoUpdater.checkForUpdates().catch(() => {});
 }
 
 function menuSetup() {
@@ -131,7 +229,7 @@ function menuSetup() {
 							message:
 								"todometer is open source and lovingly built by cassidoo",
 							detail: "You can find her on her website cassidoo.co.",
-							icon: path.join(app.getAppPath(), "assets/png/64x64.png"),
+							icon: path.join(app.getAppPath(), "assets/png/64.png"),
 						});
 					},
 				},
@@ -142,15 +240,21 @@ function menuSetup() {
 					},
 				},
 				{
-					type: "separator",
+					label: "Check for Updates…",
+					click: () => {
+						checkForUpdatesManually();
+					},
 				},
 				{
+					type: "separator",
+				},
+				/*{
 					/* For debugging */
 					label: "Dev tools",
 					click: () => {
 						mainWindow.webContents.openDevTools();
 					},
-				},
+				},*/
 				{
 					label: "Quit",
 					accelerator: "CommandOrControl+Q",
@@ -337,6 +441,7 @@ if (gotTheLock) {
 	app.on("ready", () => {
 		createWindow();
 		menuSetup();
+		setupAutoUpdater();
 
 		ipcMain.on("showNotification", (_event, payload) => {
 			if (!payload || typeof payload !== "object") {

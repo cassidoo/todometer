@@ -1,7 +1,7 @@
 {
 	"name": "todometer",
 	"description": "A meter-based to-do list",
-	"version": "2.0.2",
+	"version": "3.0.0",
 	"main": "dist/main/index.cjs",
 	"type": "module",
 	"author": {
@@ -10,20 +10,50 @@
 		"url": "https://cassidoo.co"
 	},
 	"homepage": ".",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/cassidoo/todometer"
+	},
 	"build": {
-		"appId": "com.electron.todometer",
+		"appId": "co.cassidoo.todometer",
 		"productName": "todometer",
 		"copyright": "Copyright © 2026 @cassidoo",
+		"publish": {
+			"provider": "github",
+			"owner": "cassidoo",
+			"repo": "todometer"
+		},
+		"afterSign": "scripts/notarize.js",
 		"mac": {
 			"category": "public.app-category.utilities",
-			"icon": "assets/mac/icon.png.icns"
+			"icon": "assets/mac/icon.icns",
+			"target": [
+				"dmg",
+				"zip"
+			],
+			"hardenedRuntime": true,
+			"gatekeeperAssess": false,
+			"entitlements": "build/entitlements.mac.plist",
+			"entitlementsInherit": "build/entitlements.mac.inherit.plist",
+			"notarize": false
+		},
+		"dmg": {
+			"sign": false
 		},
 		"win": {
-			"icon": "assets/win/icon.png.ico"
+			"icon": "assets/win/icon.ico",
+			"target": [
+				"nsis"
+			]
+		},
+		"nsis": {
+			"oneClick": false,
+			"allowToChangeInstallationDirectory": true,
+			"perMachine": false
 		},
 		"linux": {
 			"target": "AppImage",
-			"icon": "assets/png/256x256.png"
+			"icon": "assets/png/256.png"
 		},
 		"files": [
 			"node_modules/**/*",
@@ -31,6 +61,7 @@
 			"dist/preload/**",
 			"dist/renderer/**",
 			"assets/bloop.mp3",
+			"assets/logo.svg",
 			"package.json"
 		],
 		"directories": {
@@ -48,18 +79,23 @@
 		"test:watch": "cd ./src/renderer && vitest src",
 		"postinstall": "electron-builder install-app-deps && npm run update-vendors",
 		"pre-electron-pack": "npm run build",
-		"electron-pack": "electron-builder build --dir --windows --linux --mac"
+		"pack": "electron-builder --mac --win --linux",
+		"pack:mac": "electron-builder --mac dmg zip",
+		"pack:win": "electron-builder --win nsis",
+		"pack:linux": "electron-builder --linux AppImage"
 	},
 	"dependencies": {
 		"@radix-ui/react-accordion": "^1.2.11",
 		"date-fns": "^4.1.0",
 		"electron-is-dev": "^3.0.1",
 		"electron-store": "^11.0.2",
+		"electron-updater": "^6.8.3",
 		"prop-types": "^15.8.1",
 		"react": "^19.2.4",
 		"react-dom": "^19.2.4"
 	},
 	"devDependencies": {
+		"@electron/notarize": "^3.1.1",
 		"@eslint-react/eslint-plugin": "^3.0.0",
 		"@eslint/js": "^10.0.1",
 		"@testing-library/dom": "^10.4.1",
