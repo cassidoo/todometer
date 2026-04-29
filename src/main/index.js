@@ -249,7 +249,7 @@ function menuSetup() {
 					type: "separator",
 				},
 				/*{
-					/* For debugging */
+					// For debugging
 					label: "Dev tools",
 					click: () => {
 						mainWindow.webContents.openDevTools();

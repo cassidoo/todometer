@@ -75,7 +75,7 @@ function DroppableHeader({
 
 const STATUS_LABELS = {
 	pending: "Mark as todo",
-	paused: "Mark as do later",
+	paused: "Mark as todo later",
 	completed: "Mark as completed",
 };
 
@@ -301,8 +301,8 @@ function ItemList() {
 							>
 								<Accordion.Header>
 									<Accordion.Trigger className={styles.toggle}>
-										<img src={arrow} alt="Do Later Toggle" />
-										<span>Do Later</span>
+										<img src={arrow} alt="Later Toggle" />
+										<span>Later</span>
 									</Accordion.Trigger>
 								</Accordion.Header>
 							</DroppableHeader>
