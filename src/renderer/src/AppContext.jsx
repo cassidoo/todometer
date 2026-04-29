@@ -63,6 +63,11 @@ const appStateReducer = (state, action) => {
 			saveState(newState);
 			return newState;
 		}
+		case "SET_ITEMS": {
+			const newState = { ...state, items: action.items };
+			saveState(newState);
+			return newState;
+		}
 		case "RESET_ALL": {
 			const newItems = state.items
 				.filter((item) => item.status !== "completed")
