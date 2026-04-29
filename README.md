@@ -34,8 +34,13 @@ To build a production version:
 $ npm install
 $ npm run postinstall
 $ npm run pre-electron-pack
-$ npm run electron-pack
+$ npm run pack           # all platforms
+$ npm run pack:mac       # macOS only (DMG + ZIP)
+$ npm run pack:win       # Windows only (NSIS installer)
+$ npm run pack:linux     # Linux only (AppImage)
 ```
+
+See more in the Release documentation.
 
 ## Contributing
 
