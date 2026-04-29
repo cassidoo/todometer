@@ -50,15 +50,15 @@ The CI workflow will build, sign, and publish installers for all platforms to Gi
 
 ### Required GitHub Secrets
 
-| Secret | Description |
-|--------|-------------|
-| `MACOS_CERTIFICATE` | Base64-encoded `.p12` signing certificate |
-| `MACOS_CERTIFICATE_PASSWORD` | Password for the `.p12` certificate |
-| `APPLE_ID` | Apple ID email for notarization |
+| Secret                        | Description                                                                         | 
+| ----------------------------- | ----------------------------------------------------------------------------------- |
+| `MACOS_CERTIFICATE`           | Base64-encoded `.p12` signing certificate                                           |
+| `MACOS_CERTIFICATE_PASSWORD`  | Password for the `.p12` certificate                                                 |
+| `APPLE_ID`                    | Apple ID email for notarization                                                     |
 | `APPLE_APP_SPECIFIC_PASSWORD` | App-specific password ([create one here](https://appleid.apple.com/account/manage)) |
-| `APPLE_TEAM_ID` | Apple Developer Team ID |
-| `WIN_CSC_LINK` | _(Optional)_ Base64-encoded Windows code signing certificate |
-| `WIN_CSC_KEY_PASSWORD` | _(Optional)_ Password for the Windows certificate |
+| `APPLE_TEAM_ID`               | Apple Developer Team ID                                                             |
+| `WIN_CSC_LINK`                | _(Optional)_ Base64-encoded Windows code signing certificate                        |
+| `WIN_CSC_KEY_PASSWORD`        | _(Optional)_ Password for the Windows certificate                                   |
 
 > **Note:** Windows code signing is optional. Without it, the NSIS installer will still be built and published — users will just see a SmartScreen warning on first run.
 
