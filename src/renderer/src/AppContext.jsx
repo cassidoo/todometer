@@ -1,5 +1,11 @@
-import { createContext, useContext, useReducer } from "react";
-import { loadState, saveState } from "./local-storage.js";
+import {
+	createContext,
+	useCallback,
+	useContext,
+	useEffect,
+	useReducer,
+	useState,
+} from "react";
 import { format } from "date-fns";
 
 export const AppContext = createContext();
@@ -22,10 +28,9 @@ export function useItems() {
 	return { pending, paused, completed };
 }
 
-const appStateReducer = (state, action) => {
+function getCurrentDate() {
 	let nd = new Date();
-
-	let currentDate = {
+	return {
 		day: format(nd, "dd"),
 		dayDisplay: format(nd, "d"),
 		month: format(nd, "MM"),
@@ -33,16 +38,21 @@ const appStateReducer = (state, action) => {
 		year: format(nd, "y"),
 		weekday: format(nd, "EEEE"),
 	};
+}
+
+const appStateReducer = (state, action) => {
+	let currentDate = getCurrentDate();
 
 	switch (action.type) {
+		case "INIT": {
+			return action.state;
+		}
 		case "ADD_ITEM": {
-			const newState = { ...state, items: state.items.concat(action.item) };
-			saveState(newState);
-			return newState;
+			return { ...state, items: state.items.concat(action.item) };
 		}
 		case "UPDATE_ITEM": {
 			const newItems = state.items.map((i) => {
-				if (i.key === action.item.key) {
+				if (i.id === action.item.id) {
 					return Object.assign({}, i, {
 						status:
 							action.item.status !== undefined ? action.item.status : i.status,
@@ -51,22 +61,16 @@ const appStateReducer = (state, action) => {
 				}
 				return i;
 			});
-			const newState = { ...state, items: newItems };
-			saveState(newState);
-			return newState;
+			return { ...state, items: newItems };
 		}
 		case "DELETE_ITEM": {
-			const newState = {
+			return {
 				...state,
-				items: state.items.filter((item) => item.key !== action.item.key),
+				items: state.items.filter((item) => item.id !== action.item.id),
 			};
-			saveState(newState);
-			return newState;
 		}
 		case "SET_ITEMS": {
-			const newState = { ...state, items: action.items };
-			saveState(newState);
-			return newState;
+			return { ...state, items: action.items };
 		}
 		case "RESET_ALL": {
 			const newItems = state.items
@@ -79,40 +83,151 @@ const appStateReducer = (state, action) => {
 					}
 					return i;
 				});
-			const newState = { ...state, items: newItems, date: currentDate };
-			saveState(newState);
-			return newState;
+			return { ...state, items: newItems, date: currentDate };
 		}
 		default:
 			return state;
 	}
 };
 
+function persistAction(action) {
+	if (!window.todoAPI) return;
+
+	switch (action.type) {
+		case "ADD_ITEM":
+			window.todoAPI.addItem(action.item).catch(console.error);
+			break;
+		case "UPDATE_ITEM":
+			window.todoAPI
+				.updateItem({
+					id: action.item.id,
+					status: action.item.status,
+					text: action.item.text,
+				})
+				.catch(console.error);
+			break;
+		case "DELETE_ITEM":
+			window.todoAPI.deleteItem(action.item.id).catch(console.error);
+			break;
+		case "SET_ITEMS":
+			window.todoAPI.setItems(action.items).catch(console.error);
+			break;
+		case "RESET_ALL":
+			// Computed in reducer — we need to derive the same items here
+			window.todoAPI.setItems(action._computedItems).catch(console.error);
+			window.todoAPI.saveDate(action._computedDate).catch(console.error);
+			break;
+	}
+}
+
 export function AppStateProvider({ children }) {
-	let initialState = loadState();
+	const [loading, setLoading] = useState(true);
+	const [state, rawDispatch] = useReducer(appStateReducer, {
+		items: [],
+		date: getCurrentDate(),
+	});
 
-	if (initialState === undefined) {
-		let nd = new Date();
+	const dispatch = useCallback(
+		(action) => {
+			if (action.type === "RESET_ALL") {
+				// Pre-compute for persistence since reducer is pure
+				const currentDate = getCurrentDate();
+				const computedItems = state.items
+					.filter((item) => item.status !== "completed")
+					.map((i) =>
+						i.status === "paused" ? { ...i, status: "pending" } : i,
+					);
+				const enrichedAction = {
+					...action,
+					_computedItems: computedItems,
+					_computedDate: currentDate,
+				};
+				persistAction(enrichedAction);
+				rawDispatch(action);
+			} else {
+				persistAction(action);
+				rawDispatch(action);
+			}
+		},
+		[state.items],
+	);
 
-		initialState = {
-			items: [],
-			date: {
-				day: format(nd, "dd"),
-				dayDisplay: format(nd, "d"),
-				month: format(nd, "MM"),
-				monthDisplay: format(nd, "MMM"),
-				year: format(nd, "y"),
-				weekday: format(nd, "EEEE"),
-			},
+	useEffect(() => {
+		async function init() {
+			try {
+				if (window.todoAPI) {
+					let dbState = await window.todoAPI.loadState();
+
+					// if DB is empty but localStorage has data
+					if (
+						(!dbState.items || dbState.items.length === 0) &&
+						localStorage.getItem("state")
+					) {
+						try {
+							const oldState = JSON.parse(localStorage.getItem("state"));
+							if (oldState && oldState.items && oldState.items.length > 0) {
+								dbState =
+									await window.todoAPI.migrateFromLocalStorage(oldState);
+								localStorage.removeItem("state");
+							}
+						} catch (migrationErr) {
+							console.error("Migration failed:", migrationErr);
+						}
+					}
+
+					rawDispatch({
+						type: "INIT",
+						state: {
+							items: dbState.items || [],
+							date: dbState.date || getCurrentDate(),
+						},
+					});
+				} else {
+					// Fallback for non-Electron environments
+					const serialized = localStorage.getItem("state");
+					if (serialized) {
+						const parsed = JSON.parse(serialized);
+						rawDispatch({ type: "INIT", state: parsed });
+					}
+				}
+			} catch (err) {
+				console.error("Failed to load state:", err);
+			} finally {
+				setLoading(false);
+			}
+		}
+		init();
+
+		// Listen for external DB changes (protocol handler, API)
+		const removeListener = window.todoAPI?.onDbChanged?.(async () => {
+			try {
+				const dbState = await window.todoAPI.loadState();
+				rawDispatch({
+					type: "INIT",
+					state: {
+						items: dbState.items || [],
+						date: dbState.date || getCurrentDate(),
+					},
+				});
+			} catch (err) {
+				console.error("Failed to reload state:", err);
+			}
+		});
+
+		return () => {
+			if (typeof removeListener === "function") removeListener();
 		};
+	}, []);
+
+	if (loading) {
+		return <div className="App"></div>;
 	}
 
-	saveState(initialState);
-
-	const value = useReducer(appStateReducer, initialState);
 	return (
 		<div className="App">
-			<AppContext.Provider value={value}>{children}</AppContext.Provider>
+			<AppContext.Provider value={[state, dispatch]}>
+				{children}
+			</AppContext.Provider>
 		</div>
 	);
 }

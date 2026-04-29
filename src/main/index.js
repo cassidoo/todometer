@@ -12,7 +12,10 @@ import * as StoreModule from "electron-store";
 import * as isDevModule from "electron-is-dev";
 import { autoUpdater } from "electron-updater";
 import path from "path";
+import fs from "fs";
 import { version } from "../../package.json";
+import * as db from "./db.js";
+import * as apiServer from "./api-server.js";
 
 const unwrapDefault = (mod) => mod?.default?.default ?? mod?.default ?? mod;
 const Store = unwrapDefault(StoreModule);
@@ -22,6 +25,55 @@ const store = new Store();
 if (process.platform === "win32") {
 	app.setAppUserModelId(process.execPath);
 }
+
+// Register todometer:// protocol
+app.setAsDefaultProtocolClient("todometer");
+
+// Queue protocol URLs received before the app is ready
+let pendingProtocolUrls = [];
+let isAppReady = false;
+
+function handleProtocolUrl(url) {
+	if (!isAppReady) {
+		pendingProtocolUrls.push(url);
+		return;
+	}
+
+	try {
+		const parsed = new URL(url);
+		const command = parsed.hostname;
+
+		if (command === "add") {
+			const text = parsed.searchParams.get("text");
+			const status = parsed.searchParams.get("status") || "pending";
+			if (text) {
+				db.addItem({ text, status });
+				// Notify renderer to reload
+				if (hasMainWindow()) {
+					mainWindow.webContents.send("db:changed");
+				}
+			}
+		}
+
+		showAndFocusMainWindow();
+	} catch (err) {
+		console.error("Failed to handle protocol URL:", err);
+	}
+}
+
+function processPendingUrls() {
+	isAppReady = true;
+	for (const url of pendingProtocolUrls) {
+		handleProtocolUrl(url);
+	}
+	pendingProtocolUrls = [];
+}
+
+// macOS: open-url fires when the app is opened via a URL
+app.on("open-url", (event, url) => {
+	event.preventDefault();
+	handleProtocolUrl(url);
+});
 
 const gotTheLock = app.requestSingleInstanceLock();
 
@@ -79,6 +131,197 @@ function playNotificationSound() {
 	mainWindow.webContents.send("playNotificationSound", notificationSoundPath);
 }
 
+function getDefaultDbPath() {
+	return path.join(app.getPath("userData"), "todometer.db");
+}
+
+function getCurrentDbPath() {
+	const customPath = store.get("vaultPath");
+	if (customPath) {
+		return path.join(customPath, "todometer.db");
+	}
+	return getDefaultDbPath();
+}
+
+function initDatabase() {
+	const dbPath = getCurrentDbPath();
+	const dir = path.dirname(dbPath);
+
+	// Check if custom vault path is accessible
+	if (store.get("vaultPath") && !fs.existsSync(dir)) {
+		const choice = dialog.showMessageBoxSync(null, {
+			type: "warning",
+			title: "Vault Not Found",
+			message: `The vault folder is not accessible:\n${dir}`,
+			detail:
+				"The folder may have been moved, deleted, or the drive may be disconnected.",
+			buttons: ["Use Default Location", "Choose New Location", "Quit"],
+			defaultId: 0,
+			cancelId: 2,
+		});
+
+		if (choice === 0) {
+			store.delete("vaultPath");
+			return db.openDatabase(getDefaultDbPath());
+		} else if (choice === 1) {
+			const result = dialog.showOpenDialogSync(null, {
+				title: "Choose Vault Location",
+				properties: ["openDirectory", "createDirectory"],
+			});
+			if (result && result[0]) {
+				store.set("vaultPath", result[0]);
+				return db.openDatabase(path.join(result[0], "todometer.db"));
+			}
+			store.delete("vaultPath");
+			return db.openDatabase(getDefaultDbPath());
+		} else {
+			app.quit();
+			return null;
+		}
+	}
+
+	return db.openDatabase(dbPath);
+}
+
+async function changeVaultLocation() {
+	if (!hasMainWindow()) return;
+
+	const result = await dialog.showOpenDialog(mainWindow, {
+		title: "Choose Vault Location",
+		properties: ["openDirectory", "createDirectory"],
+	});
+
+	if (result.canceled || !result.filePaths[0]) return;
+
+	const newDir = result.filePaths[0];
+	const newDbPath = path.join(newDir, "todometer.db");
+	const currentDbPath = getCurrentDbPath();
+
+	if (newDbPath === currentDbPath) return;
+
+	try {
+		db.exportTo(newDbPath);
+		db.closeDatabase();
+		db.openDatabase(newDbPath);
+		store.set("vaultPath", newDir);
+
+		// Rebuild menu to update vault location display
+		menuSetup();
+
+		dialog.showMessageBox(mainWindow, {
+			type: "info",
+			title: "Vault Moved",
+			message: "Your vault has been moved successfully.",
+			detail: `New location: ${newDir}`,
+		});
+	} catch (err) {
+		console.error("Failed to move vault:", err);
+		// Try to reopen original DB
+		try {
+			db.openDatabase(currentDbPath);
+		} catch (_reopenErr) {
+			// Critical failure
+		}
+		dialog.showMessageBox(mainWindow, {
+			type: "error",
+			title: "Move Failed",
+			message: "Could not move the vault.",
+			detail: err.message,
+		});
+	}
+}
+
+async function resetVaultLocation() {
+	if (!hasMainWindow()) return;
+
+	const defaultPath = getDefaultDbPath();
+	const currentDbPath = getCurrentDbPath();
+
+	if (currentDbPath === defaultPath) {
+		dialog.showMessageBox(mainWindow, {
+			type: "info",
+			title: "Already Default",
+			message: "The vault is already in the default location.",
+		});
+		return;
+	}
+
+	try {
+		db.exportTo(defaultPath);
+		db.closeDatabase();
+		db.openDatabase(defaultPath);
+		store.delete("vaultPath");
+		menuSetup();
+
+		dialog.showMessageBox(mainWindow, {
+			type: "info",
+			title: "Vault Reset",
+			message: "Your vault has been moved back to the default location.",
+			detail: path.dirname(defaultPath),
+		});
+	} catch (err) {
+		console.error("Failed to reset vault:", err);
+		try {
+			db.openDatabase(currentDbPath);
+		} catch (_reopenErr) {
+			// Critical failure
+		}
+		dialog.showMessageBox(mainWindow, {
+			type: "error",
+			title: "Reset Failed",
+			message: "Could not reset the vault location.",
+			detail: err.message,
+		});
+	}
+}
+
+function revealVault() {
+	const dbPath = getCurrentDbPath();
+	shell.showItemInFolder(dbPath);
+}
+
+function notifyRendererDbChanged() {
+	if (hasMainWindow()) {
+		mainWindow.webContents.send("db:changed");
+	}
+}
+
+function registerIpcHandlers() {
+	ipcMain.handle("db:loadState", () => {
+		return db.loadState();
+	});
+
+	ipcMain.handle("db:getAllItems", () => {
+		return db.getAllItems();
+	});
+
+	ipcMain.handle("db:addItem", (_event, item) => {
+		return db.addItem(item);
+	});
+
+	ipcMain.handle("db:updateItem", (_event, item) => {
+		return db.updateItem(item);
+	});
+
+	ipcMain.handle("db:deleteItem", (_event, id) => {
+		db.deleteItem(id);
+		return { success: true };
+	});
+
+	ipcMain.handle("db:setItems", (_event, items) => {
+		return db.setItems(items);
+	});
+
+	ipcMain.handle("db:saveDate", (_event, date) => {
+		db.saveDate(date);
+		return { success: true };
+	});
+
+	ipcMain.handle("db:migrate", (_event, state) => {
+		return db.migrateFromLocalStorage(state);
+	});
+}
+
 function showNotification({ title, body, silent = false }) {
 	if (!Notification.isSupported()) {
 		return;
@@ -106,6 +349,8 @@ function createWindow() {
 		icon: path.join(app.getAppPath(), "assets/png/128.png"),
 		webPreferences: {
 			preload: path.join(app.getAppPath(), "dist/preload/index.cjs"),
+			contextIsolation: true,
+			nodeIntegration: false,
 		},
 	});
 
@@ -277,6 +522,62 @@ function menuSetup() {
 			],
 		},
 		{
+			label: "Vault",
+			submenu: [
+				{
+					label: "Change vault location…",
+					click: () => changeVaultLocation(),
+				},
+				{
+					label: "Reveal vault in file manager",
+					click: () => revealVault(),
+				},
+				{ type: "separator" },
+				{
+					label: "Reset to default location",
+					click: () => resetVaultLocation(),
+				},
+				{ type: "separator" },
+				{
+					label: `Local API (port ${apiServer.getDefaultPort()})`,
+					type: "checkbox",
+					checked: apiServer.isApiServerRunning(),
+					click: (menuItem) => {
+						if (menuItem.checked) {
+							let token = store.get("apiToken");
+							if (!token) {
+								token = apiServer.generateApiToken();
+								store.set("apiToken", token);
+							}
+							apiServer.startApiServer(token, undefined, notifyRendererDbChanged);
+							store.set("apiEnabled", true);
+							if (hasMainWindow()) {
+								dialog.showMessageBox(mainWindow, {
+									type: "info",
+									title: "Local API Enabled",
+									message: `API running on http://127.0.0.1:${apiServer.getDefaultPort()}`,
+									detail: `Bearer token: ${token}\n\nUse this token in the Authorization header:\nAuthorization: Bearer ${token}`,
+								});
+							}
+						} else {
+							apiServer.stopApiServer();
+							store.set("apiEnabled", false);
+						}
+					},
+				},
+				{
+					label: "Copy API token",
+					click: () => {
+						const token = store.get("apiToken");
+						if (token) {
+							const { clipboard } = require("electron");
+							clipboard.writeText(token);
+						}
+					},
+				},
+			],
+		},
+		{
 			label: "View",
 			submenu: [
 				// {
@@ -432,16 +733,34 @@ function menuSetup() {
 }
 
 if (gotTheLock) {
-	app.on("second-instance", () => {
+	app.on("second-instance", (_event, argv) => {
+		// On Windows/Linux, protocol URLs are passed as argv
+		const protocolUrl = argv.find((arg) => arg.startsWith("todometer://"));
+		if (protocolUrl) {
+			handleProtocolUrl(protocolUrl);
+		}
+
 		if (!showAndFocusMainWindow()) {
 			createWindow();
 		}
 	});
 
 	app.on("ready", () => {
+		initDatabase();
+		registerIpcHandlers();
+
+		// Auto-start API server if previously enabled
+		if (store.get("apiEnabled")) {
+			const token = store.get("apiToken");
+			if (token) {
+				apiServer.startApiServer(token, undefined, notifyRendererDbChanged);
+			}
+		}
+
 		createWindow();
 		menuSetup();
 		setupAutoUpdater();
+		processPendingUrls();
 
 		ipcMain.on("showNotification", (_event, payload) => {
 			if (!payload || typeof payload !== "object") {
@@ -486,5 +805,9 @@ if (gotTheLock) {
 		}
 	});
 
-	app.on("before-quit", () => (willQuit = true));
+	app.on("before-quit", () => {
+		willQuit = true;
+		apiServer.stopApiServer();
+		db.closeDatabase();
+	});
 }
