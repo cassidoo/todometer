@@ -15,7 +15,7 @@ function Item({ item, index, group }) {
 	let completed = item.status === "completed";
 
 	const { ref, isDragSource } = useSortable({
-		id: item.key,
+		id: item.id,
 		index,
 		group,
 		type: "item",

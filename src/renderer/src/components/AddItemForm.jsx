@@ -10,7 +10,7 @@ function AddItemForm() {
 	function addItem(e) {
 		const newItem = {
 			text: inputRef.current.value,
-			key: Date.now(),
+			id: crypto.randomUUID(),
 			status: "pending",
 		};
 		if (newItem.text.trim()) {

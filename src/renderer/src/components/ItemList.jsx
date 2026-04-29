@@ -86,7 +86,7 @@ function ItemList() {
 	const itemMap = useMemo(() => {
 		const map = new Map();
 		for (const item of [...pending, ...paused, ...completed]) {
-			map.set(item.key, item);
+			map.set(item.id, item);
 		}
 		return map;
 	}, [pending, paused, completed]);
@@ -148,15 +148,15 @@ function ItemList() {
 		expandedDuringDrag.current = new Set();
 
 		setLocalKeys({
-			pending: pending.map((i) => i.key),
-			paused: paused.map((i) => i.key),
-			completed: completed.map((i) => i.key),
+			pending: pending.map((i) => i.id),
+			paused: paused.map((i) => i.id),
+			completed: completed.map((i) => i.id),
 		});
 
 		let group = null;
-		if (pending.some((i) => i.key === source.id)) group = "pending";
-		else if (paused.some((i) => i.key === source.id)) group = "paused";
-		else if (completed.some((i) => i.key === source.id)) group = "completed";
+		if (pending.some((i) => i.id === source.id)) group = "pending";
+		else if (paused.some((i) => i.id === source.id)) group = "paused";
+		else if (completed.some((i) => i.id === source.id)) group = "completed";
 		setDragInitialGroup(group);
 	}
 
@@ -277,7 +277,7 @@ function ItemList() {
 				<DroppableSection id="pending" className={styles.droppableSection}>
 					{renderGroups.pending.length > 0 || isDragging ? (
 						renderGroups.pending.map((item, idx) => (
-							<Item item={item} key={item.key} index={idx} group="pending" />
+							<Item item={item} key={item.id} index={idx} group="pending" />
 						))
 					) : (
 						<div className={styles.alldone}>
@@ -314,7 +314,7 @@ function ItemList() {
 									{renderGroups.paused.map((item, idx) => (
 										<Item
 											item={item}
-											key={item.key}
+											key={item.id}
 											index={idx}
 											group="paused"
 										/>
@@ -346,7 +346,7 @@ function ItemList() {
 									{renderGroups.completed.map((item, idx) => (
 										<Item
 											item={item}
-											key={item.key}
+											key={item.id}
 											index={idx}
 											group="completed"
 										/>
