@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <g id="icon">
         <g id="Oval" transform="matrix(0.982325,0,0,0.982325,9.04948,9.04948)">
             <circle cx="512" cy="512" r="512" style="fill:rgb(46,45,51);fill-opacity:0;stroke:rgb(46,45,51);stroke-width:16.29px;"/>
         </g>
         <g id="Group">
-            <path id="Rectangle-3" d="M174.845,540.135L234.406,480.573L383.005,629.172L770.153,242.025L829.868,301.74L383.159,748.448L174.845,540.135Z" style="fill:rgb(98,220,165);fill-opacity:0;stroke:rgb(46,45,51);stroke-width:16px;"/>
+            <path id="Rectangle-3" d="M175.552,540.842C175.162,540.452 175.162,539.818 175.552,539.428C181.797,533.182 227.454,487.526 233.699,481.28C234.089,480.89 234.723,480.89 235.113,481.28C246.163,492.33 383.005,629.172 383.005,629.172C383.005,629.172 751.127,261.051 769.446,242.732C769.836,242.342 770.47,242.342 770.86,242.732C777.115,248.987 822.906,294.778 829.161,301.033C829.551,301.423 829.551,302.057 829.161,302.447C809.893,321.715 403.134,728.473 383.866,747.741C383.476,748.131 382.842,748.131 382.452,747.741C369.69,734.979 188.314,553.604 175.552,540.842Z" style="fill:rgb(98,220,165);fill-opacity:0;stroke:rgb(46,45,51);stroke-width:16px;"/>
         </g>
     </g>
 </svg>
