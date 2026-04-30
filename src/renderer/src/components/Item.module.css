@@ -55,22 +55,8 @@
 			outline-offset: 4px;
 		}
 
-		&::-webkit-scrollbar {
-			background-color: var(--item-color);
-			height: 0.75em;
-			@media (max-width: 600px) {
-				height: 0.25em;
-			}
-		}
-
-		&::-webkit-scrollbar-thumb:window-inactive,
-		&::-webkit-scrollbar-thumb {
-			background: var(--bg);
-			border: 3px solid var(--item-color);
-			border-left: none;
-			border-right: none;
-			border-radius: 3px;
-		}
+		scrollbar-color: var(--bg) var(--item-color);
+		scrollbar-width: thin;
 	}
 
 	.editInput {
