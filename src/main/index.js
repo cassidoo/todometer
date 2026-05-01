@@ -151,7 +151,7 @@ function initDatabase() {
 	if (store.get("vaultPath") && !fs.existsSync(dir)) {
 		const choice = dialog.showMessageBoxSync(null, {
 			type: "warning",
-			title: "Data vault Not Found",
+			title: "Data vault not found",
 			message: `The data folder is not accessible:\n${dir}`,
 			detail:
 				"The folder may have been moved, deleted, or the drive may be disconnected.",
@@ -211,7 +211,7 @@ async function changeVaultLocation() {
 
 		dialog.showMessageBox(mainWindow, {
 			type: "info",
-			title: "Data vault Moved",
+			title: "Data vault moved",
 			message: "Your data vault has been moved successfully.",
 			detail: `New location: ${newDir}`,
 		});
@@ -256,7 +256,7 @@ async function resetVaultLocation() {
 
 		dialog.showMessageBox(mainWindow, {
 			type: "info",
-			title: "Data vault Reset",
+			title: "Data vault location reset",
 			message: "Your data vault has been moved back to the default location.",
 			detail: path.dirname(defaultPath),
 		});
