@@ -42,19 +42,19 @@ $ npm run pack:linux     # Linux only (AppImage)
 
 See more in the Release documentation.
 
+## Features
+
+- Add, complete, pause, and delete to-do items
+- Drag and drop to reorder items or move them between groups
+- Daily auto-reset with optional notifications and reminders
+- **Settings drawer** — click **menu** at the bottom of the app to configure:
+  - Notification preferences (reset notifications, reminder frequency)
+  - Data vault location (move your database anywhere)
+  - Display options (show/hide reset and copy buttons)
+  - Local REST API and MCP server for external integrations
+- **[API & MCP integration](docs/api-and-mcp-setup.md)** — control todometer from scripts, shortcuts, or AI assistants
+- **Protocol handler** — add todos via `todometer://add?text=...` URLs
+
 ## Contributing
 
-So you want to contribute? Yay! Great! Fun!
-I love seeing new PRs for todometer. That being said, not every pull request will be merged. The general guidelines I'll follow are:
-
-- Does it make developing todometer easier?
-- Does it help other platforms (Windows, Mac, Linux) work better?
-- Does it fix a bug?
-- Does it break anything?
-- Does it stick to the original goal of todometer (a _simple_, meter-based to-do list)
-- Does it reduce the build size?
-- Is it necessary?
-
-Regarding that last point, I don't expect all pull requests to be absolutely necessary. New features are good. That being said, if the new features make the app unnecessarily complex in some way without bringing value to the users, it won't be merged.
-
-Please don't be hurt if your PR isn't merged. You're lovely for working on it. If you are thinking about working on something, feel free to make an issue beforehand so that you can make sure it'll be worth your time!
+See [the contribution guidelines](docs/CONTRIBUTING.md)!

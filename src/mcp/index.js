@@ -116,7 +116,7 @@ const TOOLS = [
 	{
 		name: "list_todos",
 		description:
-			"List all todo items from todometer. Returns items with their id, text, status (pending/paused/completed), and timestamps.",
+			"List all to-do items from todometer. Returns items with their id, text, status (pending/paused/completed), and timestamps.",
 		inputSchema: {
 			type: "object",
 			properties: {
@@ -130,13 +130,13 @@ const TOOLS = [
 	},
 	{
 		name: "add_todo",
-		description: "Add a new todo item to todometer.",
+		description: "Add a new to-do item to todometer.",
 		inputSchema: {
 			type: "object",
 			properties: {
 				text: {
 					type: "string",
-					description: "The text of the todo item.",
+					description: "The text of the to-do item.",
 				},
 				status: {
 					type: "string",
@@ -155,16 +155,16 @@ const TOOLS = [
 			properties: {
 				id: {
 					type: "string",
-					description: "The UUID of the todo item to update.",
+					description: "The UUID of the to-do item to update.",
 				},
 				text: {
 					type: "string",
-					description: "New text for the todo item.",
+					description: "New text for the to-do item.",
 				},
 				status: {
 					type: "string",
 					enum: ["pending", "paused", "completed"],
-					description: "New status for the todo item.",
+					description: "New status for the to-do item.",
 				},
 			},
 			required: ["id"],
@@ -178,7 +178,7 @@ const TOOLS = [
 			properties: {
 				id: {
 					type: "string",
-					description: "The UUID of the todo item to delete.",
+					description: "The UUID of the to-do item to delete.",
 				},
 			},
 			required: ["id"],
@@ -199,7 +199,7 @@ async function handleRequest(method, params, id) {
 					version: SERVER_VERSION,
 				},
 				instructions:
-					"You MUST use these MCP tools to interact with todometer. NEVER read or write the todometer SQLite database directly — direct database access bypasses validation, notifications, and UI sync. Always use the provided list_todos, add_todo, update_todo, and delete_todo tools.",
+					"You MUST use these MCP tools to interact with todometer. NEVER read or write the todometer SQLite database directly — direct database access bypasses validation, notifications, and UI sync. Always use the provided list_todos, add_todo, update_todo, and delete_to-do tools.",
 			});
 			break;
 
@@ -289,7 +289,7 @@ async function handleToolCall(params, id) {
 					content: [
 						{
 							type: "text",
-							text: `Deleted todo ${args.id}`,
+							text: `Deleted to-do ${args.id}`,
 						},
 					],
 				});

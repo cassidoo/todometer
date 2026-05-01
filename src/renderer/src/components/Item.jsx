@@ -3,7 +3,7 @@ import { useSortable } from "@dnd-kit/react/sortable";
 import { useAppReducer } from "../AppContext.jsx";
 import styles from "./Item.module.css";
 
-// Individual todo item
+// Individual to-do item
 function Item({ item, index, group }) {
 	const dispatch = useAppReducer();
 	const [isEditing, setIsEditing] = useState(false);

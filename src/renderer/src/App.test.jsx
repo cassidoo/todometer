@@ -125,11 +125,13 @@ test("empty inline edit reverts to previous value", async () => {
 	expect(getByText("Keep me")).toBeInTheDocument();
 });
 
-test("multiline todo keeps line breaks and can be edited", async () => {
+test("multiline to-do keeps line breaks and can be edited", async () => {
 	localStorage.setItem(
 		"state",
 		JSON.stringify({
-			items: [{ text: "Line one\nLine two", id: "test-id-123", status: "pending" }],
+			items: [
+				{ text: "Line one\nLine two", id: "test-id-123", status: "pending" },
+			],
 			date: {
 				day: format(new Date(), "dd"),
 				dayDisplay: format(new Date(), "d"),

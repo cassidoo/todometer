@@ -38,7 +38,7 @@ export default function useReminderNotification() {
 			let nd = new Date();
 
 			// sends a notification if reminder notifications are enabled,
-			// and todos are not completed
+			// and to-dos are not completed
 			if (
 				getTimeCondition(nd, notificationInterval) &&
 				(pending.length > 0 || paused.length > 0)

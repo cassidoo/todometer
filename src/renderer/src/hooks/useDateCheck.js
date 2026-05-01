@@ -24,7 +24,7 @@ export default function useDateCheck() {
 				if (resetNotification) {
 					window?.showSystemNotification?.({
 						title: "todometer reset time!",
-						body: "It's a new day! Your todos are being reset.",
+						body: "It's a new day! Your to-dos are being reset.",
 						silent: false,
 					});
 				}

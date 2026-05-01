@@ -75,7 +75,7 @@ function DroppableHeader({
 
 const STATUS_LABELS = {
 	pending: "Mark as todo",
-	paused: "Mark as todo later",
+	paused: "Mark as to-do later",
 	completed: "Mark as completed",
 };
 

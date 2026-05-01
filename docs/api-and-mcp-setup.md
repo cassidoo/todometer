@@ -6,7 +6,7 @@ todometer supports two integration methods for external tools and AI assistants:
 
 ## Local REST API
 
-The local API lets you manage your todos from scripts, shortcuts, or other applications over HTTP.
+The local API lets you manage your to-dos from scripts, shortcuts, or other applications over HTTP.
 
 ### Enabling the API
 
@@ -31,7 +31,7 @@ You can copy your token from the Settings drawer (click **menu** → **API and M
 
 #### `GET /api/items`
 
-Returns all todo items.
+Returns all to-do items.
 
 ```bash
 curl -H "Authorization: Bearer <token>" http://127.0.0.1:19747/api/items
@@ -39,7 +39,7 @@ curl -H "Authorization: Bearer <token>" http://127.0.0.1:19747/api/items
 
 #### `POST /api/items`
 
-Add a new todo item.
+Add a new to-do item.
 
 ```bash
 curl -X POST \
@@ -51,12 +51,12 @@ curl -X POST \
 
 **Body fields:**
 
-- `text` (string, required) — the todo text
+- `text` (string, required) — the to-do text
 - `status` (string, optional) — `"pending"` (default) or `"paused"`
 
 #### `PATCH /api/items/:id`
 
-Update an existing todo item.
+Update an existing to-do item.
 
 ```bash
 curl -X PATCH \
@@ -73,7 +73,7 @@ curl -X PATCH \
 
 #### `DELETE /api/items/:id`
 
-Delete a todo item.
+Delete a to-do item.
 
 ```bash
 curl -X DELETE \
@@ -85,7 +85,7 @@ curl -X DELETE \
 
 ## MCP Server
 
-The MCP server allows AI assistants to interact with your todos directly. It connects to the local REST API over HTTP, so no native modules or special runtimes are needed.
+The MCP server allows AI assistants to interact with your to-dos directly. It connects to the local REST API over HTTP, so no native modules or special runtimes are needed.
 
 **Prerequisites:** The Local API must be enabled in the Settings drawer (click **menu** → **API and MCP Configuration** → toggle **Local API** on).
 
@@ -132,16 +132,16 @@ If your API server is running on a non-default port, set the `TODOMETER_API_PORT
 
 The MCP server exposes the following tools:
 
-| Tool          | Description                                                                          |
-| ------------- | ------------------------------------------------------------------------------------ |
-| `list_todos`  | List all todo items. Optionally filter by status (`pending`, `paused`, `completed`). |
-| `add_todo`    | Add a new todo item with text and optional status.                                   |
-| `update_todo` | Update an existing todo's text or status by ID.                                      |
-| `delete_todo` | Delete a todo item by ID.                                                            |
+| Tool          | Description                                                                           |
+| ------------- | ------------------------------------------------------------------------------------- |
+| `list_todos`  | List all to-do items. Optionally filter by status (`pending`, `paused`, `completed`). |
+| `add_todo`    | Add a new to-do item with text and optional status.                                   |
+| `update_todo` | Update an existing to-do's text or status by ID.                                      |
+| `delete_todo` | Delete a to-do item by ID.                                                            |
 
 ### Protocol URL
 
-You can also add todos via the `todometer://` protocol:
+You can also add to-dos via the `todometer://` protocol:
 
 ```
 todometer://add?text=Buy+groceries&status=pending

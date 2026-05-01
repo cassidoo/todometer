@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useAppReducer } from "../AppContext.jsx";
 import styles from "./AddItemForm.module.css";
 
-// Form to populate todo items
+// Form to populate to-do items
 function AddItemForm() {
 	const dispatch = useAppReducer();
 	let inputRef = useRef();
