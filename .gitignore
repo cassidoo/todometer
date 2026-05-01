@@ -8,6 +8,8 @@
 
 # production
 /build
+!/build/entitlements.mac.plist
+!/build/entitlements.mac.inherit.plist
 dist
 
 # cache
