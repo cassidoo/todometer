@@ -79,14 +79,14 @@ const STATUS_LABELS = {
 	completed: "Mark as completed",
 };
 
-function ItemList() {
+function ItemList({ showResetButton, showCopyButton, onOpenSettings }) {
 	const dispatch = useAppReducer();
 	const { pending, paused, completed } = useItems();
 
 	const itemMap = useMemo(() => {
 		const map = new Map();
 		for (const item of [...pending, ...paused, ...completed]) {
-			map.set(item.key, item);
+			map.set(item.id, item);
 		}
 		return map;
 	}, [pending, paused, completed]);
@@ -96,6 +96,7 @@ function ItemList() {
 	const [currentDragId, setCurrentDragId] = useState(null);
 	const [dragInitialGroup, setDragInitialGroup] = useState(null);
 	const [accordionValue, setAccordionValue] = useState([]);
+	const [copied, setCopied] = useState(false);
 	// Sections manually expanded by hovering during a drag — kept open after drop
 	const expandedDuringDrag = useRef(new Set());
 
@@ -148,15 +149,15 @@ function ItemList() {
 		expandedDuringDrag.current = new Set();
 
 		setLocalKeys({
-			pending: pending.map((i) => i.key),
-			paused: paused.map((i) => i.key),
-			completed: completed.map((i) => i.key),
+			pending: pending.map((i) => i.id),
+			paused: paused.map((i) => i.id),
+			completed: completed.map((i) => i.id),
 		});
 
 		let group = null;
-		if (pending.some((i) => i.key === source.id)) group = "pending";
-		else if (paused.some((i) => i.key === source.id)) group = "paused";
-		else if (completed.some((i) => i.key === source.id)) group = "completed";
+		if (pending.some((i) => i.id === source.id)) group = "pending";
+		else if (paused.some((i) => i.id === source.id)) group = "paused";
+		else if (completed.some((i) => i.id === source.id)) group = "completed";
 		setDragInitialGroup(group);
 	}
 
@@ -277,7 +278,7 @@ function ItemList() {
 				<DroppableSection id="pending" className={styles.droppableSection}>
 					{renderGroups.pending.length > 0 || isDragging ? (
 						renderGroups.pending.map((item, idx) => (
-							<Item item={item} key={item.key} index={idx} group="pending" />
+							<Item item={item} key={item.id} index={idx} group="pending" />
 						))
 					) : (
 						<div className={styles.alldone}>
@@ -314,7 +315,7 @@ function ItemList() {
 									{renderGroups.paused.map((item, idx) => (
 										<Item
 											item={item}
-											key={item.key}
+											key={item.id}
 											index={idx}
 											group="paused"
 										/>
@@ -346,7 +347,7 @@ function ItemList() {
 									{renderGroups.completed.map((item, idx) => (
 										<Item
 											item={item}
-											key={item.key}
+											key={item.id}
 											index={idx}
 											group="completed"
 										/>
@@ -381,17 +382,71 @@ function ItemList() {
 				</DragOverlay>
 			</DragDropProvider>
 
-			{(completed.length > 0 || paused.length > 0) && (
-				<div className={styles.reset}>
-					<button
-						onClick={() => {
-							dispatch({ type: "RESET_ALL" });
-						}}
-					>
-						reset progress
-					</button>
-				</div>
-			)}
+			<div className={styles.bottomButtons}>
+				<button onClick={onOpenSettings} aria-label="Open menu">
+					menu
+				</button>
+				{showResetButton && (completed.length > 0 || paused.length > 0) && (
+					<>
+						•
+						<button
+							onClick={() => {
+								dispatch({ type: "RESET_ALL" });
+							}}
+						>
+							reset progress
+						</button>
+					</>
+				)}
+				{showCopyButton &&
+					(pending.length > 0 || paused.length > 0 || completed.length > 0) && (
+						<>
+							•
+							<button
+								onClick={() => {
+									const lines = ["todometer status:"];
+									let percentageCompleted, percentagePaused;
+									let total = pending.length + paused.length + completed.length;
+									if (total > 0) {
+										percentageCompleted = Math.round(
+											(completed.length / total) * 100,
+										);
+										percentagePaused = Math.round(
+											(paused.length / total) * 100,
+										);
+										if (
+											percentageCompleted !== 100 &&
+											(completed.length > 0 || paused.length > 0)
+										) {
+											lines.push(
+												`progress: ${percentageCompleted}% completed, ${percentagePaused}% paused`,
+											);
+										}
+									}
+
+									if (pending.length > 0) {
+										lines.push("todo:");
+										pending.forEach((i) => lines.push(`  - ${i.text}`));
+									}
+									if (paused.length > 0) {
+										lines.push("paused:");
+										paused.forEach((i) => lines.push(`  - ${i.text}`));
+									}
+									if (completed.length > 0) {
+										lines.push("completed:");
+										completed.forEach((i) => lines.push(`  - ${i.text}`));
+									}
+									navigator.clipboard.writeText(lines.join("\n")).then(() => {
+										setCopied(true);
+										setTimeout(() => setCopied(false), 2000);
+									});
+								}}
+							>
+								{copied ? "copied!" : "copy list"}
+							</button>
+						</>
+					)}
+			</div>
 		</div>
 	);
 }

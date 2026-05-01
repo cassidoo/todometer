@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
-    <title>Group</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="x" transform="translate(-1.000000, -1.000000)" fill="#E1675A">
-            <g id="Group">
-                <rect id="Rectangle-3" transform="translate(13.000000, 13.000000) rotate(45.000000) translate(-13.000000, -13.000000) " x="-2" y="11" width="30" height="4"></rect>
-                <rect id="Rectangle-3" transform="translate(13.000000, 13.000000) rotate(45.000000) translate(-13.000000, -13.000000) " x="11" y="-2" width="4" height="30"></rect>
+<svg width="100%" height="100%" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g id="x" transform="matrix(1,0,0,1,-1,-1)">
+        <g id="Symbols">
+            <g id="x1" serif:id="x">
+                <g id="Group">
+                    <g id="Rectangle-3" transform="matrix(0.707107,0.707107,-0.707107,0.707107,13,-5.38478)">
+                        <path d="M28,12L28,14C28,14.552 27.552,15 27,15L-1,15C-1.552,15 -2,14.552 -2,14L-2,12C-2,11.448 -1.552,11 -1,11L27,11C27.552,11 28,11.448 28,12Z" style="fill:rgb(225,103,90);"/>
+                    </g>
+                    <g id="Rectangle-31" serif:id="Rectangle-3" transform="matrix(0.707107,0.707107,-0.707107,0.707107,13,-5.38478)">
+                        <path d="M15,-1L15,27C15,27.552 14.552,28 14,28L12,28C11.448,28 11,27.552 11,27L11,-1C11,-1.552 11.448,-2 12,-2L14,-2C14.552,-2 15,-1.552 15,-1Z" style="fill:rgb(225,103,90);"/>
+                    </g>
+                </g>
             </g>
         </g>
     </g>

@@ -1,42 +1,51 @@
 import { test, expect, beforeEach } from "vitest";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import { format } from "date-fns";
 import App from "./App.jsx";
 
 beforeEach(() => {
 	localStorage.clear();
+	delete window.todoAPI;
 });
 
-test("renders the day of the month", () => {
+test("renders the day of the month", async () => {
 	const { getByText } = render(<App />);
-	const linkElement = getByText(format(new Date(), "d"));
-	expect(linkElement).toBeInTheDocument();
+	await waitFor(() => {
+		expect(getByText(format(new Date(), "d"))).toBeInTheDocument();
+	});
 });
 
-test("renders the month", () => {
+test("renders the month", async () => {
 	const { getByText } = render(<App />);
-	const linkElement = getByText(format(new Date(), "MMM"));
-	expect(linkElement).toBeInTheDocument();
+	await waitFor(() => {
+		expect(getByText(format(new Date(), "MMM"))).toBeInTheDocument();
+	});
 });
 
-test("renders the year", () => {
+test("renders the year", async () => {
 	const { getByText } = render(<App />);
-	const linkElement = getByText(format(new Date(), "y"));
-	expect(linkElement).toBeInTheDocument();
+	await waitFor(() => {
+		expect(getByText(format(new Date(), "y"))).toBeInTheDocument();
+	});
 });
 
-test("renders the weekday", () => {
+test("renders the weekday", async () => {
 	const { getByText } = render(<App />);
-	const linkElement = getByText(format(new Date(), "EEEE"));
-	expect(linkElement).toBeInTheDocument();
+	await waitFor(() => {
+		expect(getByText(format(new Date(), "EEEE"))).toBeInTheDocument();
+	});
 });
 
-test("clicking item name enters inline edit mode", () => {
+test("clicking item name enters inline edit mode", async () => {
 	const { getByPlaceholderText, getByText, getByDisplayValue } = render(
 		<App />,
 	);
-	const addInput = getByPlaceholderText("Add new item");
 
+	await waitFor(() => {
+		expect(getByPlaceholderText("Add new item")).toBeInTheDocument();
+	});
+
+	const addInput = getByPlaceholderText("Add new item");
 	fireEvent.change(addInput, { target: { value: "Original task" } });
 	fireEvent.submit(addInput.closest("form"));
 
@@ -45,15 +54,19 @@ test("clicking item name enters inline edit mode", () => {
 	expect(getByDisplayValue("Original task")).toBeInTheDocument();
 });
 
-test("pressing enter commits inline edits", () => {
+test("pressing enter commits inline edits", async () => {
 	const {
 		getByPlaceholderText,
 		getByText,
 		getByDisplayValue,
 		queryByDisplayValue,
 	} = render(<App />);
-	const addInput = getByPlaceholderText("Add new item");
 
+	await waitFor(() => {
+		expect(getByPlaceholderText("Add new item")).toBeInTheDocument();
+	});
+
+	const addInput = getByPlaceholderText("Add new item");
 	fireEvent.change(addInput, { target: { value: "Original task" } });
 	fireEvent.submit(addInput.closest("form"));
 
@@ -66,15 +79,19 @@ test("pressing enter commits inline edits", () => {
 	expect(queryByDisplayValue("Updated task")).not.toBeInTheDocument();
 });
 
-test("blurring inline edit commits changes", () => {
+test("blurring inline edit commits changes", async () => {
 	const {
 		getByPlaceholderText,
 		getByText,
 		getByDisplayValue,
 		queryByDisplayValue,
 	} = render(<App />);
-	const addInput = getByPlaceholderText("Add new item");
 
+	await waitFor(() => {
+		expect(getByPlaceholderText("Add new item")).toBeInTheDocument();
+	});
+
+	const addInput = getByPlaceholderText("Add new item");
 	fireEvent.change(addInput, { target: { value: "Blur me" } });
 	fireEvent.submit(addInput.closest("form"));
 
@@ -87,12 +104,16 @@ test("blurring inline edit commits changes", () => {
 	expect(queryByDisplayValue("Blur saved")).not.toBeInTheDocument();
 });
 
-test("empty inline edit reverts to previous value", () => {
+test("empty inline edit reverts to previous value", async () => {
 	const { getByPlaceholderText, getByText, getByDisplayValue } = render(
 		<App />,
 	);
-	const addInput = getByPlaceholderText("Add new item");
 
+	await waitFor(() => {
+		expect(getByPlaceholderText("Add new item")).toBeInTheDocument();
+	});
+
+	const addInput = getByPlaceholderText("Add new item");
 	fireEvent.change(addInput, { target: { value: "Keep me" } });
 	fireEvent.submit(addInput.closest("form"));
 
@@ -104,11 +125,11 @@ test("empty inline edit reverts to previous value", () => {
 	expect(getByText("Keep me")).toBeInTheDocument();
 });
 
-test("multiline todo keeps line breaks and can be edited", () => {
+test("multiline todo keeps line breaks and can be edited", async () => {
 	localStorage.setItem(
 		"state",
 		JSON.stringify({
-			items: [{ text: "Line one\nLine two", key: 123, status: "pending" }],
+			items: [{ text: "Line one\nLine two", id: "test-id-123", status: "pending" }],
 			date: {
 				day: format(new Date(), "dd"),
 				dayDisplay: format(new Date(), "d"),
@@ -121,20 +142,26 @@ test("multiline todo keeps line breaks and can be edited", () => {
 	);
 
 	const { getByText, getByDisplayValue } = render(<App />);
+
+	await waitFor(() => {
+		expect(getByText(/Line one\s+Line two/)).toBeInTheDocument();
+	});
+
 	const multilineItem = getByText(/Line one\s+Line two/);
-
-	expect(multilineItem).toBeInTheDocument();
-
 	fireEvent.click(multilineItem);
 	expect(getByDisplayValue(/Line one\s+Line two/)).toBeInTheDocument();
 });
 
-test("keyboard navigation enters item controls in order", () => {
+test("keyboard navigation enters item controls in order", async () => {
 	const { getByPlaceholderText, getByText, getByDisplayValue } = render(
 		<App />,
 	);
-	const addInput = getByPlaceholderText("Add new item");
 
+	await waitFor(() => {
+		expect(getByPlaceholderText("Add new item")).toBeInTheDocument();
+	});
+
+	const addInput = getByPlaceholderText("Add new item");
 	fireEvent.change(addInput, { target: { value: "Keyboard task" } });
 	fireEvent.submit(addInput.closest("form"));
 

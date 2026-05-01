@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
-    <title>pause</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="pause" fill="#F7F879">
-            <g id="Group-2" transform="translate(5.000000, 0.000000)">
-                <rect id="Rectangle-4" x="0" y="0" width="4" height="24"></rect>
-                <rect id="Rectangle-4" x="10" y="0" width="4" height="24"></rect>
+<svg width="100%" height="100%" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g id="Group-2" transform="matrix(1,0,0,1,5,0)">
+        <g id="Symbols">
+            <g id="pause">
+                <g id="Group-21" serif:id="Group-2">
+                    <path id="Rectangle-4" d="M4,1L4,23C4,23.552 3.552,24 3,24L1,24C0.448,24 0,23.552 0,23L0,1C0,0.448 0.448,0 1,0L3,0C3.552,0 4,0.448 4,1Z" style="fill:rgb(247,248,121);"/>
+                    <path id="Rectangle-41" serif:id="Rectangle-4" d="M14,1L14,23C14,23.552 13.552,24 13,24L11,24C10.448,24 10,23.552 10,23L10,1C10,0.448 10.448,0 11,0L13,0C13.552,0 14,0.448 14,1Z" style="fill:rgb(247,248,121);"/>
+                </g>
             </g>
         </g>
     </g>

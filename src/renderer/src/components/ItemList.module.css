@@ -65,8 +65,9 @@
 	animation: blink 2 0.5s;
 }
 
-.reset {
+.bottomButtons {
 	text-align: center;
+	margin: 20px 0;
 	& button {
 		background: transparent;
 		border: none;
