@@ -151,8 +151,8 @@ function initDatabase() {
 	if (store.get("vaultPath") && !fs.existsSync(dir)) {
 		const choice = dialog.showMessageBoxSync(null, {
 			type: "warning",
-			title: "Vault Not Found",
-			message: `The vault folder is not accessible:\n${dir}`,
+			title: "Data vault Not Found",
+			message: `The data folder is not accessible:\n${dir}`,
 			detail:
 				"The folder may have been moved, deleted, or the drive may be disconnected.",
 			buttons: ["Use Default Location", "Choose New Location", "Quit"],
@@ -165,7 +165,7 @@ function initDatabase() {
 			return db.openDatabase(getDefaultDbPath());
 		} else if (choice === 1) {
 			const result = dialog.showOpenDialogSync(null, {
-				title: "Choose Vault Location",
+				title: "Choose data vault location",
 				properties: ["openDirectory", "createDirectory"],
 			});
 			if (result && result[0]) {
@@ -187,7 +187,8 @@ async function changeVaultLocation() {
 	if (!hasMainWindow()) return;
 
 	const result = await dialog.showOpenDialog(mainWindow, {
-		title: "Choose Vault Location",
+		title: "Choose data vault location",
+		defaultPath: path.dirname(getCurrentDbPath()),
 		properties: ["openDirectory", "createDirectory"],
 	});
 
@@ -210,12 +211,12 @@ async function changeVaultLocation() {
 
 		dialog.showMessageBox(mainWindow, {
 			type: "info",
-			title: "Vault Moved",
-			message: "Your vault has been moved successfully.",
+			title: "Data vault Moved",
+			message: "Your data vault has been moved successfully.",
 			detail: `New location: ${newDir}`,
 		});
 	} catch (err) {
-		console.error("Failed to move vault:", err);
+		console.error("Failed to move data vault:", err);
 		// Try to reopen original DB
 		try {
 			db.openDatabase(currentDbPath);
@@ -225,7 +226,7 @@ async function changeVaultLocation() {
 		dialog.showMessageBox(mainWindow, {
 			type: "error",
 			title: "Move Failed",
-			message: "Could not move the vault.",
+			message: "Could not move the data vault.",
 			detail: err.message,
 		});
 	}
@@ -241,7 +242,7 @@ async function resetVaultLocation() {
 		dialog.showMessageBox(mainWindow, {
 			type: "info",
 			title: "Already Default",
-			message: "The vault is already in the default location.",
+			message: "The data vault is already in the default location.",
 		});
 		return;
 	}
@@ -255,12 +256,12 @@ async function resetVaultLocation() {
 
 		dialog.showMessageBox(mainWindow, {
 			type: "info",
-			title: "Vault Reset",
-			message: "Your vault has been moved back to the default location.",
+			title: "Data vault Reset",
+			message: "Your data vault has been moved back to the default location.",
 			detail: path.dirname(defaultPath),
 		});
 	} catch (err) {
-		console.error("Failed to reset vault:", err);
+		console.error("Failed to reset data vault:", err);
 		try {
 			db.openDatabase(currentDbPath);
 		} catch (_reopenErr) {
@@ -269,7 +270,7 @@ async function resetVaultLocation() {
 		dialog.showMessageBox(mainWindow, {
 			type: "error",
 			title: "Reset Failed",
-			message: "Could not reset the vault location.",
+			message: "Could not reset the data vault location.",
 			detail: err.message,
 		});
 	}
@@ -319,6 +320,129 @@ function registerIpcHandlers() {
 
 	ipcMain.handle("db:migrate", (_event, state) => {
 		return db.migrateFromLocalStorage(state);
+	});
+
+	// Settings IPC handlers
+	ipcMain.handle("settings:getNotifications", () => {
+		return { ...notificationSettings };
+	});
+
+	ipcMain.handle("settings:setNotifications", (_event, settings) => {
+		if (settings.resetNotification !== undefined) {
+			notificationSettings.resetNotification = settings.resetNotification;
+			store.set("reset", settings.resetNotification);
+		}
+		if (settings.reminderNotification !== undefined) {
+			notificationSettings.reminderNotification = settings.reminderNotification;
+			store.set("reminder", settings.reminderNotification);
+		}
+		if (hasMainWindow()) {
+			mainWindow.webContents.send(
+				"notificationSettingsChange",
+				notificationSettings,
+			);
+		}
+		return { ...notificationSettings };
+	});
+
+	ipcMain.handle("settings:showTestNotification", () => {
+		showNotification({
+			title: "todometer reminder!",
+			body: "Here's an example todometer notification!",
+			silent: false,
+		});
+		return { success: true };
+	});
+
+	ipcMain.handle("settings:getVaultPath", () => {
+		return {
+			path: store.get("vaultPath") || null,
+			defaultPath: path.dirname(getDefaultDbPath()),
+			currentPath: path.dirname(getCurrentDbPath()),
+		};
+	});
+
+	ipcMain.handle("settings:changeVault", async () => {
+		await changeVaultLocation();
+		return {
+			path: store.get("vaultPath") || null,
+			currentPath: path.dirname(getCurrentDbPath()),
+		};
+	});
+
+	ipcMain.handle("settings:resetVault", async () => {
+		await resetVaultLocation();
+		return {
+			path: store.get("vaultPath") || null,
+			currentPath: path.dirname(getCurrentDbPath()),
+		};
+	});
+
+	ipcMain.handle("settings:revealVault", () => {
+		revealVault();
+		return { success: true };
+	});
+
+	ipcMain.handle("settings:getApiState", () => {
+		return {
+			enabled: apiServer.isApiServerRunning(),
+			port: apiServer.getDefaultPort(),
+			token: store.get("apiToken") || null,
+			mcpPath: path.join(app.getAppPath(), "src", "mcp", "index.js"),
+		};
+	});
+
+	ipcMain.handle("settings:toggleApi", (_event, enable) => {
+		if (enable) {
+			let token = store.get("apiToken");
+			if (!token) {
+				token = apiServer.generateApiToken();
+				store.set("apiToken", token);
+			}
+			apiServer.startApiServer(token, undefined, notifyRendererDbChanged);
+			store.set("apiEnabled", true);
+			return {
+				enabled: true,
+				port: apiServer.getDefaultPort(),
+				token,
+			};
+		} else {
+			apiServer.stopApiServer();
+			store.set("apiEnabled", false);
+			return {
+				enabled: false,
+				port: apiServer.getDefaultPort(),
+				token: store.get("apiToken") || null,
+			};
+		}
+	});
+
+	ipcMain.handle("settings:copyApiToken", () => {
+		const token = store.get("apiToken");
+		if (token) {
+			const { clipboard } = require("electron");
+			clipboard.writeText(token);
+			return { success: true, copied: true };
+		}
+		return { success: false, copied: false };
+	});
+
+	ipcMain.handle("settings:getShowResetButton", () => {
+		return store.get("showResetButton") ?? true;
+	});
+
+	ipcMain.handle("settings:setShowResetButton", (_event, show) => {
+		store.set("showResetButton", show);
+		return show;
+	});
+
+	ipcMain.handle("settings:getShowCopyButton", () => {
+		return store.get("showCopyButton") ?? false;
+	});
+
+	ipcMain.handle("settings:setShowCopyButton", (_event, show) => {
+		store.set("showCopyButton", show);
+		return show;
 	});
 }
 
@@ -522,72 +646,8 @@ function menuSetup() {
 			],
 		},
 		{
-			label: "Vault",
-			submenu: [
-				{
-					label: "Change vault location…",
-					click: () => changeVaultLocation(),
-				},
-				{
-					label: "Reveal vault in file manager",
-					click: () => revealVault(),
-				},
-				{ type: "separator" },
-				{
-					label: "Reset to default location",
-					click: () => resetVaultLocation(),
-				},
-				{ type: "separator" },
-				{
-					label: `Local API (port ${apiServer.getDefaultPort()})`,
-					type: "checkbox",
-					checked: apiServer.isApiServerRunning(),
-					click: (menuItem) => {
-						if (menuItem.checked) {
-							let token = store.get("apiToken");
-							if (!token) {
-								token = apiServer.generateApiToken();
-								store.set("apiToken", token);
-							}
-							apiServer.startApiServer(token, undefined, notifyRendererDbChanged);
-							store.set("apiEnabled", true);
-							if (hasMainWindow()) {
-								dialog.showMessageBox(mainWindow, {
-									type: "info",
-									title: "Local API Enabled",
-									message: `API running on http://127.0.0.1:${apiServer.getDefaultPort()}`,
-									detail: `Bearer token: ${token}\n\nUse this token in the Authorization header:\nAuthorization: Bearer ${token}`,
-								});
-							}
-						} else {
-							apiServer.stopApiServer();
-							store.set("apiEnabled", false);
-						}
-					},
-				},
-				{
-					label: "Copy API token",
-					click: () => {
-						const token = store.get("apiToken");
-						if (token) {
-							const { clipboard } = require("electron");
-							clipboard.writeText(token);
-						}
-					},
-				},
-			],
-		},
-		{
 			label: "View",
 			submenu: [
-				// {
-				//   label: "Light mode",
-				//   type: "checkbox",
-				//   checked: false,
-				//   click: e => {
-				//     mainWindow.isLightMode = e.checked;
-				//   }
-				// },
 				{
 					type: "separator",
 				},
@@ -615,116 +675,6 @@ function menuSetup() {
 				},
 				{ role: "togglefullscreen" },
 				{ role: "minimize" },
-			],
-		},
-		{
-			label: "Notifications",
-			submenu: [
-				{
-					label: "Enable reset notification",
-					type: "checkbox",
-					checked: notificationSettings.resetNotification,
-					click: (e) => {
-						notificationSettings.resetNotification = e.checked;
-						mainWindow.webContents.send(
-							"notificationSettingsChange",
-							notificationSettings,
-						);
-						store.set("reset", e.checked);
-					},
-				},
-				{
-					label: "Reminder notifications",
-					submenu: [
-						{
-							label: "Never",
-							type: "radio",
-							checked: notificationSettings.reminderNotification === "never",
-							click: (e) => {
-								if (e.checked) {
-									notificationSettings.reminderNotification = "never";
-									mainWindow.webContents.send(
-										"notificationSettingsChange",
-										notificationSettings,
-									);
-									store.set("reminder", "never");
-								}
-							},
-						},
-						{
-							label: "Every 5 minutes",
-							type: "radio",
-							checked:
-								notificationSettings.reminderNotification === "fiveminutes",
-							click: (e) => {
-								if (e.checked) {
-									notificationSettings.reminderNotification = "fiveminutes";
-									mainWindow.webContents.send(
-										"notificationSettingsChange",
-										notificationSettings,
-									);
-									store.set("reminder", "fiveminutes");
-								}
-							},
-						},
-						{
-							label: "Every 15 minutes",
-							type: "radio",
-							checked:
-								notificationSettings.reminderNotification === "quarterhour",
-							click: (e) => {
-								if (e.checked) {
-									notificationSettings.reminderNotification = "quarterhour";
-									mainWindow.webContents.send(
-										"notificationSettingsChange",
-										notificationSettings,
-									);
-									store.set("reminder", "quarterhour");
-								}
-							},
-						},
-						{
-							label: "Every 30 minutes",
-							type: "radio",
-							checked: notificationSettings.reminderNotification === "halfhour",
-							click: (e) => {
-								if (e.checked) {
-									notificationSettings.reminderNotification = "halfhour";
-									mainWindow.webContents.send(
-										"notificationSettingsChange",
-										notificationSettings,
-									);
-									store.set("reminder", "halfhour");
-								}
-							},
-						},
-						{
-							label: "Every hour",
-							type: "radio",
-							checked: notificationSettings.reminderNotification === "hour",
-							click: (e) => {
-								if (e.checked) {
-									notificationSettings.reminderNotification = "hour";
-									mainWindow.webContents.send(
-										"notificationSettingsChange",
-										notificationSettings,
-									);
-									store.set("reminder", "hour");
-								}
-							},
-						},
-					],
-				},
-				{
-					label: "Show example notification",
-					click: (e) => {
-						showNotification({
-							title: "todometer reminder!",
-							body: "Here's an example todometer notification!",
-							silent: false,
-						});
-					},
-				},
 			],
 		},
 	];

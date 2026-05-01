@@ -79,7 +79,7 @@ const STATUS_LABELS = {
 	completed: "Mark as completed",
 };
 
-function ItemList() {
+function ItemList({ showResetButton, showCopyButton, onOpenSettings }) {
 	const dispatch = useAppReducer();
 	const { pending, paused, completed } = useItems();
 
@@ -96,6 +96,7 @@ function ItemList() {
 	const [currentDragId, setCurrentDragId] = useState(null);
 	const [dragInitialGroup, setDragInitialGroup] = useState(null);
 	const [accordionValue, setAccordionValue] = useState([]);
+	const [copied, setCopied] = useState(false);
 	// Sections manually expanded by hovering during a drag — kept open after drop
 	const expandedDuringDrag = useRef(new Set());
 
@@ -381,17 +382,71 @@ function ItemList() {
 				</DragOverlay>
 			</DragDropProvider>
 
-			{(completed.length > 0 || paused.length > 0) && (
-				<div className={styles.reset}>
-					<button
-						onClick={() => {
-							dispatch({ type: "RESET_ALL" });
-						}}
-					>
-						reset progress
-					</button>
-				</div>
-			)}
+			<div className={styles.bottomButtons}>
+				<button onClick={onOpenSettings} aria-label="Open menu">
+					menu
+				</button>
+				{showResetButton && (completed.length > 0 || paused.length > 0) && (
+					<>
+						•
+						<button
+							onClick={() => {
+								dispatch({ type: "RESET_ALL" });
+							}}
+						>
+							reset progress
+						</button>
+					</>
+				)}
+				{showCopyButton &&
+					(pending.length > 0 || paused.length > 0 || completed.length > 0) && (
+						<>
+							•
+							<button
+								onClick={() => {
+									const lines = ["todometer status:"];
+									let percentageCompleted, percentagePaused;
+									let total = pending.length + paused.length + completed.length;
+									if (total > 0) {
+										percentageCompleted = Math.round(
+											(completed.length / total) * 100,
+										);
+										percentagePaused = Math.round(
+											(paused.length / total) * 100,
+										);
+										if (
+											percentageCompleted !== 100 &&
+											(completed.length > 0 || paused.length > 0)
+										) {
+											lines.push(
+												`progress: ${percentageCompleted}% completed, ${percentagePaused}% paused`,
+											);
+										}
+									}
+
+									if (pending.length > 0) {
+										lines.push("todo:");
+										pending.forEach((i) => lines.push(`  - ${i.text}`));
+									}
+									if (paused.length > 0) {
+										lines.push("paused:");
+										paused.forEach((i) => lines.push(`  - ${i.text}`));
+									}
+									if (completed.length > 0) {
+										lines.push("completed:");
+										completed.forEach((i) => lines.push(`  - ${i.text}`));
+									}
+									navigator.clipboard.writeText(lines.join("\n")).then(() => {
+										setCopied(true);
+										setTimeout(() => setCopied(false), 2000);
+									});
+								}}
+							>
+								{copied ? "copied!" : "copy list"}
+							</button>
+						</>
+					)}
+			</div>
 		</div>
 	);
 }

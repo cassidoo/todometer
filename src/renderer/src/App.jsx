@@ -1,9 +1,24 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TodoDate from "./components/TodoDate.jsx";
 import ItemList from "./components/ItemList.jsx";
+import SettingsDrawer from "./components/SettingsDrawer.jsx";
 import { AppStateProvider } from "./AppContext.jsx";
 
 function App() {
+	const [drawerOpen, setDrawerOpen] = useState(false);
+	const [showResetButton, setShowResetButton] = useState(true);
+	const [showCopyButton, setShowCopyButton] = useState(false);
+
+	useEffect(() => {
+		Promise.all([
+			window.settingsAPI?.getShowResetButton(),
+			window.settingsAPI?.getShowCopyButton(),
+		]).then(([reset, copy]) => {
+			setShowResetButton(reset ?? true);
+			setShowCopyButton(copy ?? false);
+		});
+	}, []);
+
 	useEffect(() => {
 		const removeListener = window?.onPlayNotificationSound?.((soundPath) => {
 			if (!soundPath) {
@@ -28,10 +43,28 @@ function App() {
 		};
 	}, []);
 
+	useEffect(() => {
+		document.body.classList.toggle("settings-drawer-open", drawerOpen);
+
+		return () => {
+			document.body.classList.remove("settings-drawer-open");
+		};
+	}, [drawerOpen]);
+
+	const openSettings = useCallback(() => setDrawerOpen(true), []);
+
 	return (
 		<AppStateProvider>
 			<TodoDate />
-			<ItemList />
+			<ItemList showResetButton={showResetButton} showCopyButton={showCopyButton} onOpenSettings={openSettings} />
+			<SettingsDrawer
+				isOpen={drawerOpen}
+				onClose={() => setDrawerOpen(false)}
+				showResetButton={showResetButton}
+				onShowResetButtonChange={setShowResetButton}
+				showCopyButton={showCopyButton}
+				onShowCopyButtonChange={setShowCopyButton}
+			/>
 		</AppStateProvider>
 	);
 }
