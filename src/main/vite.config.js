@@ -25,9 +25,9 @@ export default defineConfig({
 			external: [
 				// Exclude Electron from built output
 				"electron",
-				// electron-updater must not be bundled (resolved at runtime)
+				// (resolved at runtime)
 				"electron-updater",
-				// better-sqlite3 is a native module, must be resolved at runtime
+				// (resolved at runtime)
 				"better-sqlite3",
 				// Exclude Node builtin modules.
 				...builtinModules.flatMap((p) => [p, `node:${p}`]),
