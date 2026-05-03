@@ -8,6 +8,10 @@ A simple, meter-based to-do list built with Electron and React.
 
 Nab the latest version from the [Releases](https://github.com/cassidoo/todometer/releases) page!
 
+## Web clipper
+
+You can install the [todometer web clipper](https://github.com/cassidoo/todometer-web-clipper) to your favorite browser to add tasks to todometer with a single click!
+
 ## Development
 
 - Clone the repo:
