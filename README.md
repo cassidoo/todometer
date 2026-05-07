@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/cassidoo-todometer-badge.png)](https://mseep.ai/app/cassidoo-todometer)
+
 # todometer
 
 A simple, meter-based to-do list built with Electron and React.
