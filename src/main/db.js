@@ -60,6 +60,109 @@ export function exportTo(destPath) {
 	db.exec(`VACUUM INTO '${destPath.replace(/'/g, "''")}'`);
 }
 
+// Merge the currently open database into an existing database file at destPath.
+// Conflict resolution: for items, the row with the most recent updated_at wins.
+// For app_state, existing dest values are preserved; missing keys are copied from source.
+export function mergeInto(destPath) {
+	if (!db) throw new Error("Database not open");
+	const dir = path.dirname(destPath);
+	if (!fs.existsSync(dir)) {
+		fs.mkdirSync(dir, { recursive: true });
+	}
+
+	const sourceItems = db
+		.prepare(
+			"SELECT id, text, status, sort_order, created_at, updated_at, deleted FROM items",
+		)
+		.all();
+	const sourceState = db
+		.prepare("SELECT key, value FROM app_state")
+		.all();
+
+	const dest = new Database(destPath);
+	try {
+		dest.pragma("journal_mode = WAL");
+		dest.pragma("foreign_keys = ON");
+
+		dest.exec(`
+			CREATE TABLE IF NOT EXISTS items (
+				id TEXT PRIMARY KEY,
+				text TEXT NOT NULL CHECK(length(trim(text)) > 0),
+				status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN ('pending', 'paused', 'completed')),
+				sort_order INTEGER,
+				created_at TEXT NOT NULL,
+				updated_at TEXT NOT NULL,
+				deleted INTEGER NOT NULL DEFAULT 0
+			);
+
+			CREATE TABLE IF NOT EXISTS app_state (
+				key TEXT PRIMARY KEY,
+				value TEXT
+			);
+		`);
+
+		const getExistingItem = dest.prepare(
+			"SELECT updated_at FROM items WHERE id = ?",
+		);
+		const insertItem = dest.prepare(
+			"INSERT INTO items (id, text, status, sort_order, created_at, updated_at, deleted) VALUES (?, ?, ?, ?, ?, ?, ?)",
+		);
+		const updateItemStmt = dest.prepare(
+			"UPDATE items SET text = ?, status = ?, sort_order = ?, created_at = ?, updated_at = ?, deleted = ? WHERE id = ?",
+		);
+		const getExistingState = dest.prepare(
+			"SELECT value FROM app_state WHERE key = ?",
+		);
+		const insertState = dest.prepare(
+			"INSERT INTO app_state (key, value) VALUES (?, ?)",
+		);
+
+		const merge = dest.transaction(() => {
+			for (const item of sourceItems) {
+				const existing = getExistingItem.get(item.id);
+				if (!existing) {
+					insertItem.run(
+						item.id,
+						item.text,
+						item.status,
+						item.sort_order,
+						item.created_at,
+						item.updated_at,
+						item.deleted,
+					);
+				} else if (item.updated_at > existing.updated_at) {
+					updateItemStmt.run(
+						item.text,
+						item.status,
+						item.sort_order,
+						item.created_at,
+						item.updated_at,
+						item.deleted,
+						item.id,
+					);
+				}
+			}
+
+			for (const { key, value } of sourceState) {
+				if (key === "schema_version") continue;
+				const existing = getExistingState.get(key);
+				if (!existing) {
+					insertState.run(key, value);
+				}
+			}
+
+			const versionRow = getExistingState.get("schema_version");
+			if (!versionRow) {
+				insertState.run("schema_version", String(SCHEMA_VERSION));
+			}
+		});
+
+		merge();
+	} finally {
+		dest.close();
+	}
+}
+
 function validateItem(item) {
 	if (!item.text || typeof item.text !== "string") {
 		throw new Error("Item text must be a non-empty string");

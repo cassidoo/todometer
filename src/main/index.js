@@ -200,23 +200,77 @@ async function changeVaultLocation() {
 
 	if (newDbPath === currentDbPath) return;
 
+	const destExists = fs.existsSync(newDbPath);
+	let mode = "move"; // move | use | merge | replace
+
+	if (destExists) {
+		const { response } = await dialog.showMessageBox(mainWindow, {
+			type: "question",
+			title: "Existing data vault found",
+			message: `A todometer vault already exists at:\n${newDir}`,
+			detail:
+				"Use Existing: Switch to that vault and load its data. Your current data stays in its old location and is not copied.\n\n" +
+				"Merge: Combine items from both vaults into the existing one. On conflicts, the most recently updated item wins.\n\n" +
+				"Replace: Overwrite the existing vault with your current data. The existing vault's data will be lost.",
+			buttons: ["Use Existing", "Merge", "Replace", "Cancel"],
+			defaultId: 0,
+			cancelId: 3,
+		});
+
+		if (response === 3) return;
+		if (response === 0) mode = "use";
+		else if (response === 1) mode = "merge";
+		else mode = "replace";
+	}
+
 	try {
-		db.exportTo(newDbPath);
-		db.closeDatabase();
-		db.openDatabase(newDbPath);
+		if (mode === "move") {
+			db.exportTo(newDbPath);
+			db.closeDatabase();
+			db.openDatabase(newDbPath);
+		} else if (mode === "use") {
+			db.closeDatabase();
+			db.openDatabase(newDbPath);
+		} else if (mode === "merge") {
+			db.mergeInto(newDbPath);
+			db.closeDatabase();
+			db.openDatabase(newDbPath);
+		} else if (mode === "replace") {
+			fs.rmSync(newDbPath, { force: true });
+			fs.rmSync(newDbPath + "-wal", { force: true });
+			fs.rmSync(newDbPath + "-shm", { force: true });
+			db.exportTo(newDbPath);
+			db.closeDatabase();
+			db.openDatabase(newDbPath);
+		}
+
 		store.set("vaultPath", newDir);
 
 		// Rebuild menu to update vault location display
 		menuSetup();
+		notifyRendererDbChanged();
+
+		const detailByMode = {
+			move: `New location: ${newDir}`,
+			use: `Now using existing vault at: ${newDir}`,
+			merge: `Vaults merged at: ${newDir}`,
+			replace: `Existing vault replaced at: ${newDir}`,
+		};
+		const messageByMode = {
+			move: "Your data vault has been moved successfully.",
+			use: "You're now using the existing data vault.",
+			merge: "Your data vaults have been merged successfully.",
+			replace: "The existing data vault has been replaced with your data.",
+		};
 
 		dialog.showMessageBox(mainWindow, {
 			type: "info",
-			title: "Data vault moved",
-			message: "Your data vault has been moved successfully.",
-			detail: `New location: ${newDir}`,
+			title: "Data vault updated",
+			message: messageByMode[mode],
+			detail: detailByMode[mode],
 		});
 	} catch (err) {
-		console.error("Failed to move data vault:", err);
+		console.error("Failed to update data vault:", err);
 		// Try to reopen original DB
 		try {
 			db.openDatabase(currentDbPath);
@@ -225,8 +279,8 @@ async function changeVaultLocation() {
 		}
 		dialog.showMessageBox(mainWindow, {
 			type: "error",
-			title: "Move Failed",
-			message: "Could not move the data vault.",
+			title: "Vault Update Failed",
+			message: "Could not update the data vault.",
 			detail: err.message,
 		});
 	}
