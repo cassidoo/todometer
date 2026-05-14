@@ -21,7 +21,8 @@
 		"publish": {
 			"provider": "github",
 			"owner": "cassidoo",
-			"repo": "todometer"
+			"repo": "todometer",
+			"releaseType": "release"
 		},
 		"afterSign": "scripts/notarize.js",
 		"mac": {
