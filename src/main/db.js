@@ -9,6 +9,11 @@ const MAX_TEXT_LENGTH = 10000;
 
 let db = null;
 
+function configureDatabase(database) {
+	database.pragma("journal_mode = DELETE");
+	database.pragma("foreign_keys = ON");
+}
+
 export function openDatabase(dbPath) {
 	const dir = path.dirname(dbPath);
 	if (!fs.existsSync(dir)) {
@@ -16,8 +21,7 @@ export function openDatabase(dbPath) {
 	}
 
 	db = new Database(dbPath);
-	db.pragma("journal_mode = WAL");
-	db.pragma("foreign_keys = ON");
+	configureDatabase(db);
 
 	db.exec(`
 		CREATE TABLE IF NOT EXISTS items (
@@ -75,14 +79,11 @@ export function mergeInto(destPath) {
 			"SELECT id, text, status, sort_order, created_at, updated_at, deleted FROM items",
 		)
 		.all();
-	const sourceState = db
-		.prepare("SELECT key, value FROM app_state")
-		.all();
+	const sourceState = db.prepare("SELECT key, value FROM app_state").all();
 
 	const dest = new Database(destPath);
 	try {
-		dest.pragma("journal_mode = WAL");
-		dest.pragma("foreign_keys = ON");
+		configureDatabase(dest);
 
 		dest.exec(`
 			CREATE TABLE IF NOT EXISTS items (
@@ -205,7 +206,14 @@ export function addItem(item) {
 		"INSERT INTO items (id, text, status, sort_order, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)",
 	).run(id, item.text.trim(), item.status || "pending", sortOrder, now, now);
 
-	return { id, text: item.text.trim(), status: item.status || "pending", sort_order: sortOrder, created_at: now, updated_at: now };
+	return {
+		id,
+		text: item.text.trim(),
+		status: item.status || "pending",
+		sort_order: sortOrder,
+		created_at: now,
+		updated_at: now,
+	};
 }
 
 export function updateItem(item) {
@@ -305,9 +313,10 @@ export function getAppState(key) {
 
 export function setAppState(key, value) {
 	if (!db) throw new Error("Database not open");
-	db.prepare(
-		"INSERT OR REPLACE INTO app_state (key, value) VALUES (?, ?)",
-	).run(key, value);
+	db.prepare("INSERT OR REPLACE INTO app_state (key, value) VALUES (?, ?)").run(
+		key,
+		value,
+	);
 }
 
 export function loadState() {
