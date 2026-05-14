@@ -596,9 +596,14 @@ function setupAutoUpdater() {
 			})
 			.then(({ response }) => {
 				if (response === 0) {
+					willQuit = true;
 					autoUpdater.quitAndInstall();
 				}
 			});
+	});
+
+	autoUpdater.on("before-quit-for-update", () => {
+		willQuit = true;
 	});
 
 	autoUpdater.on("error", (err) => {
