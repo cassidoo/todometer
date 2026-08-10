@@ -9,7 +9,7 @@
 //   "mcpServers": {
 //     "todometer": {
 //       "command": "node",
-//       "args": ["/path/to/todometer/src/mcp/index.js"],
+//       "args": ["/path/to/todometer/src/mcp/index.mjs"],
 //       "env": {
 //         "TODOMETER_API_TOKEN": "<your-token>"
 //       }
@@ -100,16 +100,12 @@ function apiRequest(method, path, body = null) {
 // JSON-RPC helpers
 function sendResponse(id, result) {
 	const msg = JSON.stringify({ jsonrpc: "2.0", id, result });
-	process.stdout.write(
-		`Content-Length: ${Buffer.byteLength(msg)}\r\n\r\n${msg}`,
-	);
+	process.stdout.write(`${msg}\n`);
 }
 
 function sendError(id, code, message) {
 	const msg = JSON.stringify({ jsonrpc: "2.0", id, error: { code, message } });
-	process.stdout.write(
-		`Content-Length: ${Buffer.byteLength(msg)}\r\n\r\n${msg}`,
-	);
+	process.stdout.write(`${msg}\n`);
 }
 
 const TOOLS = [
@@ -319,36 +315,25 @@ function startServer() {
 	process.stdin.on("data", (chunk) => {
 		buffer += chunk;
 
-		while (true) {
-			const headerEnd = buffer.indexOf("\r\n\r\n");
-			if (headerEnd === -1) break;
+		let newlineIndex = buffer.indexOf("\n");
+		while (newlineIndex !== -1) {
+			const line = buffer.slice(0, newlineIndex).replace(/\r$/, "");
+			buffer = buffer.slice(newlineIndex + 1);
 
-			const header = buffer.slice(0, headerEnd);
-			const match = header.match(/Content-Length:\s*(\d+)/i);
-			if (!match) {
-				buffer = buffer.slice(headerEnd + 4);
-				continue;
-			}
-
-			const contentLength = parseInt(match[1], 10);
-			const bodyStart = headerEnd + 4;
-			if (buffer.length < bodyStart + contentLength) break;
-
-			const body = buffer.slice(bodyStart, bodyStart + contentLength);
-			buffer = buffer.slice(bodyStart + contentLength);
-
-			try {
-				const msg = JSON.parse(body);
-				handleRequest(msg.method, msg.params, msg.id).catch((err) => {
-					if (msg.id !== undefined) {
-						sendError(msg.id, -32603, err.message);
-					}
-				});
-			} catch (err) {
-				if (body.includes('"id"')) {
+			if (line) {
+				try {
+					const msg = JSON.parse(line);
+					handleRequest(msg.method, msg.params, msg.id).catch((err) => {
+						if (msg.id !== undefined) {
+							sendError(msg.id, -32603, err.message);
+						}
+					});
+				} catch {
 					sendError(null, -32700, "Parse error");
 				}
 			}
+
+			newlineIndex = buffer.indexOf("\n");
 		}
 	});
 

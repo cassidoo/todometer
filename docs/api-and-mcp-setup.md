@@ -98,7 +98,7 @@ Add todometer to your MCP client's configuration file. You can copy the ready-to
 	"mcpServers": {
 		"todometer": {
 			"command": "node",
-			"args": ["/path/to/todometer/src/mcp/index.js"],
+			"args": ["/path/to/todometer/src/mcp/index.mjs"],
 			"env": {
 				"TODOMETER_API_TOKEN": "<your-token>"
 			}
@@ -107,7 +107,7 @@ Add todometer to your MCP client's configuration file. You can copy the ready-to
 }
 ```
 
-Replace `/path/to/todometer` with the actual path to your todometer installation, and `<your-token>` with your API bearer token (available in the Settings drawer under **API and MCP Configuration**).
+The Configuration menu fills in the correct MCP server path for installed apps. If you are running todometer from source, replace `/path/to/todometer` with the repository path. Replace `<your-token>` with your API bearer token (available in the Settings drawer under **API and MCP Configuration**).
 
 ### Custom API port
 
@@ -118,7 +118,7 @@ If your API server is running on a non-default port, set the `TODOMETER_API_PORT
 	"mcpServers": {
 		"todometer": {
 			"command": "node",
-			"args": ["/path/to/todometer/src/mcp/index.js"],
+			"args": ["/path/to/todometer/src/mcp/index.mjs"],
 			"env": {
 				"TODOMETER_API_TOKEN": "<your-token>",
 				"TODOMETER_API_PORT": "19747"
