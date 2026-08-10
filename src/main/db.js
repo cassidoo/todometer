@@ -40,8 +40,9 @@ export function openDatabase(dbPath) {
 		);
 	`);
 
-	// Purge any legacy soft-deleted rows
-	db.prepare("DELETE FROM items WHERE deleted = 1").run();
+	db.prepare(
+		"DELETE FROM items WHERE deleted = 1 AND julianday(updated_at) < julianday('now', '-7 days')",
+	).run();
 
 	const currentVersion = getAppState("schema_version");
 	if (!currentVersion) {
@@ -79,7 +80,7 @@ export function mergeInto(destPath) {
 
 	const sourceItems = db
 		.prepare(
-			"SELECT id, text, status, sort_order, created_at, updated_at, deleted FROM items WHERE deleted = 0",
+			"SELECT id, text, status, sort_order, created_at, updated_at, deleted FROM items",
 		)
 		.all();
 	const sourceState = db.prepare("SELECT key, value FROM app_state").all();
@@ -262,9 +263,12 @@ export function deleteItem(id) {
 	if (!db) throw new Error("Database not open");
 	if (!id) throw new Error("Item id is required");
 
+	const now = new Date().toISOString();
 	const result = db
-		.prepare("DELETE FROM items WHERE id = ? AND deleted = 0")
-		.run(id);
+		.prepare(
+			"UPDATE items SET deleted = 1, updated_at = ? WHERE id = ? AND deleted = 0",
+		)
+		.run(now, id);
 
 	if (result.changes === 0) {
 		throw new Error(`Item not found: ${id}`);
@@ -275,12 +279,12 @@ export function setItems(items) {
 	if (!db) throw new Error("Database not open");
 
 	const setItemsTransaction = db.transaction((newItems) => {
-		// Remove all existing items
-		db.prepare("DELETE FROM items").run();
+		// Remove all active items
+		db.prepare("DELETE FROM items WHERE deleted = 0").run();
 
 		// Insert new items
 		const insert = db.prepare(
-			"INSERT INTO items (id, text, status, sort_order, created_at, updated_at, deleted) VALUES (?, ?, ?, ?, ?, ?, 0)",
+			"INSERT OR REPLACE INTO items (id, text, status, sort_order, created_at, updated_at, deleted) VALUES (?, ?, ?, ?, ?, ?, 0)",
 		);
 
 		for (let i = 0; i < newItems.length; i++) {
