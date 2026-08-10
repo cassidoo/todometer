@@ -206,6 +206,11 @@ input:checked + .slider {
 	}
 }
 
+.rightButton {
+	display: flex;
+	justify-content: flex-end;
+}
+
 .buttonGroup {
 	display: flex;
 	justify-content: center;
@@ -267,7 +272,7 @@ input:checked + .slider {
 	font-size: 13px;
 	font-family: monospace;
 	overflow-x: auto;
-	margin: 8px 0 0;
+	margin: 8px 0 8px;
 	white-space: pre;
 }
 
