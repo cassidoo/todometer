@@ -72,6 +72,7 @@ function SettingsDrawer({
 		mcpPath: "",
 	});
 	const [tokenCopied, setTokenCopied] = useState(false);
+	const [mcpCopied, setMcpCopied] = useState(false);
 
 	const loadSettings = useCallback(async () => {
 		if (!window.settingsAPI) return;
@@ -151,6 +152,12 @@ function SettingsDrawer({
 		}
 	}
 
+	async function handleCopyMcp() {
+		await navigator.clipboard.writeText(mcpJson);
+		setMcpCopied(true);
+		setTimeout(() => setMcpCopied(false), 2000);
+	}
+
 	function handleOpenDocs() {
 		window.open(DOCS_URL, "_blank");
 	}
@@ -169,6 +176,21 @@ function SettingsDrawer({
 
 	const displayPath = vaultInfo.path || vaultInfo.currentPath || "Default";
 	const isCustomVault = !!vaultInfo.path;
+	const mcpJson = JSON.stringify(
+		{
+			mcpServers: {
+				todometer: {
+					command: "node",
+					args: [apiState.mcpPath],
+					env: {
+						TODOMETER_API_TOKEN: apiState.token,
+					},
+				},
+			},
+		},
+		null,
+		2,
+	);
 
 	return (
 		<>
@@ -306,23 +328,15 @@ function SettingsDrawer({
 									</div>
 									<details className={styles.details}>
 										<summary>MCP configuration</summary>
-										<pre className={styles.codeBlock}>
-											{JSON.stringify(
-												{
-													mcpServers: {
-														todometer: {
-															command: "node",
-															args: [apiState.mcpPath],
-															env: {
-																TODOMETER_API_TOKEN: apiState.token,
-															},
-														},
-													},
-												},
-												null,
-												2,
-											)}
-										</pre>
+										<pre className={styles.codeBlock}>{mcpJson}</pre>
+										<div className={styles.rightButton}>
+											<button
+												className={styles.secondaryButton}
+												onClick={handleCopyMcp}
+											>
+												{mcpCopied ? "Copied!" : "Copy"}
+											</button>
+										</div>
 									</details>
 								</>
 							)}
