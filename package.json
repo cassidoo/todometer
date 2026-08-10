@@ -116,7 +116,7 @@
 		"@testing-library/react": "^16.3.2",
 		"@vitejs/plugin-react": "^5.2.0",
 		"cross-env": "^10.1.0",
-		"electron": "^40.8.5",
+		"electron": "^41.10.3",
 		"electron-builder": "^26.15.3",
 		"eslint": "^10.0.2",
 		"globals": "^17.4.0",
