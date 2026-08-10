@@ -40,6 +40,10 @@ export function openDatabase(dbPath) {
 		);
 	`);
 
+	db.prepare(
+		"DELETE FROM items WHERE deleted = 1 AND julianday(updated_at) < julianday('now', '-7 days')",
+	).run();
+
 	const currentVersion = getAppState("schema_version");
 	if (!currentVersion) {
 		setAppState("schema_version", String(SCHEMA_VERSION));
@@ -275,11 +279,8 @@ export function setItems(items) {
 	if (!db) throw new Error("Database not open");
 
 	const setItemsTransaction = db.transaction((newItems) => {
-		// Soft-delete all existing items
-		const now = new Date().toISOString();
-		db.prepare(
-			"UPDATE items SET deleted = 1, updated_at = ? WHERE deleted = 0",
-		).run(now);
+		// Remove all active items
+		db.prepare("DELETE FROM items WHERE deleted = 0").run();
 
 		// Insert new items
 		const insert = db.prepare(
