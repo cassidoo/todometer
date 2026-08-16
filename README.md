@@ -1,6 +1,6 @@
 # todometer
 
-A simple, meter-based to-do list built with Electron and React.
+A simple task app with a progress bar.
 
 ![todometer](docs/assets/screenshot.png)
 
