@@ -16,6 +16,7 @@ import fs from "fs";
 import { version } from "../../package.json";
 import * as db from "./db.js";
 import * as apiServer from "./api-server.js";
+import { getMcpServerPath } from "./mcp-path.js";
 
 const unwrapDefault = (mod) => mod?.default?.default ?? mod?.default ?? mod;
 const Store = unwrapDefault(StoreModule);
@@ -442,7 +443,11 @@ function registerIpcHandlers() {
 			enabled: apiServer.isApiServerRunning(),
 			port: apiServer.getDefaultPort(),
 			token: store.get("apiToken") || null,
-			mcpPath: path.join(app.getAppPath(), "src", "mcp", "index.js"),
+			mcpPath: getMcpServerPath({
+				isPackaged: app.isPackaged,
+				resourcesPath: process.resourcesPath,
+				appPath: app.getAppPath(),
+			}),
 		};
 	});
 

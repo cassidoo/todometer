@@ -65,6 +65,12 @@
 			"assets/logo.svg",
 			"package.json"
 		],
+		"extraResources": [
+			{
+				"from": "src/mcp/index.mjs",
+				"to": "mcp/index.mjs"
+			}
+		],
 		"directories": {
 			"buildResources": "assets"
 		},
