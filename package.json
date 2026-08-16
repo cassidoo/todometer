@@ -1,7 +1,7 @@
 {
 	"name": "todometer",
-	"description": "A meter-based to-do list",
-	"version": "3.0.2",
+	"description": "A simple task app with a progress bar",
+	"version": "3.0.3",
 	"main": "dist/main/index.cjs",
 	"type": "module",
 	"author": {
