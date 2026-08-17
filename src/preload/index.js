@@ -60,5 +60,21 @@ process.once("loaded", () => {
 			ipcRenderer.invoke("settings:getShowCopyButton"),
 		setShowCopyButton: (show) =>
 			ipcRenderer.invoke("settings:setShowCopyButton", show),
+		getCustomCss: () => ipcRenderer.invoke("settings:getCustomCss"),
+		chooseCustomCss: () => ipcRenderer.invoke("settings:chooseCustomCss"),
+		clearCustomCss: () => ipcRenderer.invoke("settings:clearCustomCss"),
+		toggleCustomCss: (enable) =>
+			ipcRenderer.invoke("settings:toggleCustomCss", enable),
+		revealCustomCss: () => ipcRenderer.invoke("settings:revealCustomCss"),
+		listThemes: () => ipcRenderer.invoke("settings:listThemes"),
+		selectTheme: (cssPath) =>
+			ipcRenderer.invoke("settings:selectTheme", cssPath),
+		openThemesFolder: () => ipcRenderer.invoke("settings:openThemesFolder"),
+	});
+
+	contextBridge.exposeInMainWorld("onCustomCssChange", (callback) => {
+		const listener = (_event, payload) => callback(payload);
+		ipcRenderer.on("customCss:change", listener);
+		return () => ipcRenderer.removeListener("customCss:change", listener);
 	});
 });

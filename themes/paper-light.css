@@ -1,0 +1,65 @@
+/*
+ * Paper Light — a warm, printed-notebook light theme for todometer.
+ * Pick it in Settings → Configuration → Appearance → Theme.
+ */
+
+:root {
+	--bg: #f4f1ea;
+	--green: #4f7d4a;
+	--yellow: #c08a2d;
+	--red: #b0413e;
+	--gray: #9a9385;
+	--highlight: rgba(79, 125, 74, 0.14);
+
+	--input-color: #ece7db;
+	--item-color: #efeae0;
+	--font-color: #2e2a24;
+
+	--big-font-size: 64px;
+	--heading-font-size: 24px;
+	--item-font-size: 20px;
+	--pulse-animation: click 0.5s;
+}
+
+body {
+	font-family: "Iowan Old Style", "Palatino Linotype", Georgia, "Times New Roman",
+		serif !important;
+	letter-spacing: 0.2px;
+	color: var(--font-color);
+	background:
+		repeating-linear-gradient(
+			to bottom,
+			transparent 0,
+			transparent 31px,
+			rgba(46, 42, 36, 0.06) 32px
+		),
+		var(--bg) !important;
+}
+
+::selection {
+	background: #d8cbb0;
+	color: #2e2a24;
+}
+
+input,
+textarea,
+button,
+select {
+	font-family: "Iowan Old Style", "Palatino Linotype", Georgia, "Times New Roman",
+		serif !important;
+	color: var(--font-color);
+}
+
+::placeholder {
+	color: var(--gray);
+}
+
+input:focus,
+textarea:focus {
+	box-shadow: 0 0 0 1px var(--green);
+}
+
+.today::after {
+	content: " ✎";
+	color: var(--green);
+}

@@ -55,6 +55,7 @@ See more in the Release documentation.
   - Notification preferences (reset notifications, reminder frequency)
   - Data vault location (move your database anywhere)
   - Display options (show/hide reset and copy buttons)
+  - Custom CSS override (point to your own `.css` file to restyle the app — changes apply live)
   - Local REST API and MCP server for external integrations
 - **[API & MCP integration](docs/api-and-mcp-setup.md)** — control todometer from scripts, shortcuts, or AI assistants
 - **Protocol handler** — add todos via `todometer://add?text=...` URLs

@@ -1,0 +1,111 @@
+/*
+ * Hacker Terminal — a neon-green CRT theme for todometer.
+ *
+ * Drop-in override: Settings → Configuration → Appearance → Custom CSS →
+ * "Choose…" this file. It re-maps todometer's design tokens and layers on
+ * some terminal flair (monospace, phosphor glow, blinking caret, scanlines).
+ */
+
+:root {
+	--bg: #050805;
+	--green: #00ff41;
+	--yellow: #f9f871;
+	--red: #ff073a;
+	--gray: rgba(0, 255, 65, 0.45);
+	--highlight: rgba(0, 255, 65, 0.12);
+
+	--input-color: #0a120a;
+	--item-color: #0b160b;
+	--font-color: #00ff41;
+
+	--big-font-size: 64px;
+	--heading-font-size: 24px;
+	--item-font-size: 20px;
+	--pulse-animation: click 0.5s;
+}
+
+body {
+	font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Consolas",
+		"Courier New", monospace !important;
+	letter-spacing: 0.5px;
+	text-shadow: 0 0 4px rgba(0, 255, 65, 0.55);
+	background:
+		radial-gradient(circle at 50% -10%, rgba(0, 255, 65, 0.08), transparent 55%),
+		var(--bg) !important;
+}
+
+::selection {
+	background: var(--green);
+	color: #001a05;
+	text-shadow: none;
+}
+
+/* Inputs / buttons: phosphor glow + focus ring */
+input,
+textarea,
+button,
+select {
+	font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Consolas",
+		"Courier New", monospace !important;
+	text-shadow: 0 0 4px rgba(0, 255, 65, 0.5);
+}
+
+/* Match the placeholder hint to the monospace input text */
+::placeholder {
+	font-family: "Cascadia Code", "Fira Code", "JetBrains Mono", "Consolas",
+		"Courier New", monospace;
+}
+
+input:focus,
+textarea:focus {
+	box-shadow:
+		0 0 0 1px var(--green),
+		0 0 12px rgba(0, 255, 65, 0.25) inset;
+}
+
+/* Blinking terminal caret after the weekday label (global .today class) */
+.today::after {
+	content: " _";
+	animation: hk-blink 1s steps(1) infinite;
+	color: var(--green);
+}
+
+@keyframes hk-blink {
+	50% {
+		opacity: 0;
+	}
+}
+
+/* CRT scanlines + subtle flicker overlay */
+body::after {
+	content: "";
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	z-index: 9999;
+	background: repeating-linear-gradient(
+		to bottom,
+		rgba(0, 0, 0, 0) 0,
+		rgba(0, 0, 0, 0) 2px,
+		rgba(0, 0, 0, 0.22) 3px,
+		rgba(0, 0, 0, 0.22) 3px
+	);
+	mix-blend-mode: multiply;
+	animation: hk-flicker 4s infinite;
+}
+
+@keyframes hk-flicker {
+	0%,
+	100% {
+		opacity: 0.8;
+	}
+	48% {
+		opacity: 0.72;
+	}
+	50% {
+		opacity: 0.9;
+	}
+	52% {
+		opacity: 0.74;
+	}
+}

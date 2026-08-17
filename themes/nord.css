@@ -1,0 +1,55 @@
+/*
+ * Nord — a calm, arctic, north-bluish palette for todometer.
+ * https://www.nordtheme.com
+ * Pick it in Settings → Configuration → Appearance → Theme.
+ */
+
+:root {
+	--bg: #2e3440;
+	--green: #a3be8c;
+	--yellow: #ebcb8b;
+	--red: #bf616a;
+	--gray: #4c566a;
+	--highlight: rgba(136, 192, 208, 0.18);
+
+	--input-color: #3b4252;
+	--item-color: #434c5e;
+	--font-color: #eceff4;
+
+	--big-font-size: 64px;
+	--heading-font-size: 24px;
+	--item-font-size: 20px;
+	--pulse-animation: click 0.5s;
+}
+
+body {
+	font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif !important;
+	letter-spacing: 0.2px;
+	background: var(--bg) !important;
+}
+
+::selection {
+	background: #88c0d0;
+	color: #2e3440;
+}
+
+input,
+textarea,
+button,
+select {
+	font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif !important;
+}
+
+::placeholder {
+	color: #7b88a1;
+}
+
+input:focus,
+textarea:focus {
+	box-shadow: 0 0 0 1px #88c0d0;
+}
+
+.today::after {
+	content: " ❄";
+	color: #88c0d0;
+}

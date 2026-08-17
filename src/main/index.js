@@ -342,6 +342,145 @@ function notifyRendererDbChanged() {
 	}
 }
 
+// --- User-defined custom CSS override ---
+let customCssWatcher = null;
+let customCssWatchTimer = null;
+
+function getCustomCssState() {
+	return {
+		enabled: store.get("customCssEnabled") ?? false,
+		path: store.get("customCssPath") || null,
+	};
+}
+
+function readCustomCss() {
+	const { enabled, path: cssPath } = getCustomCssState();
+	if (!enabled || !cssPath) return "";
+	try {
+		return fs.readFileSync(cssPath, "utf8");
+	} catch (err) {
+		console.error("Failed to read custom CSS file:", err);
+		return "";
+	}
+}
+
+function getCustomCssPayload() {
+	const { enabled, path: cssPath } = getCustomCssState();
+	return { enabled, path: cssPath, css: readCustomCss() };
+}
+
+function broadcastCustomCss() {
+	if (hasMainWindow()) {
+		mainWindow.webContents.send("customCss:change", getCustomCssPayload());
+	}
+}
+
+function stopCustomCssWatcher() {
+	if (customCssWatcher) {
+		customCssWatcher.close();
+		customCssWatcher = null;
+	}
+}
+
+function startCustomCssWatcher() {
+	stopCustomCssWatcher();
+	const { enabled, path: cssPath } = getCustomCssState();
+	if (!enabled || !cssPath || !fs.existsSync(cssPath)) return;
+	try {
+		customCssWatcher = fs.watch(cssPath, { persistent: false }, () => {
+			// Debounce rapid successive change events emitted by editors.
+			clearTimeout(customCssWatchTimer);
+			customCssWatchTimer = setTimeout(broadcastCustomCss, 80);
+		});
+	} catch (err) {
+		console.error("Failed to watch custom CSS file:", err);
+	}
+}
+
+async function chooseCustomCssFile() {
+	if (!hasMainWindow()) return getCustomCssState();
+	const result = await dialog.showOpenDialog(mainWindow, {
+		title: "Choose custom CSS file",
+		properties: ["openFile"],
+		filters: [{ name: "CSS", extensions: ["css"] }],
+	});
+	if (result.canceled || !result.filePaths[0]) return getCustomCssState();
+	store.set("customCssPath", result.filePaths[0]);
+	store.set("customCssEnabled", true);
+	startCustomCssWatcher();
+	broadcastCustomCss();
+	return getCustomCssState();
+}
+
+function clearCustomCss() {
+	store.delete("customCssPath");
+	store.set("customCssEnabled", false);
+	stopCustomCssWatcher();
+	broadcastCustomCss();
+	return getCustomCssState();
+}
+
+function setCustomCssEnabled(enabled) {
+	store.set("customCssEnabled", !!enabled);
+	if (enabled) startCustomCssWatcher();
+	else stopCustomCssWatcher();
+	broadcastCustomCss();
+	return getCustomCssState();
+}
+
+// Directories scanned for drop-in theme .css files. The per-user themes
+// folder is listed first so user themes override bundled ones by name.
+function getThemeDirectories() {
+	const dirs = [];
+	const userThemes = path.join(app.getPath("userData"), "themes");
+	try {
+		fs.mkdirSync(userThemes, { recursive: true });
+	} catch (err) {
+		console.error("Failed to create user themes folder:", err);
+	}
+	dirs.push(userThemes);
+	dirs.push(
+		isDev
+			? path.join(app.getAppPath(), "themes")
+			: path.join(process.resourcesPath, "themes"),
+	);
+	return dirs;
+}
+
+function listThemes() {
+	const byName = new Map();
+	for (const dir of getThemeDirectories()) {
+		let entries = [];
+		try {
+			entries = fs.readdirSync(dir);
+		} catch {
+			continue;
+		}
+		for (const file of entries) {
+			if (!file.toLowerCase().endsWith(".css")) continue;
+			const name = file.replace(/\.css$/i, "");
+			if (!byName.has(name)) {
+				byName.set(name, { name, path: path.join(dir, file) });
+			}
+		}
+	}
+	return [...byName.values()].sort((a, b) => a.name.localeCompare(b.name));
+}
+
+function selectTheme(cssPath) {
+	if (!cssPath) return clearCustomCss();
+	store.set("customCssPath", cssPath);
+	store.set("customCssEnabled", true);
+	startCustomCssWatcher();
+	broadcastCustomCss();
+	return getCustomCssState();
+}
+
+function openThemesFolder() {
+	const [userThemes] = getThemeDirectories();
+	shell.openPath(userThemes);
+}
+
 function registerIpcHandlers() {
 	ipcMain.handle("db:loadState", () => {
 		return db.loadState();
@@ -503,6 +642,45 @@ function registerIpcHandlers() {
 		store.set("showCopyButton", show);
 		return show;
 	});
+
+	ipcMain.handle("settings:getCustomCss", () => {
+		return getCustomCssPayload();
+	});
+
+	ipcMain.handle("settings:chooseCustomCss", async () => {
+		await chooseCustomCssFile();
+		return getCustomCssPayload();
+	});
+
+	ipcMain.handle("settings:clearCustomCss", () => {
+		clearCustomCss();
+		return getCustomCssPayload();
+	});
+
+	ipcMain.handle("settings:toggleCustomCss", (_event, enable) => {
+		setCustomCssEnabled(enable);
+		return getCustomCssPayload();
+	});
+
+	ipcMain.handle("settings:revealCustomCss", () => {
+		const cssPath = store.get("customCssPath");
+		if (cssPath && fs.existsSync(cssPath)) {
+			shell.showItemInFolder(cssPath);
+		}
+	});
+
+	ipcMain.handle("settings:listThemes", () => {
+		return listThemes();
+	});
+
+	ipcMain.handle("settings:selectTheme", (_event, cssPath) => {
+		selectTheme(cssPath);
+		return getCustomCssPayload();
+	});
+
+	ipcMain.handle("settings:openThemesFolder", () => {
+		openThemesFolder();
+	});
 }
 
 function showNotification({ title, body, silent = false }) {
@@ -545,6 +723,9 @@ function createWindow() {
 					"file://" + __dirname,
 				).toString(),
 	);
+
+	mainWindow.webContents.on("did-finish-load", broadcastCustomCss);
+	startCustomCssWatcher();
 }
 
 function setupAutoUpdater() {
