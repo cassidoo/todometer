@@ -3,11 +3,14 @@ import TodoDate from "./components/TodoDate.jsx";
 import ItemList from "./components/ItemList.jsx";
 import SettingsDrawer from "./components/SettingsDrawer.jsx";
 import { AppStateProvider } from "./AppContext.jsx";
+import { useCustomCss } from "./hooks/useCustomCss.js";
 
 function App() {
 	const [drawerOpen, setDrawerOpen] = useState(false);
 	const [showResetButton, setShowResetButton] = useState(true);
 	const [showCopyButton, setShowCopyButton] = useState(false);
+
+	useCustomCss();
 
 	useEffect(() => {
 		Promise.all([

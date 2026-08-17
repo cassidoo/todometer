@@ -1,0 +1,64 @@
+/*
+ * Synthwave — an '80s neon sunset theme for todometer.
+ * Drop this file into your themes folder and pick it in
+ * Settings → Configuration → Appearance → Theme.
+ */
+
+:root {
+	--bg: #1a1033;
+	--green: #05ffa1;
+	--yellow: #fee440;
+	--red: #ff2e97;
+	--gray: rgba(255, 255, 255, 0.45);
+	--highlight: rgba(255, 46, 151, 0.18);
+
+	--input-color: #2a1a4a;
+	--item-color: #241546;
+	--font-color: #f7f0ff;
+
+	--big-font-size: 64px;
+	--heading-font-size: 24px;
+	--item-font-size: 20px;
+	--pulse-animation: click 0.5s;
+}
+
+body {
+	font-family: "Poppins", "Segoe UI", "Helvetica Neue", sans-serif !important;
+	letter-spacing: 0.3px;
+	text-shadow: 0 0 6px rgba(255, 46, 151, 0.35);
+	background:
+		linear-gradient(
+			180deg,
+			#2b1055 0%,
+			#41197a 45%,
+			#7b1e6d 75%,
+			#ff2e97 140%
+		),
+		var(--bg) !important;
+}
+
+::selection {
+	background: var(--red);
+	color: #1a1033;
+	text-shadow: none;
+}
+
+input,
+textarea,
+button,
+select {
+	font-family: "Poppins", "Segoe UI", "Helvetica Neue", sans-serif !important;
+}
+
+input:focus,
+textarea:focus {
+	box-shadow:
+		0 0 0 1px var(--red),
+		0 0 12px rgba(5, 255, 161, 0.25) inset;
+}
+
+.today::after {
+	content: " ▲";
+	color: var(--green);
+	text-shadow: 0 0 8px rgba(5, 255, 161, 0.6);
+}

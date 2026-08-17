@@ -69,6 +69,10 @@
 			{
 				"from": "src/mcp/index.mjs",
 				"to": "mcp/index.mjs"
+			},
+			{
+				"from": "themes",
+				"to": "themes"
 			}
 		],
 		"directories": {

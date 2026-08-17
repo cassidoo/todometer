@@ -1,0 +1,55 @@
+/*
+ * Dracula — the classic dark palette for todometer.
+ * https://draculatheme.com
+ * Pick it in Settings → Configuration → Appearance → Theme.
+ */
+
+:root {
+	--bg: #282a36;
+	--green: #50fa7b;
+	--yellow: #f1fa8c;
+	--red: #ff5555;
+	--gray: #6272a4;
+	--highlight: rgba(189, 147, 249, 0.18);
+
+	--input-color: #343746;
+	--item-color: #383a4c;
+	--font-color: #f8f8f2;
+
+	--big-font-size: 64px;
+	--heading-font-size: 24px;
+	--item-font-size: 20px;
+	--pulse-animation: click 0.5s;
+}
+
+body {
+	font-family: "Fira Code", "JetBrains Mono", "Consolas", monospace !important;
+	letter-spacing: 0.2px;
+	background: var(--bg) !important;
+}
+
+::selection {
+	background: #bd93f9;
+	color: #282a36;
+}
+
+input,
+textarea,
+button,
+select {
+	font-family: "Fira Code", "JetBrains Mono", "Consolas", monospace !important;
+}
+
+::placeholder {
+	color: var(--gray);
+}
+
+input:focus,
+textarea:focus {
+	box-shadow: 0 0 0 1px #bd93f9;
+}
+
+.today::after {
+	content: " ●";
+	color: #bd93f9;
+}

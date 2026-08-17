@@ -16,6 +16,8 @@ const SECTION_INFO = {
 	notifications: "Control how and when you receive notifications.",
 	data: "Manage where your data is stored.",
 	display: "Enable extra buttons on the interface.",
+	appearance:
+		"Pick a theme from your themes folder. Drop a .css file into the folder to add your own; changes apply live.",
 	api: "Query and control your todometer data from other applications using the local API.",
 };
 
@@ -73,18 +75,28 @@ function SettingsDrawer({
 	});
 	const [tokenCopied, setTokenCopied] = useState(false);
 	const [mcpCopied, setMcpCopied] = useState(false);
+	const [customCss, setCustomCss] = useState({
+		enabled: false,
+		path: null,
+		css: "",
+	});
+	const [themes, setThemes] = useState([]);
 
 	const loadSettings = useCallback(async () => {
 		if (!window.settingsAPI) return;
 		try {
-			const [notif, vault, api] = await Promise.all([
+			const [notif, vault, api, css, themeList] = await Promise.all([
 				window.settingsAPI.getNotifications(),
 				window.settingsAPI.getVaultPath(),
 				window.settingsAPI.getApiState(),
+				window.settingsAPI.getCustomCss(),
+				window.settingsAPI.listThemes(),
 			]);
 			setNotifications(notif);
 			setVaultInfo(vault);
 			setApiState(api);
+			setCustomCss(css);
+			setThemes(themeList ?? []);
 		} catch (err) {
 			console.error("Failed to load settings:", err);
 		}
@@ -174,8 +186,31 @@ function SettingsDrawer({
 		window.settingsAPI?.setShowCopyButton(newValue);
 	}
 
+	async function handleThemeChange(e) {
+		const value = e.target.value;
+		const result = await window.settingsAPI?.selectTheme(value);
+		if (result) setCustomCss(result);
+	}
+
+	function handleOpenThemesFolder() {
+		window.settingsAPI?.openThemesFolder();
+	}
+
 	const displayPath = vaultInfo.path || vaultInfo.currentPath || "Default";
 	const isCustomVault = !!vaultInfo.path;
+	const selectedThemePath =
+		customCss.enabled && customCss.path ? customCss.path : "";
+	const themeOptions = [...themes];
+	if (
+		selectedThemePath &&
+		!themeOptions.some((t) => t.path === selectedThemePath)
+	) {
+		const base = selectedThemePath
+			.split(/[\\/]/)
+			.pop()
+			.replace(/\.css$/i, "");
+		themeOptions.unshift({ name: `${base} (custom)`, path: selectedThemePath });
+	}
 	const mcpJson = JSON.stringify(
 		{
 			mcpServers: {
@@ -295,6 +330,32 @@ function SettingsDrawer({
 								/>
 								<span className={styles.slider} />
 							</label>
+						</section>
+
+						<section className={styles.section}>
+							<div className={styles.sectionHeader}>
+								<h3>Appearance</h3>
+								<InfoButton text={SECTION_INFO.appearance} />
+							</div>
+							<div className={styles.field}>
+								<span>Theme</span>
+								<select value={selectedThemePath} onChange={handleThemeChange}>
+									<option value="">Default</option>
+									{themeOptions.map((theme) => (
+										<option key={theme.path} value={theme.path}>
+											{theme.name}
+										</option>
+									))}
+								</select>
+							</div>
+							<div className={styles.buttonGroup}>
+								<button
+									className={styles.secondaryButton}
+									onClick={handleOpenThemesFolder}
+								>
+									Open themes folder…
+								</button>
+							</div>
 						</section>
 
 						<section className={styles.section}>
