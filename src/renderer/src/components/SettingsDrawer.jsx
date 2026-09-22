@@ -2,21 +2,21 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./SettingsDrawer.module.css";
 
 const REMINDER_OPTIONS = [
-	{ value: "never", label: "Never" },
-	{ value: "fiveminutes", label: "Every 5 minutes" },
-	{ value: "quarterhour", label: "Every 15 minutes" },
-	{ value: "halfhour", label: "Every 30 minutes" },
-	{ value: "hour", label: "Every hour" },
+	{ value: "never", label: "从不" },
+	{ value: "fiveminutes", label: "每5分钟" },
+	{ value: "quarterhour", label: "每15分钟" },
+	{ value: "halfhour", label: "每30分钟" },
+	{ value: "hour", label: "每小时" },
 ];
 
 const DOCS_URL =
 	"https://github.com/cassidoo/todometer/blob/main/docs/api-and-mcp-setup.md";
 
 const SECTION_INFO = {
-	notifications: "Control how and when you receive notifications.",
-	data: "Manage where your data is stored.",
-	display: "Enable extra buttons on the interface.",
-	api: "Query and control your todometer data from other applications using the local API.",
+	notifications: "控制接收通知的方式和时间。",
+	data: "管理数据存放地点。",
+	display: "启用界面的额外按钮。",
+	api: "利用本地 API，从其他应用程序查询并控制您的 todometer 数据。",
 };
 
 function InfoButton({ text }) {
@@ -198,7 +198,7 @@ function SettingsDrawer({
 			<div className={`${styles.drawer} ${isOpen ? styles.open : ""}`}>
 				<div className={styles.container}>
 					<div className={styles.header}>
-						<h2>Configuration</h2>
+						<h2>配置</h2>
 						<button className={styles.closeButton} onClick={onClose}>
 							✕
 						</button>
@@ -207,11 +207,11 @@ function SettingsDrawer({
 					<div className={styles.content}>
 						<section className={styles.section}>
 							<div className={styles.sectionHeader}>
-								<h3>Notifications</h3>
+								<h3>通知</h3>
 								<InfoButton text={SECTION_INFO.notifications} />
 							</div>
 							<label className={styles.toggle}>
-								<span>Reset notification</span>
+								<span>重置通知</span>
 								<input
 									type="checkbox"
 									checked={notifications.resetNotification}
@@ -220,7 +220,7 @@ function SettingsDrawer({
 								<span className={styles.slider} />
 							</label>
 							<div className={styles.field}>
-								<span>Reminder frequency</span>
+								<span>提醒间隔</span>
 								<select
 									value={notifications.reminderNotification}
 									onChange={handleReminderChange}
@@ -237,14 +237,14 @@ function SettingsDrawer({
 									className={styles.secondaryButton}
 									onClick={handleTestNotification}
 								>
-									Show example notification
+									显示示例通知
 								</button>
 							</div>
 						</section>
 
 						<section className={styles.section}>
 							<div className={styles.sectionHeader}>
-								<h3>Your data</h3>
+								<h3>数据目录</h3>
 								<InfoButton text={SECTION_INFO.data} />
 							</div>
 							<div className={styles.locationRow}>
@@ -259,7 +259,7 @@ function SettingsDrawer({
 									className={styles.secondaryButton}
 									onClick={handleChangeVault}
 								>
-									Change…
+									更改…
 								</button>
 								{isCustomVault && (
 									<button
@@ -274,11 +274,11 @@ function SettingsDrawer({
 
 						<section className={styles.section}>
 							<div className={styles.sectionHeader}>
-								<h3>Display</h3>
+								<h3>显示</h3>
 								<InfoButton text={SECTION_INFO.display} />
 							</div>
 							<label className={styles.toggle}>
-								<span>Show reset progress button</span>
+								<span>显示重置进度按钮</span>
 								<input
 									type="checkbox"
 									checked={showResetButton}
@@ -287,7 +287,7 @@ function SettingsDrawer({
 								<span className={styles.slider} />
 							</label>
 							<label className={styles.toggle}>
-								<span>Show copy button</span>
+								<span>显示复制按钮</span>
 								<input
 									type="checkbox"
 									checked={showCopyButton}
@@ -299,12 +299,12 @@ function SettingsDrawer({
 
 						<section className={styles.section}>
 							<div className={styles.sectionHeader}>
-								<h3>Local API and MCP</h3>
+								<h3>本地 API 和 MCP</h3>
 								<InfoButton text={SECTION_INFO.api} />
 							</div>
 							<label className={styles.toggle}>
 								<span>
-									Enable Local API{" "}
+									启用本地 API{" "}
 									{apiState.enabled ? `(port ${apiState.port})` : ""}
 								</span>
 								<input
@@ -323,25 +323,25 @@ function SettingsDrawer({
 											className={styles.secondaryButton}
 											onClick={handleCopyToken}
 										>
-											{tokenCopied ? "Copied!" : "Copy"}
+											{tokenCopied ? "已复制!" : "复制"}
 										</button>
 									</div>
 									<details className={styles.details}>
-										<summary>MCP configuration</summary>
+										<summary>MCP 配置</summary>
 										<pre className={styles.codeBlock}>{mcpJson}</pre>
 										<div className={styles.rightButton}>
 											<button
 												className={styles.secondaryButton}
 												onClick={handleCopyMcp}
 											>
-												{mcpCopied ? "Copied!" : "Copy"}
+												{mcpCopied ? "已复制!" : "复制"}
 											</button>
 										</div>
 									</details>
 								</>
 							)}
 							<button className={styles.linkButton} onClick={handleOpenDocs}>
-								API Documentation →
+								API 文档 →
 							</button>
 						</section>
 					</div>

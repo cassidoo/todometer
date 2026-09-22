@@ -166,7 +166,7 @@ function initDatabase() {
 			return db.openDatabase(getDefaultDbPath());
 		} else if (choice === 1) {
 			const result = dialog.showOpenDialogSync(null, {
-				title: "Choose data vault location",
+				title: "选择数据存放位置",
 				properties: ["openDirectory", "createDirectory"],
 			});
 			if (result && result[0]) {
@@ -188,7 +188,7 @@ async function changeVaultLocation() {
 	if (!hasMainWindow()) return;
 
 	const result = await dialog.showOpenDialog(mainWindow, {
-		title: "Choose data vault location",
+		title: "选择数据存放位置",
 		defaultPath: path.dirname(getCurrentDbPath()),
 		properties: ["openDirectory", "createDirectory"],
 	});
@@ -654,26 +654,26 @@ function menuSetup() {
 			label: "todometer",
 			submenu: [
 				{
-					label: "About",
+					label: "关于",
 					click: () => {
 						dialog.showMessageBox(mainWindow, {
 							type: "info",
-							title: "About",
+							title: "关于",
 							message:
-								"todometer is open source and lovingly built by cassidoo",
-							detail: "You can find her on her website cassidoo.co.",
+								"todometer 是一款开源软件，由 cassidoo 精心打造。",
+							detail: "Blog地址：cassidoo.co 。",
 							icon: path.join(app.getAppPath(), "assets/png/64.png"),
 						});
 					},
 				},
 				{
-					label: "Contribute (v" + version + ")",
+					label: "贡献 (v" + version + ")",
 					click: () => {
 						shell.openExternal("https://github.com/cassidoo/todometer");
 					},
 				},
 				{
-					label: "Check for Updates…",
+					label: "检查更新...",
 					click: () => {
 						checkForUpdatesManually();
 					},
@@ -689,7 +689,7 @@ function menuSetup() {
 					},
 				},*/
 				{
-					label: "Quit",
+					label: "退出程序",
 					accelerator: "CommandOrControl+Q",
 					click: () => {
 						app.quit();
@@ -698,26 +698,42 @@ function menuSetup() {
 			],
 		},
 		{
-			label: "Edit",
+			label: "编辑",
 			submenu: [
-				{ role: "undo" },
-				{ role: "redo" },
-				{ role: "cut" },
-				{ role: "copy" },
-				{ role: "paste" },
-				{ role: "delete" },
-				{ role: "selectall" },
+				{ 
+					label: "撤销",
+					role: "undo" },
+				{ 
+					label: "重做",
+					role: "redo" },
+				{ 
+					label: "剪切",
+					role: "cut" },
+				{ 
+					label: "复制",
+					role: "copy" },
+				{ 
+					label: "粘贴",
+					role: "paste" },
+				{ 
+					label: "删除",
+					role: "delete" },
+				{ 
+					label: "全选",
+					role: "selectall" },
 			],
 		},
 		{
-			label: "View",
+			label: "视图",
 			submenu: [
 				{
 					type: "separator",
 				},
-				{ role: "reload" },
+				{ 
+					label: "重新加载",
+					role: "reload" },
 				{
-					label: "Zoom In",
+					label: "放大",
 					accelerator: "CommandOrControl+=",
 					click: () => {
 						const wc = mainWindow.webContents;
@@ -725,7 +741,7 @@ function menuSetup() {
 					},
 				},
 				{
-					label: "Zoom Out",
+					label: "缩小",
 					accelerator: "CommandOrControl+-",
 					click: () => {
 						const wc = mainWindow.webContents;
@@ -733,12 +749,16 @@ function menuSetup() {
 					},
 				},
 				{
-					label: "Reset Zoom",
+					label: "重置缩放",
 					accelerator: "CommandOrControl+0",
 					click: () => mainWindow.webContents.setZoomLevel(0),
 				},
-				{ role: "togglefullscreen" },
-				{ role: "minimize" },
+				{ 
+					label: "全屏",
+					role: "togglefullscreen" },
+				{ 
+					label: "最小化",
+					role: "minimize" },
 			],
 		},
 	];

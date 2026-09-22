@@ -23,7 +23,7 @@ function AddItemForm() {
 
 	return (
 		<form className={styles.form} onSubmit={addItem}>
-			<input ref={inputRef} placeholder="Add new item" autoFocus />
+			<input ref={inputRef} placeholder="添加新的待办" autoFocus />
 			<button type="submit" />
 		</form>
 	);
