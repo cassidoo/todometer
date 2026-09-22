@@ -303,7 +303,7 @@ function ItemList({ showResetButton, showCopyButton, onOpenSettings }) {
 								<Accordion.Header>
 									<Accordion.Trigger className={styles.toggle}>
 										<img src={arrow} alt="Later Toggle" />
-										<span>Later</span>
+										<span>稍后</span>
 									</Accordion.Trigger>
 								</Accordion.Header>
 							</DroppableHeader>
@@ -335,7 +335,7 @@ function ItemList({ showResetButton, showCopyButton, onOpenSettings }) {
 								<Accordion.Header>
 									<Accordion.Trigger className={styles.toggle}>
 										<img src={arrow} alt="Completed Toggle" />{" "}
-										<span>Completed</span>
+										<span>已完成</span>
 									</Accordion.Trigger>
 								</Accordion.Header>
 							</DroppableHeader>
@@ -384,7 +384,7 @@ function ItemList({ showResetButton, showCopyButton, onOpenSettings }) {
 
 			<div className={styles.bottomButtons}>
 				<button onClick={onOpenSettings} aria-label="Open menu">
-					menu
+					菜单
 				</button>
 				{showResetButton && (completed.length > 0 || paused.length > 0) && (
 					<>
@@ -394,7 +394,7 @@ function ItemList({ showResetButton, showCopyButton, onOpenSettings }) {
 								dispatch({ type: "RESET_ALL" });
 							}}
 						>
-							reset progress
+							重置进度
 						</button>
 					</>
 				)}
@@ -442,7 +442,7 @@ function ItemList({ showResetButton, showCopyButton, onOpenSettings }) {
 									});
 								}}
 							>
-								{copied ? "copied!" : "copy list"}
+								{copied ? "已复制!" : "复制待办列表"}
 							</button>
 						</>
 					)}
